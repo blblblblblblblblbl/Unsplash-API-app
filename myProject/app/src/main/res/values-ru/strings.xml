@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="photos_fragment_title">Фотографии</string>
+    <string name="collections_fragment_title">Коллекции</string>
+    <string name="user_fragment_title">Пользователь</string>
+    <string name="app_name">Unfold</string>
+    <string name="hello_blank_fragment">привет пустой фрагмент</string>
+    <string name="collection_total_photos">фотографий</string>
+    <string name="made_with_camera">Сделано с</string>
+    <string name="camera_Model">Модель</string>
+    <string name="exposure">Экспозиция</string>
+    <string name="aperture">Апертура</string>
+    <string name="focal_length">Фокусное расстояние</string>
+    <string name="iso">ISO</string>
+    <string name="about">Об</string>
+    <string name="download">Скачать</string>
+    <string name="action_confirmation">Подтверждение действия</string>
+    <string name="logout_confirmation">Вы действительно хотите удалить выбранный элемент?</string>
+    <string name="logout">выйти</string>
+    <string name="cancel">отмена</string>
+    <string name="user">пользователь</string>
+    <string name="logout_icon_description">кнопка выхода</string>
+    <string name="location_icon_description">кнопка местоположения</string>
+    <string name="mail_icon_description">кнопка почты</string>
+    <string name="download_icon_description">кнопка скачивания</string>
+    <string name="like_icon_description">кнопка лайка</string>
+    <string name="try_again">попробовать снова</string>
+    <string name="onboarding">Онбординг</string>
+    <string name="log_in">войти</string>
+    <string name="onboarding1">просматривайте ленту фото</string>
+    <string name="onboarding2">просматривайте коллекции</string>
+    <string name="onboarding3">открывайте фото</string>
+    <string name="onboarding4">ищите фото</string>
+</resources>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/photosFragment">
+
+    <fragment
+        android:id="@+id/photosFragment"
+        android:name="com.blblblbl.myapplication.view.PhotosFragment"
+        android:label="fragment_photos"
+        tools:layout="@layout/fragment_photos" >
+        <action
+            android:id="@+id/action_photosFragment_to_photoDetailedInfoFragment"
+            app:destination="@id/photoDetailedInfoFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim"
+            />
+        <action
+            android:id="@+id/action_photosFragment_to_searchFragment"
+            app:destination="@id/searchFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+    </fragment>
+    <fragment
+        android:id="@+id/collectionsFragment"
+        android:name="com.blblblbl.myapplication.view.CollectionsFragment"
+        android:label="fragment_collections"
+        tools:layout="@layout/fragment_collections" >
+        <action
+            android:id="@+id/action_collectionsFragment_to_collectionPhotoListFragment"
+            app:destination="@id/collectionPhotoListFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/userFragment"
+        android:name="com.blblblbl.myapplication.view.UserFragment"
+        android:label="fragment_user"
+        tools:layout="@layout/fragment_user" />
+    <fragment
+        android:id="@+id/photoDetailedInfoFragment"
+        android:name="com.blblblbl.myapplication.view.PhotoDetailedInfoFragment"
+        android:label="fragment_photo_detailed_info"
+        tools:layout="@layout/fragment_photo_detailed_info" />
+    <fragment
+        android:id="@+id/photoDetailedInfoFragment2"
+        android:name="com.blblblbl.myapplication.view.PhotoDetailedInfoFragment"
+        android:label="fragment_photo_detailed_info"
+        tools:layout="@layout/fragment_photo_detailed_info" />
+    <fragment
+        android:id="@+id/collectionPhotoListFragment"
+        android:name="com.blblblbl.myapplication.view.CollectionPhotoListFragment"
+        android:label="fragment_collection_photo_list"
+        tools:layout="@layout/fragment_collection_photo_list" >
+        <action
+            android:id="@+id/action_collectionPhotoListFragment_to_photoDetailedInfoFragment2"
+            app:destination="@id/photoDetailedInfoFragment2" />
+    </fragment>
+    <fragment
+        android:id="@+id/searchFragment"
+        android:name="com.blblblbl.myapplication.view.SearchFragment"
+        android:label="fragment_search"
+        tools:layout="@layout/fragment_search" />
+</navigation>
