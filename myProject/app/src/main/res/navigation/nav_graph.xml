@@ -13,18 +13,17 @@
         <action
             android:id="@+id/action_photosFragment_to_photoDetailedInfoFragment"
             app:destination="@id/photoDetailedInfoFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim"
-            />
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
         <action
             android:id="@+id/action_photosFragment_to_searchFragment"
             app:destination="@id/searchFragment"
-            app:enterAnim="@anim/nav_default_enter_anim"
-            app:exitAnim="@anim/nav_default_exit_anim"
-            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
-            app:popExitAnim="@anim/nav_default_pop_exit_anim" />
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out" />
     </fragment>
     <fragment
         android:id="@+id/collectionsFragment"
@@ -33,7 +32,11 @@
         tools:layout="@layout/fragment_collections" >
         <action
             android:id="@+id/action_collectionsFragment_to_collectionPhotoListFragment"
-            app:destination="@id/collectionPhotoListFragment" />
+            app:destination="@id/collectionPhotoListFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/userFragment"
@@ -57,7 +60,11 @@
         tools:layout="@layout/fragment_collection_photo_list" >
         <action
             android:id="@+id/action_collectionPhotoListFragment_to_photoDetailedInfoFragment2"
-            app:destination="@id/photoDetailedInfoFragment2" />
+            app:destination="@id/photoDetailedInfoFragment2"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@android:anim/fade_out"
+            app:popEnterAnim="@android:anim/fade_in"
+            app:popExitAnim="@android:anim/fade_out"/>
     </fragment>
     <fragment
         android:id="@+id/searchFragment"
