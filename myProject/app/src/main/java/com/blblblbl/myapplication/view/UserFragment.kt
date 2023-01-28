@@ -37,6 +37,7 @@ import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserI
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.StatesUI
 import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.UserFragmentViewModel
 import com.example.example.UserInfo
@@ -135,10 +136,7 @@ class UserFragment : Fragment() {
                 }
             }
             StatesUI(items = lazyPhotosItems)
-            /*Column() {
-                UserInfo(it,publicInfoState)
-                likedPhotosList(viewModel.pagedPhotos)
-            }*/
+
         }
     }
     
@@ -191,76 +189,7 @@ class UserFragment : Fragment() {
     }
 
 
-    @Composable
-    fun likedPhotosList(photos: Flow<PagingData<Photo>>){
-        val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
-        LazyColumn{
-            items(lazyPhotosItems){item->
-                item?.let { PhotoScreen(photo = it)}
-            }
-        }
-        lazyPhotosItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    LoadingView(modifier = Modifier.fillMaxSize())
-                }
-                loadState.append is LoadState.Loading -> {
-                    LoadingItem()
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.refresh as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        modifier = Modifier.fillMaxSize(),
-                        onClickRetry = { retry() }
-                    )
-
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.append as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        onClickRetry = { retry() }
-                    )
-
-                }
-            }
-        }
-    }
-    @Composable
-    fun StatesUI(items: LazyPagingItems<Photo>){
-        items.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    LoadingView(modifier = Modifier.fillMaxSize())
-                }
-                loadState.append is LoadState.Loading -> {
-                    LoadingItem()
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = items.loadState.refresh as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        modifier = Modifier.fillMaxSize(),
-                        onClickRetry = { retry() }
-                    )
-
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = items.loadState.append as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        onClickRetry = { retry() }
-                    )
-
-                }
-            }
-        }
-    }
+    
     @Composable
     fun PhotoScreen(photo: Photo){
         val textColor = Color.White
