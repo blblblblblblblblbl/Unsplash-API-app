@@ -60,6 +60,7 @@ class RepositoryApi @Inject constructor(
                 @Header("Authorization") authHeader: String
             ): List<Photo>
 
+            @Headers("mock:true")
             @GET("users/{username}/likes")
             suspend fun getLikedPhotos(
                 @Path("username") username: String,

@@ -12,25 +12,20 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ExitToApp
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.outlined.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
-import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
 import androidx.paging.compose.LazyPagingItems
@@ -42,6 +37,7 @@ import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserI
 import com.blblblbl.myapplication.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.view.compose_utils.LoadingView
+import com.blblblbl.myapplication.view.compose_utils.StatesUI
 import com.blblblbl.myapplication.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.viewModel.UserFragmentViewModel
 import com.example.example.UserInfo
@@ -132,22 +128,32 @@ class UserFragment : Fragment() {
         val privateInfoState = privateUserInfo.collectAsState().value
         val publicInfoState = publicUserInfo.collectAsState().value
         privateInfoState?.let {
-            Column() {
-                UserInfo(it,publicInfoState)
-                likedPhotosList(viewModel.pagedPhotos)
+            val lazyPhotosItems: LazyPagingItems<Photo> = viewModel.pagedPhotos.collectAsLazyPagingItems()
+            LazyColumn{
+                item { UserInfo(it,publicInfoState)                }
+                items(lazyPhotosItems){item->
+                    item?.let { PhotoScreen(photo = it)}
+                }
             }
+            StatesUI(items = lazyPhotosItems)
+
         }
     }
     
     @Composable
     fun UserInfo(userInfo: UserInfo,publicUserInfo: PublicUserInfo?){
-        val avatar:String? = publicUserInfo?.profileImage?.large
-        Row() {
-            GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
-            Column() {
+        Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
+            Column(modifier = Modifier.fillMaxWidth()) {
+                val avatar:String? = publicUserInfo?.profileImage?.large
+                avatar?.let { avatar->
+                    GlideImage(imageModel = {avatar}, modifier = Modifier
+                        .clip(CircleShape)
+                        .size(128.dp)
+                        .align(CenterHorizontally))
+                }
                 Log.d("MyLog","User:${userInfo}")
-                Text(text = "${userInfo.firstName} ${userInfo.lastName}", style = MaterialTheme.typography.headlineLarge)
-                Text(text = "${userInfo.username}", style = MaterialTheme.typography.bodySmall)
+                Text(text = "${userInfo.firstName} ${userInfo.lastName}", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.align(CenterHorizontally))
+                Text(text = "@${userInfo.username}", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.align(CenterHorizontally))
                 userInfo.bio?.let{bio->
                     Text(text = "${bio}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
                 }
@@ -178,50 +184,12 @@ class UserFragment : Fragment() {
                         Text(text = "${downloads}", style = MaterialTheme.typography.bodyLarge)
                     }
                 }
-
             }
         }
     }
 
 
-    @Composable
-    fun likedPhotosList(photos: Flow<PagingData<Photo>>){
-        val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
-        LazyColumn{
-            items(lazyPhotosItems){item->
-                item?.let { PhotoScreen(photo = it)}
-            }
-        }
-        lazyPhotosItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    LoadingView(modifier = Modifier.fillMaxSize())
-                }
-                loadState.append is LoadState.Loading -> {
-                    LoadingItem()
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.refresh as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        modifier = Modifier.fillMaxSize(),
-                        onClickRetry = { retry() }
-                    )
-
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.append as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        onClickRetry = { retry() }
-                    )
-
-                }
-            }
-        }
-    }
+    
     @Composable
     fun PhotoScreen(photo: Photo){
         val textColor = Color.White

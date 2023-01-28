@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -120,6 +121,38 @@ fun PhotoScreen(
                         }
                     )
                 }
+            }
+        }
+    }
+}
+@Composable
+fun StatesUI(items: LazyPagingItems<Photo>){
+    items.apply {
+        when {
+            loadState.refresh is LoadState.Loading -> {
+                LoadingView(modifier = Modifier.fillMaxSize())
+            }
+            loadState.append is LoadState.Loading -> {
+                LoadingItem()
+            }
+            loadState.refresh is LoadState.Error -> {
+                val e = items.loadState.refresh as LoadState.Error
+
+                ErrorItem(
+                    message = e.error.localizedMessage!!,
+                    modifier = Modifier.fillMaxSize(),
+                    onClickRetry = { retry() }
+                )
+
+            }
+            loadState.append is LoadState.Error -> {
+                val e = items.loadState.append as LoadState.Error
+
+                ErrorItem(
+                    message = e.error.localizedMessage!!,
+                    onClickRetry = { retry() }
+                )
+
             }
         }
     }
