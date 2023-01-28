@@ -80,7 +80,6 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .fillMaxWidth(),
 
             style = MaterialTheme.typography.headlineLarge,
-            //fontWeight = FontWeight.Bold,
             textAlign = TextAlign.Center
         )
         Text(
