@@ -8,5 +8,5 @@ import androidx.compose.ui.unit.dp
 val UnsplashShapes = Shapes(
     small = CutCornerShape(topStart = 8.dp),
     medium = CutCornerShape(topStart = 24.dp),
-    large = RoundedCornerShape(8.dp)
+    large = RoundedCornerShape(16.dp)
 )
