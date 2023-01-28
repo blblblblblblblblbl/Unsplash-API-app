@@ -48,9 +48,5 @@ This android application works with unspash api
 
 
 ## Screenshots
-![gif1](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329.gif)
-![gif2](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(0).gif)
-![gif3](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(1).gif)
-![gif4](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(2).gif)
-![gif5](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(3).gif)
-![gif6](https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(4).gif)
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(0).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(1).gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(2).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(3).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(4).gif" width = 300>
