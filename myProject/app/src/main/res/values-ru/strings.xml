@@ -31,4 +31,5 @@
     <string name="onboarding2">просматривайте коллекции</string>
     <string name="onboarding3">открывайте фото</string>
     <string name="onboarding4">ищите фото</string>
+    <string name="skip">пропустить</string>
 </resources>

@@ -9,6 +9,7 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -21,6 +22,7 @@ import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.view.auth.utils.OnBoardingPage
 import com.blblblbl.myapplication.viewModel.AuthViewModel
 import com.google.accompanist.pager.*
+import kotlinx.coroutines.launch
 
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
@@ -34,6 +36,7 @@ fun OnBoardingScreen(
         OnBoardingPage.Third
     )
     val pagerState = rememberPagerState()
+    val coroutineScope = rememberCoroutineScope()
 
     Column(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
@@ -50,6 +53,12 @@ fun OnBoardingScreen(
                 .weight(1f),
             pagerState = pagerState
         )
+        SkipButton(modifier = Modifier.weight(1f),
+            pagerState = pagerState ) {
+
+            coroutineScope.launch { pagerState.animateScrollToPage(3) }
+
+        }
         FinishButton(
             modifier = Modifier.weight(1f),
             pagerState = pagerState
@@ -95,6 +104,35 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
     }
 }
 
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun SkipButton(
+    modifier: Modifier,
+    pagerState: PagerState,
+    onClick: () -> Unit
+) {
+    Row(
+        modifier = modifier
+            .padding(horizontal = 40.dp),
+        verticalAlignment = Alignment.Top,
+        horizontalArrangement = Arrangement.Center
+    ) {
+        AnimatedVisibility(
+            modifier = Modifier.fillMaxWidth(),
+            visible = (pagerState.currentPage in ONBOARDING_FIRST_PAGE_INDEX until ONBOARDING_LAST_PAGE_INDEX)
+        ) {
+            Button(
+                onClick = onClick,
+                colors = ButtonDefaults.buttonColors(
+                    contentColor = Color.White
+                )
+            ) {
+                Text(text = stringResource(id = R.string.skip))
+            }
+        }
+    }
+}
+
 @ExperimentalAnimationApi
 @ExperimentalPagerApi
 @Composable
@@ -111,7 +149,7 @@ fun FinishButton(
     ) {
         AnimatedVisibility(
             modifier = Modifier.fillMaxWidth(),
-            visible = pagerState.currentPage == 2
+            visible = pagerState.currentPage == ONBOARDING_LAST_PAGE_INDEX
         ) {
             Button(
                 onClick = onClick,
@@ -148,3 +186,5 @@ fun ThirdOnBoardingScreenPreview() {
         PagerScreen(onBoardingPage = OnBoardingPage.Third)
     }
 }
+const val ONBOARDING_FIRST_PAGE_INDEX = 0
+const val ONBOARDING_LAST_PAGE_INDEX = 2
