@@ -31,4 +31,5 @@
     <string name="onboarding2">look at collections</string>
     <string name="onboarding3">open photo</string>
     <string name="onboarding4">search photos</string>
+    <string name="skip">skip</string>
 </resources>
