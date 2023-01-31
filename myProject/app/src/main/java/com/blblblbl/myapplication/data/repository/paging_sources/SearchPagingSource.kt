@@ -1,10 +1,10 @@
-package com.blblblbl.myapplication.data.repository
+package com.blblblbl.myapplication.data.repository.paging_sources
 
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.data.PhotosPagingSource
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 
 class SearchPagingSource(
     private val repositoryApi: RepositoryApi,

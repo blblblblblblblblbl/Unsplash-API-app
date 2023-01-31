@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data.repository
+package com.blblblbl.myapplication.data.repository.repository_db
 
 import android.content.Context
 import androidx.room.Room

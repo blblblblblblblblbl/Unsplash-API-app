@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data.repository.utils
+package com.blblblbl.myapplication.data.repository.repository_api.utils
 
 import android.content.Context
 import okhttp3.*

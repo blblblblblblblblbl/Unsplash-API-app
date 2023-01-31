@@ -1,19 +1,19 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.repository.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.blblblbl.myapplication.data.repository.Repository
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.example.example.PhotoCollection
 import javax.inject.Inject
 
-class PhotosPagingSource @Inject constructor(
+class CollectionsPagingSource@Inject constructor(
     private val repository: Repository
-):PagingSource<Int, Photo>() {
-    override fun getRefreshKey(state: PagingState<Int, Photo>): Int?=FIRST_PAGE
-    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
-        val page = params.key?:FIRST_PAGE
+): PagingSource<Int, PhotoCollection>() {
+    override fun getRefreshKey(state: PagingState<Int, PhotoCollection>): Int?= FIRST_PAGE
+    override suspend fun load(params: LoadParams<Int>): LoadResult<Int, PhotoCollection> {
+        val page = params.key?: FIRST_PAGE
         return kotlin.runCatching {
-            repository.getPhotos(page)
+            repository.getCollections(page)
         }.fold(
             onSuccess = {
                 it?.let { it1 ->
@@ -24,7 +24,7 @@ class PhotosPagingSource @Inject constructor(
                     )
                 }
             },
-            onFailure = {LoadResult.Error(it) }
+            onFailure = { LoadResult.Error(it) }
         )!!
     }
     companion object{
