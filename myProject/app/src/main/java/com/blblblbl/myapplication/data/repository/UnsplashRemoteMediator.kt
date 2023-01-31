@@ -8,6 +8,8 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.data.repository.database.entities.UnsplashRemoteKeys
+import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
+import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
 
 @ExperimentalPagingApi
 class UnsplashRemoteMediator(

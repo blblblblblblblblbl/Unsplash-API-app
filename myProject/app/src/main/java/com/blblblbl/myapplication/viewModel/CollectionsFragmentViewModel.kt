@@ -6,7 +6,7 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.blblblbl.myapplication.data.CollectionsPagingSource
+import com.blblblbl.myapplication.data.repository.paging_sources.CollectionsPagingSource
 import com.blblblbl.myapplication.data.repository.Repository
 import com.example.example.PhotoCollection
 import dagger.hilt.android.lifecycle.HiltViewModel
