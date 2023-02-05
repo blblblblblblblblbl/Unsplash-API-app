@@ -15,7 +15,7 @@ import androidx.work.*
 import com.blblblbl.myapplication.DownloadWorker
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.usecase.GetDetailedPhotoInfoUseCase
-import com.blblblbl.myapplication.domain.usecase.LikeUseCase
+import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import com.bumptech.glide.Glide
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -34,7 +34,7 @@ import javax.inject.Inject
 @HiltViewModel
 class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     private val getPhotosUseCase: GetDetailedPhotoInfoUseCase,
-    private val likeUseCase: LikeUseCase,
+    private val likeStateUseCase: LikeStateUseCase,
     @ApplicationContext private val context: Context
 ):ViewModel() {
     private val _detailedPhotoInfo = MutableStateFlow<DetailedPhotoInfo?>(null)
@@ -51,10 +51,10 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {
             if (bool){
-                likeUseCase.like(id)
+                likeStateUseCase.like(id)
             }
             else{
-                likeUseCase.unlike(id)
+                likeStateUseCase.unlike(id)
             }
         }
     }

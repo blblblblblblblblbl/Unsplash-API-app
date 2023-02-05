@@ -15,8 +15,9 @@ import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.usecase.ClearStorageUseCase
+import com.blblblbl.myapplication.domain.usecase.GetMeInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.GetUserInfoUseCase
-import com.blblblbl.myapplication.domain.usecase.LikeUseCase
+import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import com.example.example.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -32,7 +33,8 @@ class UserFragmentViewModel @Inject constructor(
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val likedPhotosPagingSource: LikedPhotosPagingSource,
     private val persistentStorage: PersistentStorage,
-    private val likeUseCase: LikeUseCase,
+    private val likeStateUseCase: LikeStateUseCase,
+    private val getMeInfoUseCase: GetMeInfoUseCase,
     private val clearStorageUseCase: ClearStorageUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
@@ -52,19 +54,19 @@ class UserFragmentViewModel @Inject constructor(
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {
             if (bool){
-                likeUseCase.like(id)
+                likeStateUseCase.like(id)
             }
             else{
-                likeUseCase.unlike(id)
+                likeStateUseCase.unlike(id)
             }
         }
     }
     fun getUserInfo(){
         viewModelScope.launch {
-            val privateUser = getUserInfoUseCase.getPrivateUserInfo()
+            val privateUser = getMeInfoUseCase.execute()
             Log.d("MyLog","User info" + privateUser)
             privateUser?.username?.let {
-                val publicUser = getUserInfoUseCase.getPublicUserInfo(it)
+                val publicUser = getUserInfoUseCase.execute(it)
                 Log.d("MyLog","User info" + publicUser)
                 likedPhotosPagingSource.userNameinit(it)
                 pagedPhotos = Pager(
