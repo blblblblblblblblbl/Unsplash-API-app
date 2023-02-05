@@ -12,7 +12,6 @@ import android.os.Environment
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
-import androidx.core.content.ContextCompat
 import androidx.core.net.toUri
 import androidx.work.Worker
 import androidx.work.WorkerParameters
@@ -37,7 +36,7 @@ class DownloadWorker(private val ctx: Context, params: WorkerParameters) : Worke
             makeStatusNotification("downloading", appContext)
             if (url != null) {
                 if (id != null) {
-                    download1(ctx,url,id)
+                    download(ctx,url,id)
                 }
             }
             Result.success()
@@ -46,7 +45,7 @@ class DownloadWorker(private val ctx: Context, params: WorkerParameters) : Worke
             Result.failure()
         }
     }
-    private fun download1(ctx: Context, url:String, id:String){
+    private fun download(ctx: Context, url:String, id:String){
         CoroutineScope(Dispatchers.IO).launch {
             saveImage(
                 Glide.with(ctx)

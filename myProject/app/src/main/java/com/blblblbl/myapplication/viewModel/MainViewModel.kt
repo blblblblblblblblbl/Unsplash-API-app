@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.viewModel
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel
-import com.blblblbl.myapplication.domain.AuthUseCase
+import com.blblblbl.myapplication.domain.usecase.AuthUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import javax.inject.Inject
 

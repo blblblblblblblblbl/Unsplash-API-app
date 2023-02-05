@@ -1,9 +1,9 @@
-package com.blblblbl.myapplication.domain
+package com.blblblbl.myapplication.domain.usecase
 
 import com.blblblbl.myapplication.data.repository.Repository
 import javax.inject.Inject
 
-class LikeUseCase @Inject constructor(
+class LikeStateUseCase @Inject constructor(
     private val repository: Repository
 ) {
     suspend fun like(id: String){
