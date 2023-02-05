@@ -19,11 +19,6 @@ class CollectionsFragmentViewModel @Inject constructor(
     private val collectionsPagingSource: CollectionsPagingSource,
     private val repository: Repository
 ):ViewModel() {
-    fun getCollections(page:Int){
-        viewModelScope.launch {
-            repository.getCollections(page)
-        }
-    }
     val pagedCollections: Flow<PagingData<PhotoCollection>> = Pager(
         config = PagingConfig(pageSize = 10),
         pagingSourceFactory = { collectionsPagingSource }

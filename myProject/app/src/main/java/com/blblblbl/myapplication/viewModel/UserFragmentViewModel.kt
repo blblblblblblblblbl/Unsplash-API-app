@@ -14,9 +14,9 @@ import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagi
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.data.repository.Repository
-import com.blblblbl.myapplication.domain.GetUserInfoUseCase
-import com.blblblbl.myapplication.domain.LikeUseCase
+import com.blblblbl.myapplication.domain.usecase.ClearStorageUseCase
+import com.blblblbl.myapplication.domain.usecase.GetUserInfoUseCase
+import com.blblblbl.myapplication.domain.usecase.LikeUseCase
 import com.example.example.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -31,9 +31,9 @@ class UserFragmentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val getUserInfoUseCase: GetUserInfoUseCase,
     private val likedPhotosPagingSource: LikedPhotosPagingSource,
-    private val repository: Repository,
     private val persistentStorage: PersistentStorage,
-    private val likeUseCase: LikeUseCase
+    private val likeUseCase: LikeUseCase,
+    private val clearStorageUseCase: ClearStorageUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
@@ -43,7 +43,7 @@ class UserFragmentViewModel @Inject constructor(
     fun logout(){
         viewModelScope.launch{
             persistentStorage.clear()
-            repository.clearDB()
+            clearStorageUseCase.execute()
             val intent = Intent(context, AuthActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent);

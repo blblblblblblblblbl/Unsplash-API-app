@@ -7,8 +7,8 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
-import com.blblblbl.myapplication.data.repository.Repository
-import com.blblblbl.myapplication.domain.LikeUseCase
+import com.blblblbl.myapplication.domain.usecase.LikeUseCase
+import com.blblblbl.myapplication.domain.usecase.SearchImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
@@ -16,8 +16,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SearchFragmentViewModel @Inject constructor(
-    private val repository: Repository,
-    private val likeUseCase: LikeUseCase
+    private val likeUseCase: LikeUseCase,
+    private val searchImagesUseCase: SearchImagesUseCase
 ):ViewModel() {
 
     private val _searchQuery = mutableStateOf("")
@@ -42,7 +42,7 @@ class SearchFragmentViewModel @Inject constructor(
     fun search(query: String) {
         viewModelScope.launch {
             Log.d("MyLog", "viewModel search start, query: \"$query\" ")
-            repository.searchImages(query = query).cachedIn(viewModelScope).collect {
+            searchImagesUseCase.searchImages(query = query).cachedIn(viewModelScope).collect {
                 Log.d("MyLog", "viewModel search: $it")
                 _searchedImages.value = it
             }

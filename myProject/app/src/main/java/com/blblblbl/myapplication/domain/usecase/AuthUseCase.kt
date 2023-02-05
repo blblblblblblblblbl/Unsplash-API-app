@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.domain
+package com.blblblbl.myapplication.domain.usecase
 
 import android.content.Context
 import android.net.Uri
