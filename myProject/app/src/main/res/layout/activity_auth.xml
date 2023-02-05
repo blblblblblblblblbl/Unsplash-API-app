@@ -7,7 +7,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    tools:context=".AuthActivity">
+    tools:context=".presentation.view.activities.AuthActivity">
 
     <androidx.fragment.app.FragmentContainerView
         android:id="@+id/fragmentContainerViewAuth"
