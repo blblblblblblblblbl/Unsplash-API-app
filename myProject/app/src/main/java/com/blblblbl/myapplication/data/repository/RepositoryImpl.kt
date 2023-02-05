@@ -13,6 +13,7 @@ import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSource
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
+import com.blblblbl.myapplication.domain.repository.Repository
 import com.example.example.PhotoCollection
 import com.example.example.UserInfo
 import dagger.Binds
@@ -26,9 +27,9 @@ class RepositoryImpl @Inject constructor(
     private val repositoryApi: RepositoryApi,
     private val repositoryDataBase: RepositoryDataBase,
     private val persistentStorage: PersistentStorage
-):Repository {
+): Repository {
 
-   override suspend fun getPhotos(page: Int):List<Photo>{
+   override suspend fun getImgs(page: Int):List<Photo>{
        val listApi = repositoryApi.getPhotosPage(page)
        var listDB = mutableListOf<DBPhoto>()
        listApi.forEach{ photo->
@@ -39,7 +40,7 @@ class RepositoryImpl @Inject constructor(
        return listApi
    }
     @OptIn(ExperimentalPagingApi::class)
-    override fun getAllImages(): Flow<PagingData<DBPhoto>> {
+    override fun getAllImgs(): Flow<PagingData<DBPhoto>> {
         val pagingSourceFactory = { repositoryDataBase.db.photoDao().getPhotosPagingSource()}
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
@@ -51,7 +52,7 @@ class RepositoryImpl @Inject constructor(
             pagingSourceFactory = pagingSourceFactory
         ).flow
     }
-    override fun searchImages(query: String): Flow<PagingData<Photo>> {
+    override fun searchImgByTags(query: String): Flow<PagingData<Photo>> {
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
             pagingSourceFactory = {
@@ -59,13 +60,13 @@ class RepositoryImpl @Inject constructor(
             }
         ).flow
     }
-    override suspend fun getLikedPhotos(page: Int, userName:String):List<Photo>{
+    override suspend fun getLikedImgs(page: Int, userName:String):List<Photo>{
         return repositoryApi.getLikedPhotosPage(page,userName)
     }
     override suspend fun getCollections(page: Int):List<PhotoCollection>{
         return repositoryApi.getCollectionPage(page)
     }
-    override suspend fun getUserInfo():UserInfo?{
+    override suspend fun getMeInfo():UserInfo?{
         try {
             val userInfo = repositoryApi.getUserInfo()
             persistentStorage.addProperty(PersistentStorage.USER_INFO,userInfo)
@@ -82,10 +83,10 @@ class RepositoryImpl @Inject constructor(
         return repositoryApi.getPublicUserInfo(username)
     }
 
-    override suspend fun getPhotoById(id: String): DetailedPhotoInfo {
+    override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
         return repositoryApi.getPhotoById(id)
     }
-    override suspend fun getCollectionPhotoList(id:String, page: Int):List<Photo>{
+    override suspend fun getCollectionImgList(id:String, page: Int):List<Photo>{
         return repositoryApi.getCollectionPhotoList(id,page)
     }
     override suspend fun like(id: String){
@@ -105,5 +106,5 @@ class RepositoryImpl @Inject constructor(
 @InstallIn(SingletonComponent::class)
 abstract class RepositoryModule{
     @Binds
-    abstract fun bindRepository(repositoryImpl: RepositoryImpl):Repository
+    abstract fun bindRepository(repositoryImpl: RepositoryImpl): Repository
 }

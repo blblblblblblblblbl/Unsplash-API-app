@@ -1,7 +1,7 @@
 package com.blblblbl.myapplication.domain.usecase
 
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.data.repository.Repository
+import com.blblblbl.myapplication.domain.repository.Repository
 import javax.inject.Inject
 
 class GetUserInfoUseCase @Inject constructor(
