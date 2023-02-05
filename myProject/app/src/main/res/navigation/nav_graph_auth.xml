@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/authFragment"
-        android:name="com.blblblbl.myapplication.view.AuthFragment"
+        android:name="com.blblblbl.myapplication.presentation.view.fragments.AuthFragment"
         android:label="fragment_auth"
         tools:layout="@layout/fragment_auth" />
 </navigation>
