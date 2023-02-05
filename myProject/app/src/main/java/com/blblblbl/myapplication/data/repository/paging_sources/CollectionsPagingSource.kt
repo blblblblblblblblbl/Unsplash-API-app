@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.repository.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.data.repository.Repository
+import com.blblblbl.myapplication.domain.repository.Repository
 import com.example.example.PhotoCollection
 import javax.inject.Inject
 

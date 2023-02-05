@@ -1,6 +1,6 @@
 package com.blblblbl.myapplication.domain.usecase
 
-import com.blblblbl.myapplication.data.repository.Repository
+import com.blblblbl.myapplication.domain.repository.Repository
 import javax.inject.Inject
 
 class LikeStateUseCase @Inject constructor(
