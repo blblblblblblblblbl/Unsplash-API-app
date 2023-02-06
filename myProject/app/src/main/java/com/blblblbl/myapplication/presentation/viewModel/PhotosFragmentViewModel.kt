@@ -16,7 +16,7 @@ class PhotosFragmentViewModel @Inject constructor(
     private val likeStateUseCase: LikeStateUseCase,
     private val getPhotosFeedUseCase: GetPhotosFeedUseCase
 ):ViewModel() {
-    val pagedPhotos: Flow<PagingData<DBPhoto>> = getPhotosFeedUseCase.execute()
+    //val pagedPhotos: Flow<PagingData<DBPhoto>> = getPhotosFeedUseCase.execute()
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {
             if (bool){

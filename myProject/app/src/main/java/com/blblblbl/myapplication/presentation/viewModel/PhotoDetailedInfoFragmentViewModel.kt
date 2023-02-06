@@ -22,7 +22,7 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     private val likeStateUseCase: LikeStateUseCase,
     private val downloadImgUseCase: DownloadImgUseCase,
 ):ViewModel() {
-    private val _detailedPhotoInfo = MutableStateFlow<DetailedPhotoInfo?>(null)
+    private val _detailedPhotoInfo = MutableStateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>(null)
     var status = MutableLiveData<Boolean?>()
     var intent :Intent? = null
     val detailedPhotoInfo = _detailedPhotoInfo.asStateFlow()

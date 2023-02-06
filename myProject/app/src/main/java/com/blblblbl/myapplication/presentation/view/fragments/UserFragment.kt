@@ -118,7 +118,7 @@ class UserFragment : Fragment() {
         )
     }
     @Composable
-    fun screen(privateUserInfo: StateFlow<UserInfo?>, publicUserInfo: StateFlow<PublicUserInfo?>){
+    fun screen(privateUserInfo: StateFlow<UserInfo?>, publicUserInfo: StateFlow<com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?>){
         val privateInfoState = privateUserInfo.collectAsState().value
         val publicInfoState = publicUserInfo.collectAsState().value
         privateInfoState?.let {
@@ -135,7 +135,7 @@ class UserFragment : Fragment() {
     }
     
     @Composable
-    fun UserInfo(userInfo: UserInfo, publicUserInfo: PublicUserInfo?){
+    fun UserInfo(userInfo: UserInfo, publicUserInfo: com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?){
         Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 val avatar:String? = publicUserInfo?.profileImage?.large

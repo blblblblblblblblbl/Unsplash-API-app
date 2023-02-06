@@ -40,7 +40,7 @@ class UserFragmentViewModel @Inject constructor(
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
     val privateUserInfo = _privateUserInfo.asStateFlow()
-    private val _publicUserInfo = MutableStateFlow<PublicUserInfo?>(null)
+    private val _publicUserInfo = MutableStateFlow<com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?>(null)
     val publicUserInfo = _publicUserInfo.asStateFlow()
     fun logout(){
         viewModelScope.launch{

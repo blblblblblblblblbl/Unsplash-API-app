@@ -75,7 +75,7 @@ class PhotosFragment : Fragment() {
                         },
                         content = {
                             Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                                PhotosList(photos = viewModel.pagedPhotos)
+                                //PhotosList(photos = viewModel.pagedPhotos)
                             }
                         }
                     )
