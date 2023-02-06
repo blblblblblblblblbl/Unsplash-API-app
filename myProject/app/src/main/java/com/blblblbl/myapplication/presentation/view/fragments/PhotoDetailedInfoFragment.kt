@@ -97,7 +97,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                         )
                         when (snackbarResult) {
                             SnackbarResult.Dismissed -> TODO()
-                            SnackbarResult.ActionPerformed -> viewModel.openGallery()
+                            SnackbarResult.ActionPerformed -> TODO()//viewModel.openGallery()
                         }
                     }
                 }

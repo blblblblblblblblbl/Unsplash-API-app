@@ -24,6 +24,8 @@ interface Repository {
     fun searchImgByTags(query: String): Flow<PagingData<Photo>>
     suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo
 
+    fun downloadImg(detailedPhotoInfo:DetailedPhotoInfo)
+
     suspend fun getMeInfo(): UserInfo?
     suspend fun getPublicUserInfo(username:String): PublicUserInfo
 
