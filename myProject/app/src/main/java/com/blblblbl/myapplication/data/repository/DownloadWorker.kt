@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.data
+package com.blblblbl.myapplication.data.repository
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

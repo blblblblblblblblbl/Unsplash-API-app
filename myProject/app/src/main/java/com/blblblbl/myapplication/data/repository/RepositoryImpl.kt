@@ -1,13 +1,18 @@
 package com.blblblbl.myapplication.data.repository
 
 import android.content.Context
+import android.content.Intent
+import android.graphics.Bitmap
+import android.media.MediaScannerConnection
 import android.net.Uri
+import android.os.Environment
 import android.util.Log
 import androidx.core.net.toUri
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
+import androidx.work.*
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
@@ -20,13 +25,21 @@ import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBa
 import com.blblblbl.myapplication.domain.repository.Repository
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
+import com.bumptech.glide.Glide
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import kotlinx.coroutines.CoroutineExceptionHandler
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 import net.openid.appauth.*
+import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStream
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
@@ -120,6 +133,25 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
         return repositoryApi.getPhotoById(id)
     }
+
+
+    override fun downloadImg(detailedPhotoInfo:DetailedPhotoInfo){
+        val constraints: Constraints = Constraints.Builder()
+            .setRequiredNetworkType(NetworkType.CONNECTED)
+            .build()
+        val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
+            .setInputData(
+                Data.Builder()
+                    .putString(DownloadWorker.URL,detailedPhotoInfo.urls?.raw)
+                    .putString(DownloadWorker.ID,detailedPhotoInfo.id)
+                    .build())
+            .setConstraints(constraints)
+            .build()
+        WorkManager
+            .getInstance(context)
+            .enqueue(downloadWorkRequest)
+    }
+
     override suspend fun getCollectionImgList(id:String, page: Int):List<Photo>{
         return repositoryApi.getCollectionPhotoList(id,page)
     }
