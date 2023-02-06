@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.domain.repository
 
+import android.net.Uri
 import androidx.paging.PagingData
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
@@ -10,6 +11,9 @@ import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {
+
+    fun authorize(code: String)
+
     suspend fun getImgs(page: Int):List<Photo>
     fun getAllImgs(): Flow<PagingData<DBPhoto>>
     suspend fun getCollectionImgList(id:String, page: Int):List<Photo>

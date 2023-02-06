@@ -1,5 +1,9 @@
 package com.blblblbl.myapplication.data.repository
 
+import android.content.Context
+import android.net.Uri
+import android.util.Log
+import androidx.core.net.toUri
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
@@ -19,17 +23,47 @@ import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
+import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import kotlinx.coroutines.flow.Flow
+import net.openid.appauth.*
 import javax.inject.Inject
 
 class RepositoryImpl @Inject constructor(
+    @ApplicationContext private val context: Context,
     private val repositoryApi: RepositoryApi,
     private val repositoryDataBase: RepositoryDataBase,
     private val persistentStorage: PersistentStorage
 ): Repository {
+    override fun authorize(code: String) {
+        var authService = AuthorizationService(context)
+        val serviceConfig = AuthorizationServiceConfiguration(
+            Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
+            Uri.parse("https://unsplash.com/oauth/token")) // token endpoint
+        val clientAuth: ClientAuthentication = ClientSecretBasic(SECRET_KEY)
+        authService.performTokenRequest(
+            TokenRequest.Builder(serviceConfig, MY_CLIENT_ID)
+                .setAuthorizationCode(code)
+                .setRedirectUri(MY_REDIRECT_URI.toUri())
+                .setGrantType("authorization_code")
+                .build(),
+            clientAuth,
+            AuthorizationService.TokenResponseCallback { resp, ex ->
+                if (resp != null) {
+                    Log.d(
+                        "MyLog",
+                        "accessToken:" + resp.accessToken.toString() + "\ntokenType: " + resp.tokenType + "\nscope: " + resp.scopeSet
+                    )
+                    persistentStorage.addProperty(PersistentStorage.AUTH_TOKEN,resp.accessToken.toString())
+                    // exchange succeeded
+                } else {
+                    Log.d("MyLog", ex.toString())
+                    // authorization failed, check ex for more details
+                }
+            })
+    }
 
-   override suspend fun getImgs(page: Int):List<Photo>{
+    override suspend fun getImgs(page: Int):List<Photo>{
        val listApi = repositoryApi.getPhotosPage(page)
        var listDB = mutableListOf<DBPhoto>()
        listApi.forEach{ photo->
@@ -100,6 +134,9 @@ class RepositoryImpl @Inject constructor(
     }
     companion object{
         const val ITEMS_PER_PAGE:Int = 10
+        const val MY_CLIENT_ID:String ="RoIF7WHVqFj86IPcmNSz_dKxmUaDRGANTaSk9aqnyac"
+        const val MY_REDIRECT_URI:String ="myproject://www.exagfdasrvxcmple.com/gizmos"
+        const val SECRET_KEY:String ="e1guRuEqxqtvMOf9L3_Sf_S_z1P8cs41C720MpfdWqw"
     }
 }
 @Module
