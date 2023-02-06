@@ -12,8 +12,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.work.*
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.domain.DownloadWorker
+import com.blblblbl.myapplication.data.DownloadWorker
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.usecase.GetDetailedPhotoInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import com.bumptech.glide.Glide

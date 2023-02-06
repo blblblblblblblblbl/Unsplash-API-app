@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data.persistent_storage
 import android.content.Context
 import android.content.SharedPreferences
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

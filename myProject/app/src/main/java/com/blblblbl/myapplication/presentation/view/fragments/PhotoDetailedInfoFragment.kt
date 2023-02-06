@@ -40,7 +40,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.blblblbl.myapplication.R
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.PhotoDetailedInfoFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage

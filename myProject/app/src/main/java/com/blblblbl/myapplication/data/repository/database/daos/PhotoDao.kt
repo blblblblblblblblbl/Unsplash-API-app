@@ -5,7 +5,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 
 @Dao

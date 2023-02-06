@@ -36,7 +36,7 @@ import com.blblblbl.myapplication.presentation.view.compose_utils.LoadingItem
 import com.blblblbl.myapplication.presentation.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.CollectionsFragmentViewModel
-import com.example.example.PhotoCollection
+import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow

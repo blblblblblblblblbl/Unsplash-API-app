@@ -4,9 +4,9 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
@@ -14,8 +14,8 @@ import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSou
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
 import com.blblblbl.myapplication.domain.repository.Repository
-import com.example.example.PhotoCollection
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -66,7 +66,7 @@ class RepositoryImpl @Inject constructor(
     override suspend fun getCollections(page: Int):List<PhotoCollection>{
         return repositoryApi.getCollectionPage(page)
     }
-    override suspend fun getMeInfo():UserInfo?{
+    override suspend fun getMeInfo(): UserInfo?{
         try {
             val userInfo = repositoryApi.getUserInfo()
             persistentStorage.addProperty(PersistentStorage.USER_INFO,userInfo)

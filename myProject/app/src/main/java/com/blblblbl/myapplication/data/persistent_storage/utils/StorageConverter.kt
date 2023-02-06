@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.persistent_storage.utils
 
 import com.blblblbl.myapplication.data.repository.database.util.GsonParser
 import com.blblblbl.myapplication.data.repository.database.util.JsonParser
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.google.gson.GsonBuilder
 
 object StorageConverter {

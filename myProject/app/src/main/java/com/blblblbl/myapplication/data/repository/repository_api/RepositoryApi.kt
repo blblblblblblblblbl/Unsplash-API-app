@@ -1,12 +1,10 @@
 package com.blblblbl.myapplication.data.repository.repository_api
 
-import android.util.Log
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.example.example.PhotoCollection
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 
 interface RepositoryApi {
     suspend fun getPhotosPage(page: Int): List<Photo>

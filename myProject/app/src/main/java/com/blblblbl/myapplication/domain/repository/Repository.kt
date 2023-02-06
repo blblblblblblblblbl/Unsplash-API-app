@@ -1,12 +1,12 @@
 package com.blblblbl.myapplication.domain.repository
 
 import androidx.paging.PagingData
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
-import com.example.example.PhotoCollection
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import kotlinx.coroutines.flow.Flow
 
 interface Repository {

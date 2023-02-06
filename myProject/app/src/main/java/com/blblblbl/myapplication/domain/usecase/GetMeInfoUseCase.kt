@@ -1,7 +1,7 @@
 package com.blblblbl.myapplication.domain.usecase
 
 import com.blblblbl.myapplication.domain.repository.Repository
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import javax.inject.Inject
 
 class GetMeInfoUseCase@Inject constructor(

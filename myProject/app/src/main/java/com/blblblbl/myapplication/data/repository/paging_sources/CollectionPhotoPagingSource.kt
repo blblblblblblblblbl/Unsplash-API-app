@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.repository.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.domain.repository.Repository
 import javax.inject.Inject
 

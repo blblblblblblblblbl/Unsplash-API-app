@@ -30,12 +30,12 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.presentation.view.compose_utils.StatesUI
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.UserFragmentViewModel
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
@@ -118,7 +118,7 @@ class UserFragment : Fragment() {
         )
     }
     @Composable
-    fun screen(privateUserInfo: StateFlow<UserInfo?>,publicUserInfo: StateFlow<PublicUserInfo?>){
+    fun screen(privateUserInfo: StateFlow<UserInfo?>, publicUserInfo: StateFlow<PublicUserInfo?>){
         val privateInfoState = privateUserInfo.collectAsState().value
         val publicInfoState = publicUserInfo.collectAsState().value
         privateInfoState?.let {
@@ -135,7 +135,7 @@ class UserFragment : Fragment() {
     }
     
     @Composable
-    fun UserInfo(userInfo: UserInfo,publicUserInfo: PublicUserInfo?){
+    fun UserInfo(userInfo: UserInfo, publicUserInfo: PublicUserInfo?){
         Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
             Column(modifier = Modifier.fillMaxWidth()) {
                 val avatar:String? = publicUserInfo?.profileImage?.large
