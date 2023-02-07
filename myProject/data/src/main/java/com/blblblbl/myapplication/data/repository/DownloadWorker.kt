@@ -106,8 +106,7 @@ class DownloadWorker(private val ctx: Context, params: WorkerParameters) : Worke
     }
 
     private fun makeStatusNotification(message: String, context: Context) {
-/*
-        // Make a channel if necessary
+        /*// Make a channel if necessary
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the NotificationChannel, but only on API 26+ because
             // the NotificationChannel class is new and not in the support library

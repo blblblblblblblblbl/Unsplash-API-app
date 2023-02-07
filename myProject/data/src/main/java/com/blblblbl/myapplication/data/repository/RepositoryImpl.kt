@@ -170,9 +170,4 @@ class RepositoryImpl @Inject constructor(
         const val SECRET_KEY:String ="e1guRuEqxqtvMOf9L3_Sf_S_z1P8cs41C720MpfdWqw"
     }
 }
-@Module
-@InstallIn(SingletonComponent::class)
-abstract class RepositoryModule{
-    @Binds
-    abstract fun bindRepository(repositoryImpl: RepositoryImpl): Repository
-}
+

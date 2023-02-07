@@ -1,7 +1,7 @@
 package com.blblblbl.myapplication.di
 
-import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
-import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApiImpl
+import com.blblblbl.myapplication.data.repository.RepositoryImpl
+import com.blblblbl.myapplication.domain.repository.Repository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -12,5 +12,5 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 abstract class DataModule{
     @Binds
-    abstract fun bindRepositoryApi(repositoryApiImpl: RepositoryApiImpl): RepositoryApi
+    abstract fun bindRepository(repositoryImpl: RepositoryImpl): Repository
 }
