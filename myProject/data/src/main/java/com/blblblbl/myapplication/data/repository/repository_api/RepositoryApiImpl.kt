@@ -7,6 +7,7 @@ import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.search.SearchResult
 import com.blblblbl.myapplication.data.repository.repository_api.utils.MockRequestInterceptor
+import com.blblblbl.myapplication.data.repository.repository_api.utils.RetrofitServices
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.google.gson.GsonBuilder
@@ -24,123 +25,26 @@ import javax.inject.Singleton
 
 @Singleton
 class RepositoryApiImpl @Inject constructor(
-    private val persistentStorage: PersistentStorage
+    private val persistentStorage: PersistentStorage,
+    private val retrofitServices: RetrofitServices
 ):RepositoryApi {
-
-    object RetrofitServices {
-        private const val BASE_URL = "https://api.unsplash.com/"
-        private val gson = GsonBuilder().setLenient().create()
-        private val retrofit = Retrofit.Builder()
-            .baseUrl(BASE_URL)
-            .client(
-                OkHttpClient.Builder()
-                    .connectTimeout(60L, TimeUnit.SECONDS)
-                    .readTimeout(60L, TimeUnit.SECONDS)
-                    //.addInterceptor(MockRequestInterceptor(MyApp.appContext))
-                    .build()
-            )
-            .addConverterFactory(GsonConverterFactory.create(gson))
-            .build()
-        val photosApi: PhotosApi = retrofit.create(
-            PhotosApi::class.java
-        )
-        val collectionsApi: CollectionsApi = retrofit.create(
-            CollectionsApi::class.java
-        )
-        val userApi: UserApi = retrofit.create(
-            UserApi::class.java
-        )
-        val likeApi: LikeApi = retrofit.create(
-            LikeApi::class.java
-        )
-
-        interface PhotosApi {
-            @Headers("mock:true")
-            @GET("photos")
-            suspend fun getPhotos(
-                @Query("page") page: Int,
-                @Query("per_page") perPage: Int = 10,
-                @Header("Authorization") authHeader: String
-            ): List<Photo>
-
-            @Headers("mock:true")
-            @GET("users/{username}/likes")
-            suspend fun getLikedPhotos(
-                @Path("username") username: String,
-                @Query("page") page: Int,
-                @Query("per_page") perPage: Int = 10,
-                @Header("Authorization") authHeader: String
-            ): List<Photo>
-
-            @GET("photos/{id}")
-            suspend fun getPhotoById(
-                @Path("id") id: String,
-                @Header("Authorization") authHeader: String
-            ): com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
-            @GET("collections/{id}/photos")
-            suspend fun getCollectionPhotos(
-                @Path("id") id: String,
-                @Query("page") page: Int,
-                @Query("per_page") perPage: Int = 10,
-                @Header("Authorization") authHeader: String
-            ): List<Photo>
-
-            @GET("search/photos")
-            suspend fun searchPhotos(
-                @Query("page") page: Int,
-                @Query("per_page") perPage: Int = 10,
-                @Query("query") query: String,
-                @Header("Authorization") authHeader: String
-            ): SearchResult
-        }
-
-        interface CollectionsApi {
-            @Headers("mock:true")
-            @GET("collections")
-            suspend fun getCollection(
-                @Query("page") page: Int,
-                @Query("per_page") perPage: Int = 10,
-                @Header("Authorization") authHeader: String
-            ): List<PhotoCollection>
-        }
-
-        interface UserApi {
-            @GET("me")
-            suspend fun getMe(@Header("Authorization") authHeader: String): UserInfo
-
-            @GET("/users/{username}")
-            suspend fun getPublicUserInfo(
-                @Path("username") username: String,
-                @Header("Authorization") authHeader: String
-            ): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
-        }
-
-        interface LikeApi {
-            @POST("photos/{id}/like")
-            suspend fun like(@Path("id") id: String, @Header("Authorization") authHeader: String)
-
-            @DELETE("photos/{id}/like")
-            suspend fun unlike(@Path("id") id: String, @Header("Authorization") authHeader: String)
-        }
-
-    }
 
     override suspend fun getPhotosPage(page: Int): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "photos page: " + page + "token: " + token)
-        return RetrofitServices.photosApi.getPhotos(page, 10, "Bearer " + token)
+        return retrofitServices.photosApi.getPhotos(page, 10, "Bearer " + token)
     }
 
     override suspend fun getPhotosPage(page: Int, perPage: Int): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "photos page: " + page + "token: " + token)
-        return RetrofitServices.photosApi.getPhotos(page, perPage, "Bearer " + token)
+        return retrofitServices.photosApi.getPhotos(page, perPage, "Bearer " + token)
     }
 
     override suspend fun searchPhotos(page: Int, perPage: Int, query: String): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         val response =
-            RetrofitServices.photosApi.searchPhotos(page, perPage, query, "Bearer " + token)
+            retrofitServices.photosApi.searchPhotos(page, perPage, query, "Bearer " + token)
         Log.d("MyLog", "search response: $response")
         return response.results
     }
@@ -148,42 +52,42 @@ class RepositoryApiImpl @Inject constructor(
     override suspend fun getCollectionPage(page: Int): List<PhotoCollection> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "collections page: " + page + "token: " + token)
-        return RetrofitServices.collectionsApi.getCollection(page, 10, "Bearer " + token)
+        return retrofitServices.collectionsApi.getCollection(page, 10, "Bearer " + token)
     }
 
     override suspend fun getUserInfo(): UserInfo {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        return RetrofitServices.userApi.getMe("Bearer " + token)
+        return retrofitServices.userApi.getMe("Bearer " + token)
     }
 
     override suspend fun getPublicUserInfo(username: String): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        return RetrofitServices.userApi.getPublicUserInfo(username, "Bearer " + token)
+        return retrofitServices.userApi.getPublicUserInfo(username, "Bearer " + token)
     }
 
     override suspend fun getLikedPhotosPage(page: Int, username: String): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         Log.d("MyLog", "photos page: " + page + "token: " + token)
-        return RetrofitServices.photosApi.getLikedPhotos(username, page, 10, "Bearer " + token)
+        return retrofitServices.photosApi.getLikedPhotos(username, page, 10, "Bearer " + token)
     }
 
     override suspend fun getPhotoById(id: String): com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        return RetrofitServices.photosApi.getPhotoById(id, "Bearer " + token)
+        return retrofitServices.photosApi.getPhotoById(id, "Bearer " + token)
     }
 
     override suspend fun getCollectionPhotoList(id: String, page: Int): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        return RetrofitServices.photosApi.getCollectionPhotos(id, page, 10, "Bearer " + token)
+        return retrofitServices.photosApi.getCollectionPhotos(id, page, 10, "Bearer " + token)
     }
 
     override suspend fun like(id: String) {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        RetrofitServices.likeApi.like(id, "Bearer " + token)
+        retrofitServices.likeApi.like(id, "Bearer " + token)
     }
 
     override suspend fun unlike(id: String) {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        RetrofitServices.likeApi.unlike(id, "Bearer " + token)
+        retrofitServices.likeApi.unlike(id, "Bearer " + token)
     }
 }
