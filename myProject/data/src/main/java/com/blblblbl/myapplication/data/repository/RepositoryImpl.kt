@@ -138,6 +138,7 @@ class RepositoryImpl @Inject constructor(
         val constraints: Constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
+        Log.d("MyLog","downloadWorkRequest")
         val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
             .setInputData(
                 Data.Builder()
@@ -146,9 +147,11 @@ class RepositoryImpl @Inject constructor(
                     .build())
             .setConstraints(constraints)
             .build()
+        Log.d("MyLog","WorkManager")
         WorkManager
             .getInstance(context)
             .enqueue(downloadWorkRequest)
+        Log.d("MyLog","afterWorkManager")
     }
 
     override suspend fun getCollectionImgList(id:String, page: Int):List<Photo>{
