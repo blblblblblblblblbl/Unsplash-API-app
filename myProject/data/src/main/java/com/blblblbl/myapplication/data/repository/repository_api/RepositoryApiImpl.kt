@@ -3,10 +3,10 @@ package com.blblblbl.myapplication.data.repository.repository_api
 import android.util.Log
 import com.blblblbl.myapplication.data.data_classes.collections.PhotoCollection
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.repository.repository_api.utils.RetrofitServices
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -31,9 +31,9 @@ class RepositoryApiImpl @Inject constructor(
 
     override suspend fun searchPhotos(page: Int, perPage: Int, query: String): List<Photo> {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
-        val response =
-            retrofitServices.photosApi.searchPhotos(page, perPage, query, "Bearer " + token)
+        val response = retrofitServices.photosApi.searchPhotos(page, perPage, query, "Bearer " + token)
         Log.d("MyLog", "search response: $response")
+
         return response.results
     }
 

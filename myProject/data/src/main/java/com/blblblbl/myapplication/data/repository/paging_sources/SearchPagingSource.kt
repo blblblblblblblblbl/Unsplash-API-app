@@ -5,6 +5,7 @@ import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
+import com.blblblbl.myapplication.data.utils.mapToDomain
 
 class SearchPagingSource(
     private val repositoryApi: RepositoryApi,
@@ -14,7 +15,9 @@ class SearchPagingSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val currentPage = params.key?: FIRST_PAGE
         return try {
-            val response = repositoryApi.searchPhotos(page = currentPage, perPage = ITEMS_PER_PAGE, query = query )
+            val responseApi = repositoryApi.searchPhotos(page = currentPage, perPage = ITEMS_PER_PAGE, query = query )
+            val response = mutableListOf<Photo>()
+            responseApi.forEach { it.mapToDomain()?.let { it1 -> response.add(it1) } }
             Log.d("MyLog","search response: $response")
             val endOfPaginationReached = response.isEmpty()
             if (response.isNotEmpty()) {

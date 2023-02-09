@@ -2,7 +2,7 @@ package com.blblblbl.myapplication.data.repository.database.util
 
 import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
-import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.photos.Photo
 
 @ProvidedTypeConverter
 class Converters(

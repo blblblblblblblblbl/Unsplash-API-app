@@ -3,7 +3,7 @@ package com.blblblbl.myapplication.data.repository.database.entities
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.data.data_classes.photos.Photo
 import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "photos")

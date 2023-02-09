@@ -59,8 +59,8 @@ class RepositoryImpl @Inject constructor(
                 }
             })
     }
-
-    override suspend fun getImgs(page: Int):List<Photo>{
+///maybe getImgs not using and i can delete it
+    /*override suspend fun getImgs(page: Int):List<Photo>{
        val listApi = repositoryApi.getPhotosPage(page)
        var listDB = mutableListOf<DBPhoto>()
        listApi.forEach{ photo->
@@ -69,7 +69,8 @@ class RepositoryImpl @Inject constructor(
            }
        }
        return listApi
-   }
+   }*/
+
     /*@OptIn(ExperimentalPagingApi::class)
     override fun getAllImgs(): Flow<PagingData<DBPhoto>> {
         val pagingSourceFactory = { repositoryDataBase.db.photoDao().getPhotosPagingSource()}
@@ -92,7 +93,12 @@ class RepositoryImpl @Inject constructor(
         ).flow
     }
     override suspend fun getLikedImgs(page: Int, userName:String):List<Photo>{
-        return repositoryApi.getLikedPhotosPage(page,userName)
+        val temp = repositoryApi.getLikedPhotosPage(page,userName)
+        val listPhotos = mutableListOf<Photo>()
+        temp.forEach {
+            it.mapToDomain()?.let { it1 -> listPhotos.add(it1) }
+        }
+        return listPhotos.toList()
     }
     override suspend fun getCollections(page: Int):List<PhotoCollection>{
         val temp = repositoryApi.getCollectionPage(page)
@@ -145,7 +151,12 @@ class RepositoryImpl @Inject constructor(
     }
 
     override suspend fun getCollectionImgList(id:String, page: Int):List<Photo>{
-        return repositoryApi.getCollectionPhotoList(id,page)
+        val temp = repositoryApi.getCollectionPhotoList(id,page)
+        val listPhotos = mutableListOf<Photo>()
+        temp.forEach {
+            it.mapToDomain()?.let { it1 -> listPhotos.add(it1) }
+        }
+        return listPhotos.toList()
     }
     override suspend fun like(id: String){
         repositoryApi.like(id)

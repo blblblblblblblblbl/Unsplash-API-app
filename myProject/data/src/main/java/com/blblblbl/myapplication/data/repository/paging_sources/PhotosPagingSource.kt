@@ -8,7 +8,7 @@ import javax.inject.Inject
 
 class PhotosPagingSource @Inject constructor(
     private val repository: Repository
-):PagingSource<Int, Photo>() {
+)/*:PagingSource<Int, Photo>() {
     override fun getRefreshKey(state: PagingState<Int, Photo>): Int?= FIRST_PAGE
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val page = params.key?: FIRST_PAGE
@@ -30,4 +30,4 @@ class PhotosPagingSource @Inject constructor(
     companion object{
         private val FIRST_PAGE = 1
     }
-}
+}*/

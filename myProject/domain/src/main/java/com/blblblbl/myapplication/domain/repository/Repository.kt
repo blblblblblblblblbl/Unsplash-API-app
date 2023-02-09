@@ -12,7 +12,7 @@ interface Repository {
 
     fun authorize(code: String)
 
-    suspend fun getImgs(page: Int):List<Photo>
+    //suspend fun getImgs(page: Int):List<Photo>
     //fun getAllImgs(): Flow<PagingData<DBPhoto>>
     suspend fun getCollectionImgList(id:String, page: Int):List<Photo>
 
