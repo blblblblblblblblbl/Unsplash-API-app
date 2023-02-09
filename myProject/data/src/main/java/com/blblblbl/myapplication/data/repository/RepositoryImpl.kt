@@ -2,14 +2,12 @@ package com.blblblbl.myapplication.data.repository
 
 import android.content.Context
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.paging.*
 import androidx.work.*
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
-import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSource
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
@@ -46,29 +44,13 @@ class RepositoryImpl @Inject constructor(
             clientAuth,
             AuthorizationService.TokenResponseCallback { resp, ex ->
                 if (resp != null) {
-                    Log.d(
-                        "MyLog",
-                        "accessToken:" + resp.accessToken.toString() + "\ntokenType: " + resp.tokenType + "\nscope: " + resp.scopeSet
-                    )
                     persistentStorage.addProperty(PersistentStorage.AUTH_TOKEN,resp.accessToken.toString())
                     // exchange succeeded
                 } else {
-                    Log.d("MyLog", ex.toString())
                     // authorization failed, check ex for more details
                 }
             })
     }
-///maybe getImgs not using and i can delete it
-    /*override suspend fun getImgs(page: Int):List<Photo>{
-       val listApi = repositoryApi.getPhotosPage(page)
-       var listDB = mutableListOf<DBPhoto>()
-       listApi.forEach{ photo->
-           photo.id?.let {id->
-               repositoryDataBase.db.photoDao().insert(DBPhoto(id,photo))
-           }
-       }
-       return listApi
-   }*/
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getAllImgs(): Flow<PagingData<Photo>> {
@@ -136,7 +118,6 @@ class RepositoryImpl @Inject constructor(
         val constraints: Constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
-        Log.d("MyLog","downloadWorkRequest")
         val downloadWorkRequest: WorkRequest = OneTimeWorkRequestBuilder<DownloadWorker>()
             .setInputData(
                 Data.Builder()
@@ -145,11 +126,9 @@ class RepositoryImpl @Inject constructor(
                     .build())
             .setConstraints(constraints)
             .build()
-        Log.d("MyLog","WorkManager")
         WorkManager
             .getInstance(context)
             .enqueue(downloadWorkRequest)
-        Log.d("MyLog","afterWorkManager")
     }
 
     override suspend fun getCollectionImgList(id:String, page: Int):List<Photo>{

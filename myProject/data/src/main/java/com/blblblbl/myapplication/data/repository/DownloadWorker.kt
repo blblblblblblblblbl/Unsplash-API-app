@@ -1,23 +1,16 @@
 package com.blblblbl.myapplication.data.repository
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
 import android.media.MediaScannerConnection
-import android.os.Build
 import android.os.Environment
-import android.util.Log
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.net.toUri
 import androidx.hilt.work.HiltWorker
 import androidx.work.Worker
 import androidx.work.WorkerParameters
 import com.blblblbl.myapplication.data.DownloadNotifications
-
 import com.bumptech.glide.Glide
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
@@ -27,7 +20,6 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
-import javax.inject.Inject
 
 @HiltWorker
 class DownloadWorker @AssistedInject constructor(
@@ -76,7 +68,6 @@ class DownloadWorker @AssistedInject constructor(
             Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)
                 .toString() + "/YOUR_FOLDER_NAME"
         )
-        Log.d("MyLog", "storageDir: $storageDir")
         var success = true
         if (!storageDir.exists()) {
             success = storageDir.mkdirs()
@@ -93,7 +84,6 @@ class DownloadWorker @AssistedInject constructor(
             }
             galleryAddPic(savedImagePath)
 
-            //Toast.makeText(context, "IMAGE SAVED", Toast.LENGTH_LONG).show() // to make this working, need to manage coroutine, as this execution is something off the main thread
         }
         return savedImagePath
     }
