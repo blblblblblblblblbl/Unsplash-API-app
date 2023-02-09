@@ -40,7 +40,7 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import com.blblblbl.myapplication.R
-import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.PhotoDetailedInfoFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
@@ -83,7 +83,7 @@ class PhotoDetailedInfoFragment : Fragment() {
     }
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun all(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
+    fun all(detailedPhotoInfo: StateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>){
         val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
         viewModel.status.observe(viewLifecycleOwner, Observer { status ->
@@ -97,7 +97,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                         )
                         when (snackbarResult) {
                             SnackbarResult.Dismissed -> TODO()
-                            SnackbarResult.ActionPerformed -> viewModel.openGallery()
+                            SnackbarResult.ActionPerformed -> TODO()//viewModel.openGallery()
                         }
                     }
                 }
@@ -113,7 +113,7 @@ class PhotoDetailedInfoFragment : Fragment() {
         )
     }
     @Composable
-    fun screen(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
+    fun screen(detailedPhotoInfo: StateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>){
         val state = detailedPhotoInfo.collectAsState().value
         state?.let {
             Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -123,7 +123,7 @@ class PhotoDetailedInfoFragment : Fragment() {
         }
     }
     @Composable
-    fun PhotoScreen(detailedPhotoInfo: DetailedPhotoInfo){
+    fun PhotoScreen(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
         val textColor = Color.White
         val textSizeTotalLikes = 15.sp
         val textSizeName = 15.sp
@@ -172,7 +172,7 @@ class PhotoDetailedInfoFragment : Fragment() {
         }
     }
     @Composable
-    fun PhotoDescription(detailedPhotoInfo: DetailedPhotoInfo){
+    fun PhotoDescription(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
         Column(modifier = Modifier.padding(10.dp)) {
             detailedPhotoInfo.location?.let { location->
                 if (location.city!=null||location.country!=null||(location.position!=null&&location.position?.latitude!=null&&location.position?.longitude!=null)){

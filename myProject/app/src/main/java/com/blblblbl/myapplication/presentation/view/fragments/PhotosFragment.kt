@@ -41,7 +41,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.presentation.viewModel.PhotosFragmentViewModel
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.presentation.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.presentation.view.compose_utils.LoadingItem
@@ -186,18 +186,18 @@ class PhotosFragment : Fragment() {
     @OptIn(ExperimentalFoundationApi::class)
     @Composable
 
-    fun PhotosList(photos: Flow<PagingData<DBPhoto>>) {
-        val lazyPhotosItems: LazyPagingItems<DBPhoto> = photos.collectAsLazyPagingItems()
+    fun PhotosList(photos: Flow<PagingData<Photo>>) {
+        val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
 
 
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2) ){
             items(
-                items = lazyPhotosItems,
-                key = {dbPhoto -> dbPhoto.id }
+                items = lazyPhotosItems
+
             ) {item->
                 if (item != null) {
                     //PhotoItem(photo = item)
-                    PhotoItem(dbPhoto = item)
+                    PhotoItem(photo = item)
                 }
             }
         }
@@ -233,8 +233,7 @@ class PhotosFragment : Fragment() {
     }
 
     @Composable
-    fun PhotoItem(dbPhoto: DBPhoto){
-        val photo = dbPhoto.photo
+    fun PhotoItem(photo: Photo){
         val textColor = Color.White
         val textSizeTotalLikes = 15.sp
         val textSizeName = 15.sp

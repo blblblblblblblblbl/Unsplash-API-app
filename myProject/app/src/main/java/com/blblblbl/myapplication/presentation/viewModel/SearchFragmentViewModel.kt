@@ -6,7 +6,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import com.blblblbl.myapplication.domain.usecase.SearchImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel

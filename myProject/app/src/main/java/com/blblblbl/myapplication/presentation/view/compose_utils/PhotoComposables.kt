@@ -22,14 +22,14 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
 fun PhotoList(
     photos: Flow<PagingData<Photo>>,
-    photoScreen: @Composable (photo:Photo) -> Unit
+    photoScreen: @Composable (photo: Photo) -> Unit
 ){
     val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
     LazyColumn{

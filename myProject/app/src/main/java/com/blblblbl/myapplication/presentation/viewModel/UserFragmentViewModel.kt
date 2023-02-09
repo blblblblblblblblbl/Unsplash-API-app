@@ -12,13 +12,12 @@ import androidx.paging.cachedIn
 import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
 import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagingSource
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.blblblbl.myapplication.data.data_classes.public_user_info.photos.Photo
-import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.usecase.ClearStorageUseCase
 import com.blblblbl.myapplication.domain.usecase.GetMeInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.GetUserInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
-import com.example.example.UserInfo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -40,7 +39,7 @@ class UserFragmentViewModel @Inject constructor(
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
     val privateUserInfo = _privateUserInfo.asStateFlow()
-    private val _publicUserInfo = MutableStateFlow<PublicUserInfo?>(null)
+    private val _publicUserInfo = MutableStateFlow<com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?>(null)
     val publicUserInfo = _publicUserInfo.asStateFlow()
     fun logout(){
         viewModelScope.launch{
