@@ -1,10 +1,12 @@
 package com.blblblbl.myapplication.data.repository.repository_api.utils
 
 import android.content.Context
+import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
 import com.blblblbl.myapplication.domain.models.search.SearchResult
-import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.google.gson.GsonBuilder
 import dagger.hilt.android.qualifiers.ApplicationContext
 import okhttp3.OkHttpClient
@@ -67,7 +69,7 @@ class RetrofitServices @Inject constructor(
         suspend fun getPhotoById(
             @Path("id") id: String,
             @Header("Authorization") authHeader: String
-        ): com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
+        ): DetailedPhotoInfo
         @GET("collections/{id}/photos")
         suspend fun getCollectionPhotos(
             @Path("id") id: String,
@@ -103,7 +105,7 @@ class RetrofitServices @Inject constructor(
         suspend fun getPublicUserInfo(
             @Path("username") username: String,
             @Header("Authorization") authHeader: String
-        ): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
+        ): PublicUserInfo
     }
 
     interface LikeApi {

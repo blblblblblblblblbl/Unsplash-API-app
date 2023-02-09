@@ -1,8 +1,6 @@
-package com.blblblbl.myapplication.domain.models.collections
+package com.blblblbl.myapplication.data.data_classes.collections
 
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Links
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Urls
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.User
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -18,6 +16,6 @@ data class CoverPhoto (
     @SerializedName("description"   ) var description : String?  = null,
     @SerializedName("user"          ) var user        : User?    = User(),
     @SerializedName("urls"          ) var urls        : Urls?    = Urls(),
-    @SerializedName("links"         ) var links       : Links?   = Links()
+    //@SerializedName("links"         ) var links       : Links?   = Links()
 
 )

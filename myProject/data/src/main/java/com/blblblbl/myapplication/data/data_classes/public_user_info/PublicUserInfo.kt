@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.domain.models.public_user_info
+package com.blblblbl.myapplication.data.data_classes.public_user_info
 
 import com.google.gson.annotations.SerializedName
 
@@ -26,6 +26,6 @@ data class PublicUserInfo (
     @SerializedName("social"             ) var social            : Social?       = Social(),
     @SerializedName("profile_image"      ) var profileImage      : ProfileImage? = ProfileImage(),
     @SerializedName("badge"              ) var badge             : Badge?        = Badge(),
-    @SerializedName("links"              ) var links             : PublicUserInfoLinks?    = PublicUserInfoLinks()
+    @SerializedName("links"              ) var links             : PublicUserInfoLinks?        = PublicUserInfoLinks()
 
 )

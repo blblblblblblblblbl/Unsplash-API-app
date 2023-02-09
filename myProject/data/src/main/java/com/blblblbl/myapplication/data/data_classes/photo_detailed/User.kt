@@ -1,6 +1,6 @@
-package com.blblblbl.myapplication.domain.models.photo_detailed
+package com.blblblbl.myapplication.data.data_classes.photo_detailed
 
-import com.blblblbl.myapplication.domain.models.public_user_info.ProfileImage
+import com.blblblbl.myapplication.data.data_classes.public_user_info.ProfileImage
 import com.google.gson.annotations.SerializedName
 
 

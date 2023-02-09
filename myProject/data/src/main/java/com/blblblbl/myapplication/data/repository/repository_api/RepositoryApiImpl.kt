@@ -1,15 +1,15 @@
 package com.blblblbl.myapplication.data.repository.repository_api
 
 import android.util.Log
+import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
+import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
-import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.search.SearchResult
 import com.blblblbl.myapplication.data.repository.repository_api.utils.MockRequestInterceptor
 import com.blblblbl.myapplication.data.repository.repository_api.utils.RetrofitServices
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
-import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.google.gson.GsonBuilder
 import dagger.Binds
 import dagger.Module
@@ -60,7 +60,7 @@ class RepositoryApiImpl @Inject constructor(
         return retrofitServices.userApi.getMe("Bearer " + token)
     }
 
-    override suspend fun getPublicUserInfo(username: String): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo {
+    override suspend fun getPublicUserInfo(username: String): PublicUserInfo {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return retrofitServices.userApi.getPublicUserInfo(username, "Bearer " + token)
     }
@@ -71,7 +71,7 @@ class RepositoryApiImpl @Inject constructor(
         return retrofitServices.photosApi.getLikedPhotos(username, page, 10, "Bearer " + token)
     }
 
-    override suspend fun getPhotoById(id: String): com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo {
+    override suspend fun getPhotoById(id: String): DetailedPhotoInfo {
         val token = persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         return retrofitServices.photosApi.getPhotoById(id, "Bearer " + token)
     }

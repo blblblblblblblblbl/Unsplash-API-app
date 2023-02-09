@@ -13,17 +13,18 @@ import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.work.*
-import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
-import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSource
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
+import com.blblblbl.myapplication.data.utils.mapToDomain
 import com.blblblbl.myapplication.domain.repository.Repository
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
+import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.Binds
 import dagger.Module
@@ -116,25 +117,25 @@ class RepositoryImpl @Inject constructor(
         try {
             val userInfo = repositoryApi.getUserInfo()
             persistentStorage.addProperty(PersistentStorage.USER_INFO,userInfo)
-            return userInfo
+            return userInfo.mapToDomain()
         }
         catch (e:Throwable){
             val json = persistentStorage.getProperty(PersistentStorage.USER_INFO)
             val userInfo = StorageConverter.userInfoFromJson(json?:"")
-            return userInfo
+            return userInfo.mapToDomain()
         }
 
     }
-    override suspend fun getPublicUserInfo(username:String): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo {
-        return repositoryApi.getPublicUserInfo(username)
+    override suspend fun getPublicUserInfo(username:String): PublicUserInfo {
+        return repositoryApi.getPublicUserInfo(username).mapToDomain()?: PublicUserInfo()
     }
 
-    override suspend fun getDetailedImgInfoById(id: String): com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo {
-        return repositoryApi.getPhotoById(id)
+    override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
+        return repositoryApi.getPhotoById(id).mapToDomain()?:DetailedPhotoInfo()
     }
 
 
-    override fun downloadImg(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
+    override fun downloadImg(detailedPhotoInfo: DetailedPhotoInfo){
         val constraints: Constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()

@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.domain.models.public_user_info
+package com.blblblbl.myapplication.data.data_classes.user_info
 
 import com.google.gson.annotations.SerializedName
 
