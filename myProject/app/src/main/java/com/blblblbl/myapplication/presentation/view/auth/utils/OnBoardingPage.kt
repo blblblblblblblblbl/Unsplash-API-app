@@ -26,4 +26,7 @@ sealed class OnBoardingPage(
         title = "Search",
         description = "Search photos by tags"
     )
+    companion object{
+        const val ONBOARDING_PAGES_COUNT = 3
+    }
 }

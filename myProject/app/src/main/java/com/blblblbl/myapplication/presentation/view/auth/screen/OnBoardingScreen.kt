@@ -40,7 +40,7 @@ fun OnBoardingScreen(
     Column(modifier = Modifier.fillMaxSize()) {
         HorizontalPager(
             modifier = Modifier.weight(10f),
-            count = 3,
+            count = OnBoardingPage.ONBOARDING_PAGES_COUNT,
             state = pagerState,
             verticalAlignment = Alignment.Bottom
         ) { position ->
@@ -97,7 +97,6 @@ fun PagerScreen(onBoardingPage: OnBoardingPage) {
                 .padding(top = 20.dp),
             text = onBoardingPage.description,
             fontSize = MaterialTheme.typography.titleMedium.fontSize,
-            //fontWeight = FontWeight.Medium,
             textAlign = TextAlign.Center
         )
     }

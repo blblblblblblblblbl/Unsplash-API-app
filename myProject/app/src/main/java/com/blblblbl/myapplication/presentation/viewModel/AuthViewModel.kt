@@ -17,7 +17,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class AuthViewModel @Inject constructor(
-    @ApplicationContext context: Context,
+    @ApplicationContext private val context: Context,
     private val persistentStorage: PersistentStorage
 ):ViewModel() {
     val serviceConfig = AuthorizationServiceConfiguration(
@@ -33,7 +33,6 @@ class AuthViewModel @Inject constructor(
     var authRequest = authRequestBuilder
         .setScope("public read_user write_user read_photos write_photos write_likes write_followers write_collections read_collections")
         .build()
-    var context = context
     var authService = AuthorizationService(context)
     fun rememberedAuth(){
         val token =persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
