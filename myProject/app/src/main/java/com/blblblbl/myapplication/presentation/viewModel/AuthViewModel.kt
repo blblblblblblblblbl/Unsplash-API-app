@@ -4,7 +4,6 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.util.Log
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
@@ -39,7 +38,6 @@ class AuthViewModel @Inject constructor(
     fun rememberedAuth(){
         val token =persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
         if (token!=null){
-            Log.d("MyLog","token exist: $token")
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent);
@@ -50,8 +48,6 @@ class AuthViewModel @Inject constructor(
             authRequest,
             PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
             PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
-        Log.d("MyLog","auth_button_click")
-
     }
 
     companion object{

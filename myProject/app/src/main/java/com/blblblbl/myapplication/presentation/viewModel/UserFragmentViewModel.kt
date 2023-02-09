@@ -2,22 +2,21 @@ package com.blblblbl.myapplication.presentation.viewModel
 
 import android.content.Context
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
-import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagingSource
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagingSource
 import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.blblblbl.myapplication.domain.usecase.ClearStorageUseCase
 import com.blblblbl.myapplication.domain.usecase.GetMeInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.GetUserInfoUseCase
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
-import com.blblblbl.myapplication.domain.models.user_info.UserInfo
+import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -63,10 +62,8 @@ class UserFragmentViewModel @Inject constructor(
     fun getUserInfo(){
         viewModelScope.launch {
             val privateUser = getMeInfoUseCase.execute()
-            Log.d("MyLog","User info" + privateUser)
             privateUser?.username?.let {
                 val publicUser = getUserInfoUseCase.execute(it)
-                Log.d("MyLog","User info" + publicUser)
                 likedPhotosPagingSource.userNameinit(it)
                 pagedPhotos = Pager(
                     config = PagingConfig(pageSize = 10),

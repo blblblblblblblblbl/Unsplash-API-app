@@ -1,7 +1,6 @@
 package com.blblblbl.myapplication.presentation.viewModel
 
 import android.content.Intent
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -22,7 +21,7 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
     private val likeStateUseCase: LikeStateUseCase,
     private val downloadImgUseCase: DownloadImgUseCase,
 ):ViewModel() {
-    private val _detailedPhotoInfo = MutableStateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>(null)
+    private val _detailedPhotoInfo = MutableStateFlow<DetailedPhotoInfo?>(null)
     var status = MutableLiveData<Boolean?>()
     var intent :Intent? = null
     val detailedPhotoInfo = _detailedPhotoInfo.asStateFlow()
@@ -30,7 +29,6 @@ class PhotoDetailedInfoFragmentViewModel @Inject constructor(
         viewModelScope.launch {
             val response = getPhotosUseCase.execute(id)
             _detailedPhotoInfo.value = response
-            Log.d("MyLog","single photo by id response:${response}")
         }
     }
     fun changeLike(id: String, bool:Boolean){

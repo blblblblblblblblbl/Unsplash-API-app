@@ -1,7 +1,6 @@
 package com.blblblbl.myapplication.presentation.view.fragments
 
 import android.os.Bundle
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -146,7 +145,6 @@ class UserFragment : Fragment() {
                         .size(128.dp)
                         .align(CenterHorizontally))
                 }
-                Log.d("MyLog","User:${userInfo}")
                 Text(text = "${userInfo.firstName} ${userInfo.lastName}", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.align(CenterHorizontally))
                 Text(text = "@${userInfo.username}", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.align(CenterHorizontally))
                 userInfo.bio?.let{bio->

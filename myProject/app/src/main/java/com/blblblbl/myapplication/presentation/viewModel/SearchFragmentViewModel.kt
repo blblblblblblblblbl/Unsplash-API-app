@@ -1,6 +1,5 @@
 package com.blblblbl.myapplication.presentation.viewModel
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -41,9 +40,7 @@ class SearchFragmentViewModel @Inject constructor(
     }
     fun search(query: String) {
         viewModelScope.launch {
-            Log.d("MyLog", "viewModel search start, query: \"$query\" ")
             searchImagesUseCase.execute(query = query).cachedIn(viewModelScope).collect {
-                Log.d("MyLog", "viewModel search: $it")
                 _searchedImages.value = it
             }
         }
