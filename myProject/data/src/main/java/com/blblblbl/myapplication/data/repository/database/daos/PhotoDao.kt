@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.blblblbl.myapplication.data.data_classes.photos.Photo
+
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 
 @Dao
@@ -25,8 +26,8 @@ interface PhotoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertList(dbPhoto: List<DBPhoto>)
 
-    @Query("SELECT * FROM photos")
-    fun getPhotosPagingSource(): PagingSource<Int, DBPhoto>
+    @Query("SELECT photo FROM photos")
+    fun getPhotosPagingSource(): PagingSource<Int, Photo>
 
     @Query("DELETE FROM photos")
     suspend fun clear()

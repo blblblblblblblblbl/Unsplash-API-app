@@ -4,9 +4,7 @@ import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.core.net.toUri
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
-import androidx.paging.PagingData
+import androidx.paging.*
 import androidx.work.*
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
@@ -23,6 +21,7 @@ import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.map
 import net.openid.appauth.*
 import javax.inject.Inject
 
@@ -71,8 +70,8 @@ class RepositoryImpl @Inject constructor(
        return listApi
    }*/
 
-    /*@OptIn(ExperimentalPagingApi::class)
-    override fun getAllImgs(): Flow<PagingData<DBPhoto>> {
+    @OptIn(ExperimentalPagingApi::class)
+    override fun getAllImgs(): Flow<PagingData<Photo>> {
         val pagingSourceFactory = { repositoryDataBase.db.photoDao().getPhotosPagingSource()}
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
@@ -82,8 +81,11 @@ class RepositoryImpl @Inject constructor(
 
             ),
             pagingSourceFactory = pagingSourceFactory
-        ).flow
-    }*/
+        ).flow.map { pagingData ->
+            pagingData.map { photo->photo.mapToDomain()?:Photo()
+            }
+        }
+    }
     override fun searchImgByTags(query: String): Flow<PagingData<Photo>> {
         return Pager(
             config = PagingConfig(pageSize = ITEMS_PER_PAGE),
