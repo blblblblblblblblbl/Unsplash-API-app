@@ -83,7 +83,7 @@ class PhotoDetailedInfoFragment : Fragment() {
     }
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
-    fun all(detailedPhotoInfo: StateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>){
+    fun all(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
         val snackbarHostState = remember { SnackbarHostState() }
         val coroutineScope: CoroutineScope = rememberCoroutineScope()
         viewModel.status.observe(viewLifecycleOwner, Observer { status ->
@@ -113,7 +113,7 @@ class PhotoDetailedInfoFragment : Fragment() {
         )
     }
     @Composable
-    fun screen(detailedPhotoInfo: StateFlow<com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo?>){
+    fun screen(detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>){
         val state = detailedPhotoInfo.collectAsState().value
         state?.let {
             Column(Modifier.verticalScroll(rememberScrollState())) {
@@ -123,7 +123,7 @@ class PhotoDetailedInfoFragment : Fragment() {
         }
     }
     @Composable
-    fun PhotoScreen(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
+    fun PhotoScreen(detailedPhotoInfo: DetailedPhotoInfo){
         val textColor = Color.White
         val textSizeTotalLikes = 15.sp
         val textSizeName = 15.sp
@@ -172,15 +172,22 @@ class PhotoDetailedInfoFragment : Fragment() {
         }
     }
     @Composable
-    fun PhotoDescription(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
+    fun PhotoDescription(detailedPhotoInfo: DetailedPhotoInfo){
         Column(modifier = Modifier.padding(10.dp)) {
             detailedPhotoInfo.location?.let { location->
-                if (location.city!=null||location.country!=null||(location.position!=null&&location.position?.latitude!=null&&location.position?.longitude!=null)){
-                    Row() {
+                val isLocName = location.city!=null|| location.country!=null
+                val isLocNotNull = location.position?.latitude!=null&& location.position?.longitude!=null
+                val isLocNotZero = location.position?.latitude!=0.0|| location.position?.longitude!=0.0
+                if (isLocName||(isLocNotNull&&isLocNotZero)
+                ){
+                    Row(verticalAlignment = Alignment.CenterVertically) {
                         IconButton(onClick = {
                             val latitude = location.position?.latitude
                             val longitude  = location.position?.longitude
+                            Log.d("MyLog","location.position?.latitude!=0.0:${location.position?.latitude!=0.0}")
+                            Log.d("MyLog","location.position?.longitude!=0.0:${location.position?.longitude!=0.0}")
                             Log.d("MyLog","geo:${location.position}")
+                            Log.d("MyLog","geo:${location.city} ${location.country}")
                             if (latitude!=null &&longitude!=null){
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
@@ -194,6 +201,7 @@ class PhotoDetailedInfoFragment : Fragment() {
                                 contentDescription = "location icon",
                                 )
                         }
+                        Log.d("MyLog","geo:${location.city} ${location.country}")
                         Text(text = "${location.city?:""} ${location.country?:""}", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
