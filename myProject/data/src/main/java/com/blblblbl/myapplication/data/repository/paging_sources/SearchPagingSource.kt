@@ -1,6 +1,5 @@
 package com.blblblbl.myapplication.data.repository.paging_sources
 
-import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import com.blblblbl.myapplication.domain.models.photos.Photo
@@ -18,7 +17,6 @@ class SearchPagingSource(
             val responseApi = repositoryApi.searchPhotos(page = currentPage, perPage = ITEMS_PER_PAGE, query = query )
             val response = mutableListOf<Photo>()
             responseApi.forEach { it.mapToDomain()?.let { it1 -> response.add(it1) } }
-            Log.d("MyLog","search response: $response")
             val endOfPaginationReached = response.isEmpty()
             if (response.isNotEmpty()) {
                 LoadResult.Page(
@@ -34,7 +32,6 @@ class SearchPagingSource(
                 )
             }
         } catch (e: Exception) {
-            Log.d("MyLog","search response exception: ${e.message}")
             LoadResult.Error(e)
         }
     }

@@ -16,7 +16,7 @@ data class User (
     @SerializedName("total_collections"  ) var totalCollections  : Int?          = null,
     @SerializedName("instagram_username" ) var instagramUsername : String?       = null,
     @SerializedName("twitter_username"   ) var twitterUsername   : String?       = null,
-    @SerializedName("profile_image"      ) var profileImage      : com.blblblbl.myapplication.domain.models.collection_photos.ProfileImage? = com.blblblbl.myapplication.domain.models.collection_photos.ProfileImage(),
-    @SerializedName("links"              ) var links             : com.blblblbl.myapplication.domain.models.collection_photos.Links?        = com.blblblbl.myapplication.domain.models.collection_photos.Links()
+    @SerializedName("profile_image"      ) var profileImage      : ProfileImage? = ProfileImage(),
+    @SerializedName("links"              ) var links             : Links?        = Links()
 
 )

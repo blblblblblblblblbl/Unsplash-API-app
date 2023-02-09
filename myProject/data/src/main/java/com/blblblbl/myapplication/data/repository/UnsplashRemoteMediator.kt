@@ -1,6 +1,5 @@
 package com.blblblbl.myapplication.data.repository
 
-import android.util.Log
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -18,16 +17,14 @@ class UnsplashRemoteMediator(
     private val repositoryDataBase: RepositoryDataBase
 ) : RemoteMediator<Int, Photo>() {
 
-    private val unsplashImageDao = repositoryDataBase.db.photoDao()// unsplashDatabase.unsplashImageDao()
-    private val unsplashRemoteKeysDao = repositoryDataBase.db.unsplashRemoteKeysDao()//unsplashDatabase.unsplashRemoteKeysDao()
+    private val unsplashImageDao = repositoryDataBase.db.photoDao()
+    private val unsplashRemoteKeysDao = repositoryDataBase.db.unsplashRemoteKeysDao()
 
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, Photo>
     ): MediatorResult {
         return try {
-            Log.d("MyLog","loadType: $loadType")
-            Log.d("MyLog","state: ${state}")
             val currentPage = when (loadType) {
                 LoadType.REFRESH -> {
                     val remoteKeys = getRemoteKeyClosestToCurrentPosition(state)

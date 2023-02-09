@@ -1,6 +1,5 @@
 package com.blblblbl.myapplication.domain.models.user_info
 
-import com.blblblbl.myapplication.domain.models.user_info.Links
 import com.google.gson.annotations.SerializedName
 
 

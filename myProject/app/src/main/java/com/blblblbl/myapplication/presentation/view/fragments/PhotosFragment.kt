@@ -7,7 +7,6 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.os.Parcel
 import android.os.Parcelable
-import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -129,10 +128,8 @@ class PhotosFragment : Fragment() {
             R.drawable.img4,
             R.drawable.img2,
             R.drawable.img3)
-        Log.d("MyLog",R.drawable.img1.toString())
         LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2) ){
             items(images) { item->
-                Log.d("MyLog",item.toString())
                 Image(
                     painterResource(item),
                     contentDescription = ""
@@ -196,7 +193,6 @@ class PhotosFragment : Fragment() {
 
             ) {item->
                 if (item != null) {
-                    //PhotoItem(photo = item)
                     PhotoItem(photo = item)
                 }
             }
@@ -262,7 +258,6 @@ class PhotosFragment : Fragment() {
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Text(text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                    //Icon(painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24), contentDescription = "like icon", tint = Color.White)
                     if (isLiked) {
                         Icon(
                             Icons.Outlined.Favorite,

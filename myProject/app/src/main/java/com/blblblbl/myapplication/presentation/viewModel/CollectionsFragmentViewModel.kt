@@ -7,7 +7,6 @@ import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.repository.paging_sources.CollectionsPagingSource
-import com.blblblbl.myapplication.domain.repository.Repository
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -15,8 +14,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionsFragmentViewModel @Inject constructor(
-    private val collectionsPagingSource: CollectionsPagingSource,
-    private val repository: Repository
+    private val collectionsPagingSource: CollectionsPagingSource
 ):ViewModel() {
     val pagedCollections: Flow<PagingData<PhotoCollection>> = Pager(
         config = PagingConfig(pageSize = 10),

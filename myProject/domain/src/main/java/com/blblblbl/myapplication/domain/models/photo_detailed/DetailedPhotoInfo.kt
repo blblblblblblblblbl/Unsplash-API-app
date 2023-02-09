@@ -17,12 +17,12 @@ data class DetailedPhotoInfo (
     @SerializedName("liked_by_user"            ) var likedByUser            : Boolean?                          = null,
     @SerializedName("public_domain"            ) var publicDomain           : Boolean?                          = null,
     @SerializedName("description"              ) var description            : String?                           = null,
-    @SerializedName("exif"                     ) var exif                   : com.blblblbl.myapplication.domain.models.photo_detailed.Exif?                             = com.blblblbl.myapplication.domain.models.photo_detailed.Exif(),
-    @SerializedName("location"                 ) var location               : com.blblblbl.myapplication.domain.models.photo_detailed.Location?                         = com.blblblbl.myapplication.domain.models.photo_detailed.Location(),
-    @SerializedName("tags"                     ) var tags                   : ArrayList<com.blblblbl.myapplication.domain.models.photo_detailed.Tags>                   = arrayListOf(),
-    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<com.blblblbl.myapplication.domain.models.photo_detailed.CurrentUserCollections> = arrayListOf(),
-    @SerializedName("urls"                     ) var urls                   : com.blblblbl.myapplication.domain.models.photo_detailed.Urls?                             = com.blblblbl.myapplication.domain.models.photo_detailed.Urls(),
-    @SerializedName("links"                    ) var links                  : com.blblblbl.myapplication.domain.models.photo_detailed.Links?                            = com.blblblbl.myapplication.domain.models.photo_detailed.Links(),
-    @SerializedName("user"                     ) var user                   : com.blblblbl.myapplication.domain.models.photo_detailed.User?                             = com.blblblbl.myapplication.domain.models.photo_detailed.User()
+    @SerializedName("exif"                     ) var exif                   : Exif?                             = Exif(),
+    @SerializedName("location"                 ) var location               : Location?                         = Location(),
+    @SerializedName("tags"                     ) var tags                   : ArrayList<Tags>                   = arrayListOf(),
+    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<CurrentUserCollections> = arrayListOf(),
+    @SerializedName("urls"                     ) var urls                   : Urls?                             = Urls(),
+    @SerializedName("links"                    ) var links                  : Links?                            = Links(),
+    @SerializedName("user"                     ) var user                   : User?                             = User()
 
 )

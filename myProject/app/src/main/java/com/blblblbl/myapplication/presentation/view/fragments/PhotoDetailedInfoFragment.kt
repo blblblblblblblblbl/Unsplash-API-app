@@ -5,7 +5,6 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -56,7 +55,6 @@ class PhotoDetailedInfoFragment : Fragment() {
     private var photoId:String? = null
 
     val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){map->
-        Log.d("MyLog","$map")
         if (map.values.all { it }){
             Toast.makeText(context,"storage permissions granted", Toast.LENGTH_LONG).show()
             viewModel.download()
@@ -71,7 +69,6 @@ class PhotoDetailedInfoFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         arguments?.let {photoId = it.getString(PHOTO_ID_KEY)  }
-        Log.d("MyLog","photoId: $photoId")
         photoId?.let { viewModel.getPhotoById(it)}
         return ComposeView(requireContext()).apply {
             setContent {
@@ -184,10 +181,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                         IconButton(onClick = {
                             val latitude = location.position?.latitude
                             val longitude  = location.position?.longitude
-                            Log.d("MyLog","location.position?.latitude!=0.0:${location.position?.latitude!=0.0}")
-                            Log.d("MyLog","location.position?.longitude!=0.0:${location.position?.longitude!=0.0}")
-                            Log.d("MyLog","geo:${location.position}")
-                            Log.d("MyLog","geo:${location.city} ${location.country}")
                             if (latitude!=null &&longitude!=null){
                                 val intent = Intent(
                                     Intent.ACTION_VIEW,
@@ -201,7 +194,6 @@ class PhotoDetailedInfoFragment : Fragment() {
                                 contentDescription = "location icon",
                                 )
                         }
-                        Log.d("MyLog","geo:${location.city} ${location.country}")
                         Text(text = "${location.city?:""} ${location.country?:""}", style = MaterialTheme.typography.bodyMedium)
                     }
                 }
