@@ -25,7 +25,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
@@ -194,14 +196,14 @@ class UserFragment : Fragment() {
             .fillMaxWidth()
             .height(IntrinsicSize.Max)
             .padding(10.dp)
-            /*.clickable {
+            .clickable {
                 val bundle = bundleOf()
                 bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
                 findNavController().navigate(
-                    R.id.action_collectionPhotoListFragment_to_photoDetailedInfoFragment2,
+                    R.id.action_userFragment_to_photoDetailedInfoFragment4,
                     bundle
                 )
-            }*/) {
+            }) {
             GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
             Column() {
                 Spacer(modifier = Modifier.weight(1f))
