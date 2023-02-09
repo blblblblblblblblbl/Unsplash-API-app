@@ -228,7 +228,7 @@ class SearchFragment : Fragment() {
                 val bundle = bundleOf()
                 bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
                 findNavController().navigate(
-                    R.id.action_collectionPhotoListFragment_to_photoDetailedInfoFragment2,
+                    R.id.action_searchFragment_to_photoDetailedInfoFragment3,
                     bundle
                 )
             }) {
