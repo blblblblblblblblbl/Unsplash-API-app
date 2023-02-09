@@ -15,9 +15,9 @@ data class CollectionPhoto (
     @SerializedName("likes"                    ) var likes                  : Int?                              = null,
     @SerializedName("liked_by_user"            ) var likedByUser            : Boolean?                          = null,
     @SerializedName("description"              ) var description            : String?                           = null,
-    @SerializedName("user"                     ) var user                   : com.blblblbl.myapplication.domain.models.collection_photos.User?                             = com.blblblbl.myapplication.domain.models.collection_photos.User(),
-    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<com.blblblbl.myapplication.domain.models.collection_photos.CurrentUserCollections> = arrayListOf(),
-    @SerializedName("urls"                     ) var urls                   : com.blblblbl.myapplication.domain.models.collection_photos.Urls?                             = com.blblblbl.myapplication.domain.models.collection_photos.Urls(),
-    @SerializedName("links"                    ) var links                  : com.blblblbl.myapplication.domain.models.collection_photos.Links?                            = com.blblblbl.myapplication.domain.models.collection_photos.Links()
+    @SerializedName("user"                     ) var user                   : User?                             = User(),
+    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<CurrentUserCollections> = arrayListOf(),
+    @SerializedName("urls"                     ) var urls                   : Urls?                             = Urls(),
+    @SerializedName("links"                    ) var links                  : Links?                            = Links()
 
 )

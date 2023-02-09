@@ -7,7 +7,7 @@ import javax.inject.Inject
 class GetUserInfoUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun execute(username:String): com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?{
+    suspend fun execute(username:String): PublicUserInfo?{
         try {
             return repository.getPublicUserInfo(username)
         }

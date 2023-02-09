@@ -7,7 +7,7 @@ import javax.inject.Inject
 class DownloadImgUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    fun execute(detailedPhotoInfo: com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo){
+    fun execute(detailedPhotoInfo: DetailedPhotoInfo){
         repository.downloadImg(detailedPhotoInfo)
     }
 }
