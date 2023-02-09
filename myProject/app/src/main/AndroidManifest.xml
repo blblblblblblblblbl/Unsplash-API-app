@@ -13,7 +13,6 @@
         android:icon="@mipmap/ic_my_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_my_launcher_round"
-        android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <provider
@@ -29,9 +28,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
         <activity
             android:name=".presentation.view.activities.MainActivity"
@@ -51,9 +47,6 @@
                 <!-- note that the leading "/" is required for pathPrefix-->
             </intent-filter>
 
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
         </activity>
     </application>
 

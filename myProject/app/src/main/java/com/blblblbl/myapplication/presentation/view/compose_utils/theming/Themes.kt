@@ -9,17 +9,14 @@ import androidx.compose.material3.lightColorScheme
 
 private val LightColors = lightColorScheme(
     primary = Purple500,
-    //primaryVariant = Red900,
     onPrimary = Color.White,
     secondary = Purple200,
-    //secondaryVariant = Red900,
     onSecondary = Color.White,
     error = Red800
 )
 
 private val DarkColors = darkColorScheme(
     primary = Purple500,
-    //primaryVariant = Red700,
     onPrimary = Color.Black,
     secondary = Purple200,
     onSecondary = Color.Black,

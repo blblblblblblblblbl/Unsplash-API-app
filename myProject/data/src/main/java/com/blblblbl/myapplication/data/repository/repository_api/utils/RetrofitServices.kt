@@ -48,7 +48,7 @@ class RetrofitServices @Inject constructor(
     )
 
     interface PhotosApi {
-        @Headers("mock:true")
+        //@Headers("mock:true")
         @GET("photos")
         suspend fun getPhotos(
             @Query("page") page: Int,
