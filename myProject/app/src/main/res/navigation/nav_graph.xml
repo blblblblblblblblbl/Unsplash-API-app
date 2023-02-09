@@ -49,6 +49,11 @@
         android:label="fragment_photo_detailed_info"
         tools:layout="@layout/fragment_photo_detailed_info" />
     <fragment
+        android:id="@+id/photoDetailedInfoFragment3"
+        android:name="com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment"
+        android:label="fragment_photo_detailed_info"
+        tools:layout="@layout/fragment_photo_detailed_info" />
+    <fragment
         android:id="@+id/photoDetailedInfoFragment2"
         android:name="com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment"
         android:label="fragment_photo_detailed_info"
@@ -70,5 +75,9 @@
         android:id="@+id/searchFragment"
         android:name="com.blblblbl.myapplication.presentation.view.fragments.SearchFragment"
         android:label="fragment_search"
-        tools:layout="@layout/fragment_search" />
+        tools:layout="@layout/fragment_search" >
+        <action
+            android:id="@+id/action_searchFragment_to_photoDetailedInfoFragment3"
+            app:destination="@id/photoDetailedInfoFragment3" />
+    </fragment>
 </navigation>
