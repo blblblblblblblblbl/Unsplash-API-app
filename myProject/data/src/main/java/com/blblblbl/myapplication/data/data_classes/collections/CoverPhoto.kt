@@ -16,6 +16,6 @@ data class CoverPhoto (
     @SerializedName("description"   ) var description : String?  = null,
     @SerializedName("user"          ) var user        : User?    = User(),
     @SerializedName("urls"          ) var urls        : Urls?    = Urls(),
-    //@SerializedName("links"         ) var links       : Links?   = Links()
+    @SerializedName("links"         ) var links       : Links?   = Links()
 
 )

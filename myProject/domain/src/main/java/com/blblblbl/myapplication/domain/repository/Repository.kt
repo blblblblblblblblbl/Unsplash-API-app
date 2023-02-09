@@ -1,10 +1,9 @@
 package com.blblblbl.myapplication.domain.repository
 
-import android.net.Uri
 import androidx.paging.PagingData
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import kotlinx.coroutines.flow.Flow

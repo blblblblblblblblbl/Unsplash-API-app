@@ -41,7 +41,7 @@ import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.presentation.viewModel.PhotosFragmentViewModel
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.repository.database.entities.DBPhoto
 import com.blblblbl.myapplication.presentation.view.compose_utils.ErrorItem
 import com.blblblbl.myapplication.presentation.view.compose_utils.LoadingItem

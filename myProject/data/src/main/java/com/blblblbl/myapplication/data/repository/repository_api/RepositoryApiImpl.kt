@@ -1,25 +1,13 @@
 package com.blblblbl.myapplication.data.repository.repository_api
 
 import android.util.Log
+import com.blblblbl.myapplication.data.data_classes.collections.PhotoCollection
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.myapplication.data.data_classes.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Photo
-import com.blblblbl.myapplication.domain.models.search.SearchResult
-import com.blblblbl.myapplication.data.repository.repository_api.utils.MockRequestInterceptor
+import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.repository.repository_api.utils.RetrofitServices
-import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
-import com.google.gson.GsonBuilder
-import dagger.Binds
-import dagger.Module
-import dagger.hilt.InstallIn
-import dagger.hilt.components.SingletonComponent
-import okhttp3.OkHttpClient
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.http.*
-import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 import javax.inject.Singleton
 

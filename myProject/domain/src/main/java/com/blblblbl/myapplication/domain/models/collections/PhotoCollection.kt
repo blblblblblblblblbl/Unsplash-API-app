@@ -1,8 +1,6 @@
 package com.blblblbl.myapplication.domain.models.collections
 
-import com.blblblbl.myapplication.domain.models.collections.CoverPhoto
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.Links
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.User
+
 import com.google.gson.annotations.SerializedName
 
 
@@ -19,6 +17,6 @@ data class PhotoCollection (
     @SerializedName("share_key"         ) var shareKey        : String?     = null,
     @SerializedName("cover_photo"       ) var coverPhoto      : CoverPhoto? = CoverPhoto(),
     @SerializedName("user"              ) var user            : User?       = User(),
-    @SerializedName("links"             ) var links           : com.blblblbl.myapplication.domain.models.public_user_info.photos.Links?      = com.blblblbl.myapplication.domain.models.public_user_info.photos.Links()
+    @SerializedName("links"             ) var links           : Links?      = Links()
 
 )

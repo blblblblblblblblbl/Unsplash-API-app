@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.domain.models.public_user_info.photos
+package com.blblblbl.myapplication.domain.models.photos
 
 import com.google.gson.annotations.SerializedName
 
@@ -16,8 +16,8 @@ data class Photo (
     @SerializedName("liked_by_user"            ) var likedByUser            : Boolean?                          = null,
     @SerializedName("description"              ) var description            : String?                           = null,
     @SerializedName("user"                     ) var user                   : User?                             = User(),
-    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<com.blblblbl.myapplication.domain.models.public_user_info.photos.CurrentUserCollections> = arrayListOf(),
+    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<CurrentUserCollections> = arrayListOf(),
     @SerializedName("urls"                     ) var urls                   : Urls?                             = Urls(),
-    @SerializedName("links"                    ) var links                  : com.blblblbl.myapplication.domain.models.public_user_info.photos.Links?                            = com.blblblbl.myapplication.domain.models.public_user_info.photos.Links()
+    @SerializedName("links"                    ) var links                  : Links?                            = Links()
 
 )

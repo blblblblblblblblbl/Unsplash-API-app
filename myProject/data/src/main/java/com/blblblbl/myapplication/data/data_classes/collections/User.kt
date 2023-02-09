@@ -1,7 +1,6 @@
 package com.blblblbl.myapplication.data.data_classes.collections
 
-import com.blblblbl.myapplication.domain.models.collections.UserLinks
-import com.blblblbl.myapplication.domain.models.public_user_info.photos.ProfileImage
+
 import com.google.gson.annotations.SerializedName
 
 

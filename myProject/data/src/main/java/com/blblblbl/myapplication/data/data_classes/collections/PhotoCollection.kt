@@ -17,6 +17,6 @@ data class PhotoCollection (
     @SerializedName("share_key"         ) var shareKey        : String?     = null,
     @SerializedName("cover_photo"       ) var coverPhoto      : CoverPhoto? = CoverPhoto(),
     @SerializedName("user"              ) var user            : User?       = User(),
-    //@SerializedName("links"             ) var links           : Links?      = Links()
+    @SerializedName("links"             ) var links           : Links?      = Links()
 
 )

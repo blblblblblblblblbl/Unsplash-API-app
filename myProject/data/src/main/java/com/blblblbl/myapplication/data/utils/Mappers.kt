@@ -37,6 +37,21 @@ import com.blblblbl.myapplication.domain.models.photo_detailed.User as DomainUse
 import com.blblblbl.myapplication.data.data_classes.photo_detailed.DetailedPhotoInfo as DataDetailedPhotoInfo
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo as DomainDetailedPhotoInfo
 
+import com.blblblbl.myapplication.data.data_classes.collections.Links as DataCollectionsLinks
+import com.blblblbl.myapplication.domain.models.collections.Links as DomainCollectionsLinks
+import com.blblblbl.myapplication.data.data_classes.collections.UserLinks as DataCollectionsUserLinks
+import com.blblblbl.myapplication.domain.models.collections.UserLinks as DomainCollectionsUserLinks
+import com.blblblbl.myapplication.data.data_classes.collections.Urls as DataCollectionsUrls
+import com.blblblbl.myapplication.domain.models.collections.Urls as DomainCollectionsUrls
+import com.blblblbl.myapplication.data.data_classes.collections.ProfileImage as DataCollectionsProfileImage
+import com.blblblbl.myapplication.domain.models.collections.ProfileImage as DomainCollectionsProfileImage
+import com.blblblbl.myapplication.data.data_classes.collections.User as DataCollectionsUser
+import com.blblblbl.myapplication.domain.models.collections.User as DomainCollectionsUser
+import com.blblblbl.myapplication.data.data_classes.collections.CoverPhoto as DataCollectionsCoverPhoto
+import com.blblblbl.myapplication.domain.models.collections.CoverPhoto as DomainCollectionsCoverPhoto
+import com.blblblbl.myapplication.data.data_classes.collections.PhotoCollection as DataCollectionsPhotoCollection
+import com.blblblbl.myapplication.domain.models.collections.PhotoCollection as DomainCollectionsPhotoCollection
+
 fun DataMeLinks?.mapToDomain(): DomainMeLinks? {
     val domainMeLinks: DomainMeLinks =
         DomainMeLinks(
@@ -267,4 +282,99 @@ fun DataDetailedPhotoInfo?.mapToDomain():DomainDetailedPhotoInfo?{
             this?.user.mapToDomain(),
         )
     return domainDetailedPhotoInfo
+}
+
+
+fun DataCollectionsLinks?.mapToDomain():DomainCollectionsLinks?{
+    val domainCollectionsLinks: DomainCollectionsLinks =
+        DomainCollectionsLinks(
+            this?.self,
+            this?.html,
+            this?.download,
+            this?.downloadLocation
+        )
+    return domainCollectionsLinks
+}
+fun DataCollectionsUserLinks?.mapToDomain():DomainCollectionsUserLinks?{
+    val domainCollectionsUserLinks: DomainCollectionsUserLinks =
+        DomainCollectionsUserLinks(
+            this?.self,
+            this?.html,
+            this?.photos,
+            this?.related
+        )
+    return domainCollectionsUserLinks
+}
+fun DataCollectionsUrls?.mapToDomain():DomainCollectionsUrls?{
+    val domainCollectionsUrls: DomainCollectionsUrls =
+        DomainCollectionsUrls(
+            this?.raw,
+            this?.full,
+            this?.regular,
+            this?.small,
+            this?.thumb
+        )
+    return domainCollectionsUrls
+}
+fun DataCollectionsProfileImage?.mapToDomain():DomainCollectionsProfileImage?{
+    val domainCollectionsProfileImage: DomainCollectionsProfileImage =
+        DomainCollectionsProfileImage(
+            this?.small,
+            this?.medium,
+            this?.large
+        )
+    return domainCollectionsProfileImage
+}
+fun DataCollectionsUser?.mapToDomain():DomainCollectionsUser?{
+    val domainCollectionsUser: DomainCollectionsUser =
+        DomainCollectionsUser(
+            this?.id,
+            this?.updatedAt,
+            this?.username,
+            this?.name,
+            this?.portfolioUrl,
+            this?.bio,
+            this?.location,
+            this?.totalLikes,
+            this?.totalPhotos,
+            this?.totalCollections,
+            this?.profileImage.mapToDomain(),
+            this?.links.mapToDomain()
+        )
+    return domainCollectionsUser
+}
+fun DataCollectionsCoverPhoto?.mapToDomain():DomainCollectionsCoverPhoto?{
+    val domainCollectionsCoverPhoto: DomainCollectionsCoverPhoto =
+        DomainCollectionsCoverPhoto(
+            this?.id,
+            this?.width,
+            this?.height,
+            this?.color,
+            this?.blurHash,
+            this?.likes,
+            this?.likedByUser,
+            this?.description,
+            this?.user.mapToDomain(),
+            this?.urls.mapToDomain(),
+            this?.links.mapToDomain()
+        )
+    return domainCollectionsCoverPhoto
+}
+fun DataCollectionsPhotoCollection?.mapToDomain():DomainCollectionsPhotoCollection?{
+    val domainCollectionsPhotoCollection: DomainCollectionsPhotoCollection =
+        DomainCollectionsPhotoCollection(
+            this?.id,
+            this?.title,
+            this?.description,
+            this?.publishedAt,
+            this?.lastCollectedAt,
+            this?.updatedAt,
+            this?.totalPhotos,
+            this?.private,
+            this?.shareKey,
+            this?.coverPhoto.mapToDomain(),
+            this?.user.mapToDomain(),
+            this?.links.mapToDomain(),
+        )
+    return domainCollectionsPhotoCollection
 }
