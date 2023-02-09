@@ -42,7 +42,11 @@
         android:id="@+id/userFragment"
         android:name="com.blblblbl.myapplication.presentation.view.fragments.UserFragment"
         android:label="fragment_user"
-        tools:layout="@layout/fragment_user" />
+        tools:layout="@layout/fragment_user" >
+        <action
+            android:id="@+id/action_userFragment_to_photoDetailedInfoFragment4"
+            app:destination="@id/photoDetailedInfoFragment4" />
+    </fragment>
     <fragment
         android:id="@+id/photoDetailedInfoFragment"
         android:name="com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment"
@@ -50,6 +54,11 @@
         tools:layout="@layout/fragment_photo_detailed_info" />
     <fragment
         android:id="@+id/photoDetailedInfoFragment3"
+        android:name="com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment"
+        android:label="fragment_photo_detailed_info"
+        tools:layout="@layout/fragment_photo_detailed_info" />
+    <fragment
+        android:id="@+id/photoDetailedInfoFragment4"
         android:name="com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment"
         android:label="fragment_photo_detailed_info"
         tools:layout="@layout/fragment_photo_detailed_info" />
