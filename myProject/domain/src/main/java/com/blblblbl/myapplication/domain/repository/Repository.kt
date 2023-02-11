@@ -17,6 +17,8 @@ interface Repository {
 
     suspend fun getLikedImgs(page: Int, userName:String):List<Photo>
     suspend fun getCollections(page: Int):List<PhotoCollection>
+    fun  getCollectionPhotosPagingDataFlow(id:String,pageSize:Int):Flow<PagingData<Photo>>
+    fun  getCollectionPagingDataFlow(pageSize:Int):Flow<PagingData<PhotoCollection>>
 
     fun searchImgByTags(query: String): Flow<PagingData<Photo>>
     suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo
@@ -25,6 +27,7 @@ interface Repository {
 
     suspend fun getMeInfo(): UserInfo?
     suspend fun getPublicUserInfo(username:String): PublicUserInfo
+    fun  getLikedPhotosPagingDataFlow(username: String,pageSize:Int):Flow<PagingData<Photo>>
 
     suspend fun like(id: String)
     suspend fun unlike(id: String)

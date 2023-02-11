@@ -4,18 +4,12 @@ import android.content.Context
 import android.content.Intent
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
-import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagingSource
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
-import com.blblblbl.myapplication.domain.usecase.ClearStorageUseCase
-import com.blblblbl.myapplication.domain.usecase.GetMeInfoUseCase
-import com.blblblbl.myapplication.domain.usecase.GetUserInfoUseCase
-import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
+import com.blblblbl.myapplication.domain.usecase.*
 import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -29,11 +23,11 @@ import javax.inject.Inject
 class UserFragmentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val likedPhotosPagingSource: LikedPhotosPagingSource,
     private val persistentStorage: PersistentStorage,
     private val likeStateUseCase: LikeStateUseCase,
     private val getMeInfoUseCase: GetMeInfoUseCase,
-    private val clearStorageUseCase: ClearStorageUseCase
+    private val clearStorageUseCase: ClearStorageUseCase,
+    private val getLikedPhotoPagingUseCase: GetLikedPhotoPagingUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
@@ -64,14 +58,13 @@ class UserFragmentViewModel @Inject constructor(
             val privateUser = getMeInfoUseCase.execute()
             privateUser?.username?.let {
                 val publicUser = getUserInfoUseCase.execute(it)
-                likedPhotosPagingSource.userNameinit(it)
-                pagedPhotos = Pager(
-                    config = PagingConfig(pageSize = 10),
-                    pagingSourceFactory = { likedPhotosPagingSource }
-                ).flow.cachedIn(viewModelScope)
+                pagedPhotos = getLikedPhotoPagingUseCase.execute(it, PAGE_SIZE).cachedIn(viewModelScope)
                 _publicUserInfo.value = publicUser
                 _privateUserInfo.value = privateUser
             }
         }
+    }
+    companion object{
+        const val PAGE_SIZE = 10
     }
 }

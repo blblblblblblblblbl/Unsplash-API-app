@@ -2,12 +2,12 @@ package com.blblblbl.myapplication.data.repository.paging_sources
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.repository.Repository
+import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import javax.inject.Inject
 
 class CollectionPhotoPagingSource @Inject constructor(
-    private val repository: Repository
+    private val repositoryApi: RepositoryApi
 ): PagingSource<Int, Photo>() {
     private lateinit var id:String
     fun idInit(id:String){
@@ -17,7 +17,7 @@ class CollectionPhotoPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val page = params.key?: FIRST_PAGE
         return kotlin.runCatching {
-            repository.getCollectionImgList(id,page)
+            repositoryApi.getCollectionPhotoList(id,page)
         }.fold(
             onSuccess = {
                 it?.let { it1 ->

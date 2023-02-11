@@ -8,6 +8,9 @@ import androidx.work.*
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
+import com.blblblbl.myapplication.data.repository.paging_sources.CollectionPhotoPagingSource
+import com.blblblbl.myapplication.data.repository.paging_sources.CollectionsPagingSource
+import com.blblblbl.myapplication.data.repository.paging_sources.LikedPhotosPagingSource
 import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSource
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
@@ -27,7 +30,10 @@ class RepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repositoryApi: RepositoryApi,
     private val repositoryDataBase: RepositoryDataBase,
-    private val persistentStorage: PersistentStorage
+    private val persistentStorage: PersistentStorage,
+    private val collectionPhotosPagingSource: CollectionPhotoPagingSource,
+    private val collectionsPagingSource: CollectionsPagingSource,
+    private val likedPhotosPagingSource: LikedPhotosPagingSource
 ): Repository {
     override fun authorize(code: String) {
         var authService = AuthorizationService(context)
@@ -92,6 +98,29 @@ class RepositoryImpl @Inject constructor(
         }
         return collections.toList()
     }
+
+    override fun getCollectionPhotosPagingDataFlow(
+        id: String,
+        pageSize: Int
+    ): Flow<PagingData<Photo>> {
+        collectionPhotosPagingSource.idInit(id)
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { collectionPhotosPagingSource }
+        ).flow.map { pagingData->
+            pagingData.map { it.mapToDomain()?:Photo() }
+        }
+    }
+
+    override fun getCollectionPagingDataFlow(pageSize: Int): Flow<PagingData<PhotoCollection>> {
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { collectionsPagingSource }
+        ).flow.map { pagingData->
+            pagingData.map { it.mapToDomain()?: PhotoCollection() }
+        }
+    }
+
     override suspend fun getMeInfo(): UserInfo?{
         try {
             val userInfo = repositoryApi.getUserInfo()
@@ -107,6 +136,20 @@ class RepositoryImpl @Inject constructor(
     }
     override suspend fun getPublicUserInfo(username:String): PublicUserInfo {
         return repositoryApi.getPublicUserInfo(username).mapToDomain()?: PublicUserInfo()
+    }
+
+    override fun getLikedPhotosPagingDataFlow(
+        username: String,
+        pageSize: Int
+    ): Flow<PagingData<Photo>> {
+        likedPhotosPagingSource.userNameinit(username)
+        return Pager(
+            config = PagingConfig(pageSize = 10),
+            pagingSourceFactory = { likedPhotosPagingSource }
+        ).flow.map { pagingData ->
+            pagingData.map { photo->photo.mapToDomain()?:Photo()
+            }
+        }
     }
 
     override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
