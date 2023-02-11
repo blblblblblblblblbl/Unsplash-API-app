@@ -3,12 +3,12 @@ package com.blblblbl.myapplication.data.repository.paging_sources
 import android.util.Log
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.repository.Repository
+import com.blblblbl.myapplication.data.data_classes.photos.Photo
+import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApiImpl
 import javax.inject.Inject
 
 class LikedPhotosPagingSource @Inject constructor(
-    private val repository: Repository
+    private val repositoryApi: RepositoryApiImpl
 ): PagingSource<Int, Photo>() {
     lateinit var userName:String
     fun userNameinit(userName:String)
@@ -19,7 +19,8 @@ class LikedPhotosPagingSource @Inject constructor(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Photo> {
         val page = params.key?: FIRST_PAGE
         return kotlin.runCatching {
-            repository.getLikedImgs(page, userName)
+
+            repositoryApi.getLikedPhotosPage(page, userName)
         }.fold(
             onSuccess = {
                 Log.d("MyLog",it.toString())
