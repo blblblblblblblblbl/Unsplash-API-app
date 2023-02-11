@@ -28,6 +28,7 @@ interface Repository {
     suspend fun getMeInfo(): UserInfo?
     suspend fun getPublicUserInfo(username:String): PublicUserInfo
     fun  getLikedPhotosPagingDataFlow(username: String,pageSize:Int):Flow<PagingData<Photo>>
+    fun getSavedBearerToken():String?
 
     suspend fun like(id: String)
     suspend fun unlike(id: String)

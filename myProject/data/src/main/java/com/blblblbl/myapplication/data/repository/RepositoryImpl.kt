@@ -152,6 +152,10 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedBearerToken(): String? {
+        return persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+    }
+
     override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
         return repositoryApi.getPhotoById(id).mapToDomain()?:DetailedPhotoInfo()
     }
