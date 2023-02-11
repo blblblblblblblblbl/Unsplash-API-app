@@ -33,5 +33,5 @@ interface Repository {
     suspend fun like(id: String)
     suspend fun unlike(id: String)
 
-    suspend fun clearDB()
+    suspend fun clearStorage()
 }

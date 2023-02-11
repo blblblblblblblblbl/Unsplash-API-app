@@ -7,6 +7,6 @@ class ClearStorageUseCase @Inject constructor(
     private val repository: Repository
 ) {
     suspend fun execute(){
-        repository.clearDB()
+        repository.clearStorage()
     }
 }

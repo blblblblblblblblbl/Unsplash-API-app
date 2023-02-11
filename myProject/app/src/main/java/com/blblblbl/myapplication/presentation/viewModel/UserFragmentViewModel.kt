@@ -6,7 +6,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.blblblbl.myapplication.domain.usecase.*
@@ -23,7 +22,6 @@ import javax.inject.Inject
 class UserFragmentViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val getUserInfoUseCase: GetUserInfoUseCase,
-    private val persistentStorage: PersistentStorage,
     private val likeStateUseCase: LikeStateUseCase,
     private val getMeInfoUseCase: GetMeInfoUseCase,
     private val clearStorageUseCase: ClearStorageUseCase,
@@ -36,7 +34,7 @@ class UserFragmentViewModel @Inject constructor(
     val publicUserInfo = _publicUserInfo.asStateFlow()
     fun logout(){
         viewModelScope.launch{
-            persistentStorage.clear()
+
             clearStorageUseCase.execute()
             val intent = Intent(context, AuthActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

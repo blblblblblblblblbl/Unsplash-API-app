@@ -192,7 +192,8 @@ class RepositoryImpl @Inject constructor(
     override suspend fun unlike(id: String){
         repositoryApi.unlike(id)
     }
-    override suspend fun clearDB(){
+    override suspend fun clearStorage(){
+        persistentStorage.clear()
         repositoryDataBase.db.photoDao().clear()
     }
     companion object{
