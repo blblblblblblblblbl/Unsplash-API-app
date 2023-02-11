@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.presentation.viewModel
+package com.blblblbl.myapplication.di
 
 import android.app.NotificationChannel
 import android.app.NotificationManager

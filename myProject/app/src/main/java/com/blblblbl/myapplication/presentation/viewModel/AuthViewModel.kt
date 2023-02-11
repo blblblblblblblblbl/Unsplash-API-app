@@ -8,7 +8,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
 import com.blblblbl.myapplication.presentation.view.activities.MainActivity
-import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
+import com.blblblbl.myapplication.domain.usecase.GetSavedBearerTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import net.openid.appauth.*
@@ -18,7 +18,7 @@ import javax.inject.Inject
 @HiltViewModel
 class AuthViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
-    private val persistentStorage: PersistentStorage
+    private val getSavedBearerTokenUseCase: GetSavedBearerTokenUseCase
 ):ViewModel() {
     val serviceConfig = AuthorizationServiceConfiguration(
         Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
@@ -35,7 +35,7 @@ class AuthViewModel @Inject constructor(
         .build()
     var authService = AuthorizationService(context)
     fun rememberedAuth(){
-        val token =persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+        val token = getSavedBearerTokenUseCase.execute()
         if (token!=null){
             val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)

@@ -152,6 +152,10 @@ class RepositoryImpl @Inject constructor(
         }
     }
 
+    override fun getSavedBearerToken(): String? {
+        return persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN)
+    }
+
     override suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo {
         return repositoryApi.getPhotoById(id).mapToDomain()?:DetailedPhotoInfo()
     }
@@ -188,7 +192,8 @@ class RepositoryImpl @Inject constructor(
     override suspend fun unlike(id: String){
         repositoryApi.unlike(id)
     }
-    override suspend fun clearDB(){
+    override suspend fun clearStorage(){
+        persistentStorage.clear()
         repositoryDataBase.db.photoDao().clear()
     }
     companion object{

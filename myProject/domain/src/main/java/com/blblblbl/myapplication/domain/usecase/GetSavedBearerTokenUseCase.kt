@@ -3,10 +3,10 @@ package com.blblblbl.myapplication.domain.usecase
 import com.blblblbl.myapplication.domain.repository.Repository
 import javax.inject.Inject
 
-class ClearStorageUseCase @Inject constructor(
+class GetSavedBearerTokenUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    suspend fun execute(){
-        repository.clearStorage()
+    fun execute():String?{
+        return repository.getSavedBearerToken()
     }
 }
