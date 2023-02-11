@@ -8,6 +8,7 @@ import androidx.work.*
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.data.persistent_storage.PersistentStorage
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
+import com.blblblbl.myapplication.data.repository.paging_sources.CollectionPhotoPagingSource
 import com.blblblbl.myapplication.data.repository.paging_sources.SearchPagingSource
 import com.blblblbl.myapplication.data.repository.repository_api.RepositoryApi
 import com.blblblbl.myapplication.data.repository.repository_db.RepositoryDataBase
@@ -27,7 +28,8 @@ class RepositoryImpl @Inject constructor(
     @ApplicationContext private val context: Context,
     private val repositoryApi: RepositoryApi,
     private val repositoryDataBase: RepositoryDataBase,
-    private val persistentStorage: PersistentStorage
+    private val persistentStorage: PersistentStorage,
+    private val collectionPhotosPagingSource: CollectionPhotoPagingSource,
 ): Repository {
     override fun authorize(code: String) {
         var authService = AuthorizationService(context)
@@ -92,6 +94,20 @@ class RepositoryImpl @Inject constructor(
         }
         return collections.toList()
     }
+
+    override fun getCollectionPhotosPagingDataFlow(
+        id: String,
+        pageSize: Int
+    ): Flow<PagingData<Photo>> {
+        collectionPhotosPagingSource.idInit(id)
+        return Pager(
+            config = PagingConfig(pageSize = pageSize),
+            pagingSourceFactory = { collectionPhotosPagingSource }
+        ).flow.map { pagingData->
+            pagingData.map { it.mapToDomain()?:Photo() }
+        }
+    }
+
     override suspend fun getMeInfo(): UserInfo?{
         try {
             val userInfo = repositoryApi.getUserInfo()

@@ -17,6 +17,7 @@ interface Repository {
 
     suspend fun getLikedImgs(page: Int, userName:String):List<Photo>
     suspend fun getCollections(page: Int):List<PhotoCollection>
+    fun  getCollectionPhotosPagingDataFlow(id:String,pageSize:Int):Flow<PagingData<Photo>>
 
     fun searchImgByTags(query: String): Flow<PagingData<Photo>>
     suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo

@@ -2,12 +2,10 @@ package com.blblblbl.myapplication.presentation.viewModel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import androidx.paging.Pager
-import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.data.repository.paging_sources.CollectionPhotoPagingSource
+import com.blblblbl.myapplication.domain.usecase.GetCollectionPhotoPagingUseCase
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
@@ -16,16 +14,12 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CollectionPhotoListViewModel @Inject constructor(
-    private val collectionPhotosPagingSource: CollectionPhotoPagingSource,
-    private val likeStateUseCase: LikeStateUseCase
+    private val likeStateUseCase: LikeStateUseCase,
+    private val pagingFlow: GetCollectionPhotoPagingUseCase
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     fun getCollectionPhotos(id:String){
-        collectionPhotosPagingSource.idInit(id)
-        pagedPhotos = Pager(
-            config = PagingConfig(pageSize = 10),
-            pagingSourceFactory = { collectionPhotosPagingSource }
-        ).flow.cachedIn(viewModelScope)
+        pagedPhotos = pagingFlow.execute(id,PAGE_SIZE).cachedIn(viewModelScope)
     }
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {
@@ -36,5 +30,8 @@ class CollectionPhotoListViewModel @Inject constructor(
                 likeStateUseCase.unlike(id)
             }
         }
+    }
+    companion object {
+        const val PAGE_SIZE:Int = 10
     }
 }
