@@ -12,7 +12,7 @@ interface Repository {
 
     fun authorize(code: String)
 
-    fun getAllImgs(): Flow<PagingData<Photo>>
+    fun getAllImgs(pageSize: Int): Flow<PagingData<Photo>>
     suspend fun getCollectionImgList(id:String, page: Int):List<Photo>
 
     suspend fun getLikedImgs(page: Int, userName:String):List<Photo>
@@ -20,7 +20,7 @@ interface Repository {
     fun  getCollectionPhotosPagingDataFlow(id:String,pageSize:Int):Flow<PagingData<Photo>>
     fun  getCollectionPagingDataFlow(pageSize:Int):Flow<PagingData<PhotoCollection>>
 
-    fun searchImgByTags(query: String): Flow<PagingData<Photo>>
+    fun searchImgByTags(query: String,pageSize: Int): Flow<PagingData<Photo>>
     suspend fun getDetailedImgInfoById(id: String): DetailedPhotoInfo
 
     fun downloadImg(detailedPhotoInfo: DetailedPhotoInfo)
