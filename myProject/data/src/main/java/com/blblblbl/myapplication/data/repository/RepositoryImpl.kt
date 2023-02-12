@@ -59,10 +59,10 @@ class RepositoryImpl @Inject constructor(
     }
 
     @OptIn(ExperimentalPagingApi::class)
-    override fun getAllImgs(): Flow<PagingData<Photo>> {
+    override fun getAllImgs(pageSize: Int): Flow<PagingData<Photo>> {
         val pagingSourceFactory = { repositoryDataBase.db.photoDao().getPhotosPagingSource()}
         return Pager(
-            config = PagingConfig(pageSize = ITEMS_PER_PAGE),
+            config = PagingConfig(pageSize = pageSize),
             remoteMediator = UnsplashRemoteMediator(
                 repositoryApi = repositoryApi,
                 repositoryDataBase = repositoryDataBase
@@ -74,9 +74,9 @@ class RepositoryImpl @Inject constructor(
             }
         }
     }
-    override fun searchImgByTags(query: String): Flow<PagingData<Photo>> {
+    override fun searchImgByTags(query: String,pageSize: Int): Flow<PagingData<Photo>> {
         return Pager(
-            config = PagingConfig(pageSize = ITEMS_PER_PAGE),
+            config = PagingConfig(pageSize = pageSize),
             pagingSourceFactory = {
                 SearchPagingSource(repositoryApi = repositoryApi, query = query)
             }
@@ -197,7 +197,6 @@ class RepositoryImpl @Inject constructor(
         repositoryDataBase.db.photoDao().clear()
     }
     companion object{
-        const val ITEMS_PER_PAGE:Int = 10
         const val MY_CLIENT_ID:String ="RoIF7WHVqFj86IPcmNSz_dKxmUaDRGANTaSk9aqnyac"
         const val MY_REDIRECT_URI:String ="myproject://www.exagfdasrvxcmple.com/gizmos"
         const val SECRET_KEY:String ="e1guRuEqxqtvMOf9L3_Sf_S_z1P8cs41C720MpfdWqw"

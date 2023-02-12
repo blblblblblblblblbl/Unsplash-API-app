@@ -9,7 +9,7 @@ import javax.inject.Inject
 class SearchImagesUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    fun execute(query: String): Flow<PagingData<Photo>>{
-        return repository.searchImgByTags(query)
+    fun execute(query: String,pageSize: Int): Flow<PagingData<Photo>>{
+        return repository.searchImgByTags(query,pageSize)
     }
 }

@@ -40,9 +40,12 @@ class SearchFragmentViewModel @Inject constructor(
     }
     fun search(query: String) {
         viewModelScope.launch {
-            searchImagesUseCase.execute(query = query).cachedIn(viewModelScope).collect {
+            searchImagesUseCase.execute(query = query,PAGE_SIZE).cachedIn(viewModelScope).collect {
                 _searchedImages.value = it
             }
         }
+    }
+    companion object{
+        const val PAGE_SIZE:Int = 10
     }
 }
