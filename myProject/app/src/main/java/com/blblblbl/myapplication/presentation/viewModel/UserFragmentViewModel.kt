@@ -7,6 +7,7 @@ import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.blblblbl.myapplication.domain.usecase.*
 import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
@@ -30,7 +31,7 @@ class UserFragmentViewModel @Inject constructor(
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
     val privateUserInfo = _privateUserInfo.asStateFlow()
-    private val _publicUserInfo = MutableStateFlow<com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?>(null)
+    private val _publicUserInfo = MutableStateFlow<PublicUserInfo?>(null)
     val publicUserInfo = _publicUserInfo.asStateFlow()
     fun logout(){
         viewModelScope.launch{

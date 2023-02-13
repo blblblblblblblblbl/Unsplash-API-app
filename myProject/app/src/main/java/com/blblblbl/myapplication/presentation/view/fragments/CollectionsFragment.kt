@@ -48,6 +48,7 @@ class CollectionsFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getCollections()
         return ComposeView(requireContext()).apply {
             setContent {
                 UnsplashTheme() {

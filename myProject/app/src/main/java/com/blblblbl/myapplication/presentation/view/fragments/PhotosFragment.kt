@@ -59,6 +59,7 @@ class PhotosFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        viewModel.getPhotosFeed()
         return ComposeView(requireContext()).apply {
             setContent {
                 UnsplashTheme {
