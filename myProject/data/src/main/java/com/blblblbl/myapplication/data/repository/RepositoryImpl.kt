@@ -2,6 +2,7 @@ package com.blblblbl.myapplication.data.repository
 
 import android.content.Context
 import android.net.Uri
+import android.util.Log
 import androidx.core.net.toUri
 import androidx.paging.*
 import androidx.work.*
@@ -53,6 +54,7 @@ class RepositoryImpl @Inject constructor(
                     persistentStorage.addProperty(PersistentStorage.AUTH_TOKEN,resp.accessToken.toString())
                     // exchange succeeded
                 } else {
+                    ex?.printStackTrace()
                     // authorization failed, check ex for more details
                 }
             })

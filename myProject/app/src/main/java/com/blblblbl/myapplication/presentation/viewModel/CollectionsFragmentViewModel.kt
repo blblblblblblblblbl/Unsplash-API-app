@@ -14,7 +14,10 @@ import javax.inject.Inject
 class CollectionsFragmentViewModel @Inject constructor(
     private val getCollectionsPagingUseCase: GetCollectionsPagingUseCase
 ):ViewModel() {
-    val pagedCollections: Flow<PagingData<PhotoCollection>> = getCollectionsPagingUseCase.execute(PAGE_SIZE).cachedIn(viewModelScope)
+    lateinit var pagedCollections: Flow<PagingData<PhotoCollection>>
+    fun getCollections(){
+        pagedCollections = getCollectionsPagingUseCase.execute(PAGE_SIZE).cachedIn(viewModelScope)
+    }
     companion object {
         const val PAGE_SIZE:Int = 10
     }

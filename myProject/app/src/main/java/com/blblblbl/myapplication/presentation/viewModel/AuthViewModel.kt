@@ -20,20 +20,7 @@ class AuthViewModel @Inject constructor(
     @ApplicationContext private val context: Context,
     private val getSavedBearerTokenUseCase: GetSavedBearerTokenUseCase
 ):ViewModel() {
-    val serviceConfig = AuthorizationServiceConfiguration(
-        Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
-        Uri.parse("https://unsplash.com/oauth/token")) // token endpoint
-    var authState = AuthState(serviceConfig)
-    var authRequestBuilder = AuthorizationRequest.Builder(
-        serviceConfig,  // the authorization service configuration
-        MY_CLIENT_ID,  // the client ID, typically pre-registered and static
-        ResponseTypeValues.CODE,  // the response_type value: we want a code
-        MY_REDIRECT_URI.toUri()
-    ) // the redirect URI to which the auth response is sent
-    var authRequest = authRequestBuilder
-        .setScope("public read_user write_user read_photos write_photos write_likes write_followers write_collections read_collections")
-        .build()
-    var authService = AuthorizationService(context)
+
     fun rememberedAuth(){
         val token = getSavedBearerTokenUseCase.execute()
         if (token!=null){
@@ -43,6 +30,19 @@ class AuthViewModel @Inject constructor(
         }
     }
     fun auth(){
+        val authService = AuthorizationService(context)
+        val serviceConfig = AuthorizationServiceConfiguration(
+            Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
+            Uri.parse("https://unsplash.com/oauth/token")) // token endpoint
+        var authRequestBuilder = AuthorizationRequest.Builder(
+            serviceConfig,  // the authorization service configuration
+            MY_CLIENT_ID,  // the client ID, typically pre-registered and static
+            ResponseTypeValues.CODE,  // the response_type value: we want a code
+            MY_REDIRECT_URI.toUri()
+        ) // the redirect URI to which the auth response is sent
+        var authRequest = authRequestBuilder
+            .setScope("public read_user write_user read_photos write_photos write_likes write_followers write_collections read_collections")
+            .build()
         authService.performAuthorizationRequest(
             authRequest,
             PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
