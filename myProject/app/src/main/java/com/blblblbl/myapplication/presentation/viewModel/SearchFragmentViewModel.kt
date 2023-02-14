@@ -9,7 +9,9 @@ import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import com.blblblbl.myapplication.domain.usecase.SearchImagesUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -22,8 +24,8 @@ class SearchFragmentViewModel @Inject constructor(
     private val _searchQuery = mutableStateOf("")
     val searchQuery = _searchQuery
 
-    private val _searchedImages = MutableStateFlow<PagingData<Photo>>(PagingData.empty())
-    val searchedImages = _searchedImages
+    private val _searchedImages = MutableStateFlow<Flow<PagingData<Photo>>?>(null)
+    val searchedImages = _searchedImages.asStateFlow()
 
     fun updateSearchQuery(query: String) {
         _searchQuery.value = query
@@ -40,9 +42,7 @@ class SearchFragmentViewModel @Inject constructor(
     }
     fun search(query: String) {
         viewModelScope.launch {
-            searchImagesUseCase.execute(query = query,PAGE_SIZE).cachedIn(viewModelScope).collect {
-                _searchedImages.value = it
-            }
+            _searchedImages.value = searchImagesUseCase.execute(query = query,PAGE_SIZE).cachedIn(viewModelScope)
         }
     }
     companion object{
