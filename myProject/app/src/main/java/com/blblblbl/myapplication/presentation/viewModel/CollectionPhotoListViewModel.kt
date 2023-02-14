@@ -9,6 +9,8 @@ import com.blblblbl.myapplication.domain.usecase.GetCollectionPhotoPagingUseCase
 import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -17,9 +19,10 @@ class CollectionPhotoListViewModel @Inject constructor(
     private val likeStateUseCase: LikeStateUseCase,
     private val pagingFlow: GetCollectionPhotoPagingUseCase
 ):ViewModel() {
-    lateinit var pagedPhotos: Flow<PagingData<Photo>>
+    private val _pagedPhotos = MutableStateFlow<Flow<PagingData<Photo>>?>(null)
+    val pagedPhotos = _pagedPhotos.asStateFlow()
     fun getCollectionPhotos(id:String){
-        pagedPhotos = pagingFlow.execute(id,PAGE_SIZE).cachedIn(viewModelScope)
+        _pagedPhotos.value = pagingFlow.execute(id,PAGE_SIZE).cachedIn(viewModelScope)
     }
     fun changeLike(id: String, bool:Boolean){
         viewModelScope.launch {

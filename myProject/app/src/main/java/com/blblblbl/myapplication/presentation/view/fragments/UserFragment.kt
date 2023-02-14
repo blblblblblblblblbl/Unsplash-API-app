@@ -53,7 +53,6 @@ class UserFragment : Fragment() {
         viewModel.getUserInfo()
         return ComposeView(requireContext()).apply {
             setContent {
-                val pagedPhotos = viewModel.pagedPhotos.collectAsState()
                 UnsplashTheme() {
                     val openDialog = remember { mutableStateOf(false) }
                     Scaffold(

@@ -114,7 +114,7 @@ fun PhotoDescription(
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     IconButton(modifier = Modifier.testTag("locationButton"),
                         onClick = {
-                            locationAction
+                            locationAction()
                         } ) {
                         Icon(
                             Icons.Outlined.LocationOn,
