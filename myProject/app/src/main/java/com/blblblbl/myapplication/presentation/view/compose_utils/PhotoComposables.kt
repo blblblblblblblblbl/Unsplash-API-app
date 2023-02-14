@@ -27,14 +27,15 @@ import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.flow.Flow
 
 @Composable
-fun PhotoList(
+fun PhotoListView(
     photos: Flow<PagingData<Photo>>,
-    photoScreen: @Composable (photo: Photo) -> Unit
+    onClick:(Photo)->Unit,
+    changeLike:(String,Boolean)->Unit
 ){
     val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
     LazyColumn{
         items(lazyPhotosItems){item->
-            item?.let { photoScreen(photo = it)}
+            item?.let { PhotoView(photo = it,onClick,changeLike) }
         }
     }
     lazyPhotosItems.apply {
@@ -68,10 +69,10 @@ fun PhotoList(
     }
 }
 @Composable
-fun PhotoScreen(
+fun PhotoView(
     photo: Photo,
-    onClick: () -> Unit,
-    likeOnClick: ()->Unit
+    onClick:(Photo)->Unit,
+    changeLike:(String,Boolean)->Unit
 ){
     val textColor = Color.White
     val textSizeTotalLikes = 15.sp
@@ -82,7 +83,7 @@ fun PhotoScreen(
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
         .padding(10.dp)
-        .clickable { onClick() }) {
+        .clickable { onClick(photo) }) {
         GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
         Column() {
             Spacer(modifier = Modifier.weight(1f))
@@ -102,7 +103,7 @@ fun PhotoScreen(
                         tint = Color.Red,
                         modifier = Modifier.clickable {
                             isLiked=!isLiked
-                            likeOnClick()
+                            photo.id?.let {changeLike(it,isLiked)}
                         }
                     )
                 }
@@ -113,7 +114,7 @@ fun PhotoScreen(
                         tint = Color.White,
                         modifier = Modifier.clickable {
                             isLiked=!isLiked
-                            likeOnClick()
+                            photo.id?.let {changeLike(it,isLiked)}
                         }
                     )
                 }

@@ -42,14 +42,14 @@ fun PhotoDetailedScreen(
     val state = detailedPhotoInfo.collectAsState().value
     state?.let {
         Column(Modifier.verticalScroll(rememberScrollState())) {
-            PhotoScreen(detailedPhotoInfo = it,changeLike)
+            DetailedPhotoView(detailedPhotoInfo = it,changeLike)
             PhotoDescription(detailedPhotoInfo = it,isLocationShow,locationAction,downloadAction,shareAction)
         }
     }
 }
 
 @Composable
-fun PhotoScreen(
+fun DetailedPhotoView(
     detailedPhotoInfo: DetailedPhotoInfo,
     changeLike:(String,Boolean)->Unit
 ){

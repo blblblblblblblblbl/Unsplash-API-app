@@ -28,7 +28,8 @@ class UserFragmentViewModel @Inject constructor(
     private val clearStorageUseCase: ClearStorageUseCase,
     private val getLikedPhotoPagingUseCase: GetLikedPhotoPagingUseCase
 ):ViewModel() {
-    lateinit var pagedPhotos: Flow<PagingData<Photo>>
+    private var _pagedPhotos = MutableStateFlow<Flow<PagingData<Photo>>?>(null)
+    var pagedPhotos = _pagedPhotos.asStateFlow()
     private val _privateUserInfo = MutableStateFlow<UserInfo?>(null)
     val privateUserInfo = _privateUserInfo.asStateFlow()
     private val _publicUserInfo = MutableStateFlow<PublicUserInfo?>(null)
@@ -57,7 +58,7 @@ class UserFragmentViewModel @Inject constructor(
             val privateUser = getMeInfoUseCase.execute()
             privateUser?.username?.let {
                 val publicUser = getUserInfoUseCase.execute(it)
-                pagedPhotos = getLikedPhotoPagingUseCase.execute(it, PAGE_SIZE).cachedIn(viewModelScope)
+                _pagedPhotos.value = getLikedPhotoPagingUseCase.execute(it, PAGE_SIZE).cachedIn(viewModelScope)
                 _publicUserInfo.value = publicUser
                 _privateUserInfo.value = privateUser
             }

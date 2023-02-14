@@ -32,10 +32,12 @@ import androidx.paging.compose.collectAsLazyPagingItems
 import androidx.paging.compose.items
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.presentation.view.compose_utils.StatesUI
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.UserFragmentViewModel
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
+import com.blblblbl.myapplication.presentation.view.compose_utils.MeInfoScreen
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
@@ -51,6 +53,7 @@ class UserFragment : Fragment() {
         viewModel.getUserInfo()
         return ComposeView(requireContext()).apply {
             setContent {
+                val pagedPhotos = viewModel.pagedPhotos.collectAsState()
                 UnsplashTheme() {
                     val openDialog = remember { mutableStateOf(false) }
                     Scaffold(
@@ -59,39 +62,58 @@ class UserFragment : Fragment() {
                         }
                     ) {
                         if (openDialog.value) {
-                            AlertDialog(
-                                onDismissRequest = {
-                                    openDialog.value = false
-                                },
-                                title = { Text(text = stringResource(id = R.string.action_confirmation)) },
-                                text = { Text(stringResource(id = R.string.logout_confirmation)) },
-                                confirmButton = {
-                                    Button(
-                                        onClick = {
-                                            viewModel.logout()
-                                            openDialog.value = false },
-                                        content = {
-                                            Text(stringResource(id = R.string.logout))
-                                        }
-                                    )
-                                },
-                                dismissButton = {
-                                    Button(
-                                        onClick = { openDialog.value = false }
-                                    ) {
-                                        Text(stringResource(id = R.string.cancel))
-                                    }
-                                }
-                            )
+                            LogOutDialog(openDialog = openDialog)
                         }
                         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                            screen(privateUserInfo = viewModel.privateUserInfo, publicUserInfo = viewModel.publicUserInfo)
+                            MeInfoScreen(
+                                privateUserInfo = viewModel.privateUserInfo,
+                                publicUserInfo = viewModel.publicUserInfo,
+                                viewModel.pagedPhotos,
+                                { id, bool -> viewModel.changeLike(id,bool) },
+                                {photo -> openDetailed(photo)}
+                            )
                         }
                     }
                 }
             }
         }
     }
+    @Composable
+    fun LogOutDialog(openDialog:MutableState<Boolean>){
+        AlertDialog(
+            onDismissRequest = {
+                openDialog.value = false
+            },
+            title = { Text(text = stringResource(id = R.string.action_confirmation)) },
+            text = { Text(stringResource(id = R.string.logout_confirmation)) },
+            confirmButton = {
+                Button(
+                    onClick = {
+                        viewModel.logout()
+                        openDialog.value = false },
+                    content = {
+                        Text(stringResource(id = R.string.logout))
+                    }
+                )
+            },
+            dismissButton = {
+                Button(
+                    onClick = { openDialog.value = false }
+                ) {
+                    Text(stringResource(id = R.string.cancel))
+                }
+            }
+        )
+    }
+    fun openDetailed(photo:Photo){
+        val bundle = bundleOf()
+        bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
+        findNavController().navigate(
+            R.id.action_userFragment_to_photoDetailedInfoFragment4,
+            bundle
+        )
+    }
+
     @OptIn(ExperimentalMaterial3Api::class)
     @Composable
     fun UserTopBar(
@@ -116,129 +138,6 @@ class UserFragment : Fragment() {
                 }
             }
         )
-    }
-    @Composable
-    fun screen(privateUserInfo: StateFlow<UserInfo?>, publicUserInfo: StateFlow<com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?>){
-        val privateInfoState = privateUserInfo.collectAsState().value
-        val publicInfoState = publicUserInfo.collectAsState().value
-        privateInfoState?.let {
-            val lazyPhotosItems: LazyPagingItems<Photo> = viewModel.pagedPhotos.collectAsLazyPagingItems()
-            LazyColumn{
-                item { UserInfo(it,publicInfoState)                }
-                items(lazyPhotosItems){item->
-                    item?.let { PhotoScreen(photo = it)}
-                }
-            }
-            StatesUI(items = lazyPhotosItems)
-
-        }
-    }
-    
-    @Composable
-    fun UserInfo(userInfo: UserInfo, publicUserInfo: com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo?){
-        Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
-            Column(modifier = Modifier.fillMaxWidth()) {
-                val avatar:String? = publicUserInfo?.profileImage?.large
-                avatar?.let { avatar->
-                    GlideImage(imageModel = {avatar}, modifier = Modifier
-                        .clip(CircleShape)
-                        .size(128.dp)
-                        .align(CenterHorizontally))
-                }
-                Text(text = "${userInfo.firstName} ${userInfo.lastName}", style = MaterialTheme.typography.headlineLarge, modifier = Modifier.align(CenterHorizontally))
-                Text(text = "@${userInfo.username}", style = MaterialTheme.typography.bodyMedium, modifier = Modifier.align(CenterHorizontally))
-                userInfo.bio?.let{bio->
-                    Text(text = "${bio}", style = MaterialTheme.typography.bodyLarge, modifier = Modifier.padding(top = 15.dp, bottom = 15.dp))
-                }
-                userInfo.location?.let { location->
-                    Row() {
-                        Icon(
-                            Icons.Outlined.LocationOn,
-                            contentDescription = stringResource(id = R.string.location_icon_description)
-                        )
-                        Text(text = "${location}", style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                userInfo.email?.let { email->
-                    Row() {
-                        Icon(
-                            Icons.Outlined.Mail,
-                            contentDescription = stringResource(id = R.string.mail_icon_description)
-                        )
-                        Text(text = "${email}", style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-                userInfo.downloads?.let {downloads->
-                    Row() {
-                        Icon(
-                            Icons.Outlined.Download,
-                            contentDescription = stringResource(id = R.string.download_icon_description)
-                        )
-                        Text(text = "${downloads}", style = MaterialTheme.typography.bodyLarge)
-                    }
-                }
-            }
-        }
-    }
-
-
-    
-    @Composable
-    fun PhotoScreen(photo: Photo){
-        val textColor = Color.White
-        val textSizeTotalLikes = 15.sp
-        val textSizeName = 15.sp
-        val textSizeUserName = 10.sp
-        var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
-        Surface(modifier = Modifier
-            .fillMaxWidth()
-            .height(IntrinsicSize.Max)
-            .padding(10.dp)
-            .clickable {
-                val bundle = bundleOf()
-                bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
-                findNavController().navigate(
-                    R.id.action_userFragment_to_photoDetailedInfoFragment4,
-                    bundle
-                )
-            }) {
-            GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
-            Column() {
-                Spacer(modifier = Modifier.weight(1f))
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    val avatar:String? = photo.user?.profileImage?.large
-                    GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
-                    Column(Modifier.padding(start = 5.dp)) {
-                        Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName)
-                        Text(text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
-                    }
-                    Spacer(modifier = Modifier.weight(1f))
-                    Text(text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                    if (isLiked) {
-                        Icon(
-                            Icons.Outlined.Favorite,
-                            contentDescription = stringResource(id = R.string.like_icon_description),
-                            tint = Color.Red,
-                            modifier = Modifier.clickable {
-                                isLiked=!isLiked
-                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
-                            }
-                        )
-                    }
-                    else {
-                        Icon(
-                            Icons.Outlined.FavoriteBorder,
-                            contentDescription = stringResource(id = R.string.like_icon_description),
-                            tint = Color.White,
-                            modifier = Modifier.clickable {
-                                isLiked=!isLiked
-                                photo.id?.let {viewModel.changeLike(it,isLiked)  }
-                            }
-                        )
-                    }
-                }
-            }
-        }
     }
 
 
