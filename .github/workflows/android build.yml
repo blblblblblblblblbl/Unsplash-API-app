@@ -1,0 +1,21 @@
+name: android-build
+on: pull_request
+    
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Set Up JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+      - name: Run domain unit tests
+        working-directory: ./myProject
+        run: gradle :domain:testDebugUnitTest --tests "com.*"
+      - name: Run presentation unit tests
+        working-directory: ./myProject
+        run: gradle :app:testDebugUnitTest --tests "com.*"
+      - name: Build project
+        working-directory: ./myProject
+        run: gradle assemble
