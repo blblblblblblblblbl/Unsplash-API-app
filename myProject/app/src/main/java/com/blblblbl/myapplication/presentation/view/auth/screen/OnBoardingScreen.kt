@@ -27,7 +27,7 @@ import kotlinx.coroutines.launch
 @ExperimentalPagerApi
 @Composable
 fun OnBoardingScreen(
-    logInOnClick: () -> Unit,
+    logInOnClick: () -> Unit ,
 ) {
     val pages = listOf(
         OnBoardingPage.First,
