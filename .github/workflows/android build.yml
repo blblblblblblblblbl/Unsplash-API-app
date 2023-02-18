@@ -18,4 +18,4 @@ jobs:
         run: gradle :app:testDebugUnitTest --tests "com.*"
       - name: Build project
         working-directory: ./myProject
-        run: gradle assemble
+        run: gradle assembleDebug
