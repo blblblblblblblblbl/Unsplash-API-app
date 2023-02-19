@@ -12,6 +12,8 @@ import com.blblblbl.myapplication.databinding.ActivityMainBinding
 import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.runBlocking
 
 
 @AndroidEntryPoint
@@ -20,13 +22,16 @@ class MainActivity : AppCompatActivity() {
     private val viewModel: MainViewModel by viewModels()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+        val navController = navHostFragment.navController
+
+
         val redirectUri: Uri? = intent.data
         if (redirectUri.toString().startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")){
             viewModel.saveAuthToken(redirectUri!!)
         }
-        binding = ActivityMainBinding.inflate(layoutInflater)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+
         if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
@@ -34,6 +39,7 @@ class MainActivity : AppCompatActivity() {
             bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
             navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment,bundle)
         }
+
         binding.bottomNav.setupWithNavController(navController)
         setContentView(binding.root)
 

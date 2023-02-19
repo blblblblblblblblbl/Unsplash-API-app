@@ -62,6 +62,7 @@ class RepositoryImpl @Inject constructor(
 
     @OptIn(ExperimentalPagingApi::class)
     override fun getAllImgs(pageSize: Int): Flow<PagingData<Photo>> {
+        Log.d("MyLog","getAllImgs")
         val pagingSourceFactory = { repositoryDataBase.db.photoDao().getPhotosPagingSource()}
         return Pager(
             config = PagingConfig(pageSize = pageSize),
