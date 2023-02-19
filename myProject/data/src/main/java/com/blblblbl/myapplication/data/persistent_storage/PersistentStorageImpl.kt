@@ -11,12 +11,11 @@ import javax.inject.Singleton
 
 @Singleton
 class PersistentStorageImpl @Inject constructor(
-    @ApplicationContext context: Context
+    private @ApplicationContext var context: Context
 ):PersistentStorage {
 
     private var sharedPreferences: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
-    private var context: Context = context
 
     private fun init() {
         sharedPreferences = context.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
