@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.os.bundleOf
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.blblblbl.myapplication.R
@@ -13,6 +14,7 @@ import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoF
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.runBlocking
 
 
@@ -23,13 +25,23 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-        val navController = navHostFragment.navController
+
 
 
         val redirectUri: Uri? = intent.data
         if (redirectUri.toString().startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")){
             viewModel.saveAuthToken(redirectUri!!)
+            lifecycleScope.launchWhenCreated { viewModel.authSuccess.collect {
+                it?.let {
+                    if (it){
+                        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                        val navController = navHostFragment.navController
+                        binding.bottomNav.setupWithNavController(navController)
+                        setContentView(binding.root)
+                    }
+                }
+            }
+            }
         }
 
         if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
@@ -37,11 +49,14 @@ class MainActivity : AppCompatActivity() {
             val start = "https://unsplash.com/photos/".length
             var id = redirectUri.toString().substring(start,redirectUri.toString().length)
             bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
             navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment,bundle)
+            binding.bottomNav.setupWithNavController(navController)
+            setContentView(binding.root)
         }
 
-        binding.bottomNav.setupWithNavController(navController)
-        setContentView(binding.root)
+
 
     }
 
