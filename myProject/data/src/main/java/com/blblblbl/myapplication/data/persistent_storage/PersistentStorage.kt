@@ -1,60 +1,13 @@
 package com.blblblbl.myapplication.data.persistent_storage
 
-import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
-import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
-import dagger.hilt.android.qualifiers.ApplicationContext
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class PersistentStorage @Inject constructor(
-    @ApplicationContext context: Context
-) {
+interface PersistentStorage {
 
-    private var sharedPreferences: SharedPreferences? = null
-    private var editor: SharedPreferences.Editor? = null
-    private var context: Context = context
-
-    private fun init() {
-        sharedPreferences = context.getSharedPreferences(STORAGE_NAME, Context.MODE_PRIVATE)
-        editor = sharedPreferences!!.edit()
-    }
-
-    fun addProperty(name: String?, value: String?) {
-        if (sharedPreferences == null) {
-            init()
-        }
-        Log.d("MyLog","addProperty:$name $value")
-        editor!!.putString(name, value)
-        editor!!.apply()
-    }
-    fun addProperty(name: String?, userInfo: UserInfo?) {
-        if (sharedPreferences == null) {
-            init()
-        }
-        val value = userInfo?.let {
-            StorageConverter.userInfoToJson(it)
-        }
-        editor!!.putString(name, value)
-        editor!!.apply()
-    }
-    fun clear() {
-        if (sharedPreferences == null) {
-            init()
-        }
-        editor!!.clear()
-        editor!!.apply()
-    }
-
-    fun getProperty(name: String?): String? {
-        if (sharedPreferences == null) {
-            init()
-        }
-        return sharedPreferences!!.getString(name, null)
-    }
+    fun addProperty(name: String?, value: String?)
+    fun addProperty(name: String?, userInfo: UserInfo?)
+    fun clear()
+    fun getProperty(name: String?): String?
     companion object{
         const val STORAGE_NAME = "StorageName"
         const val AUTH_TOKEN = "lastsearch"

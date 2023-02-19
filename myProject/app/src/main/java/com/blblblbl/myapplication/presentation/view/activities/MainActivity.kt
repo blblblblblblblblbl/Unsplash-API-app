@@ -60,9 +60,5 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.setupWithNavController(navController)
             setContentView(binding.root)
         }
-
-
     }
-
-
 }
