@@ -19,7 +19,6 @@ class PhotosFragmentViewModel @Inject constructor(
 ):ViewModel() {
     lateinit var pagedPhotos: Flow<PagingData<Photo>>
     fun getPhotosFeed(){
-        Log.d("MyLog", "getPhotosFeed()")
         pagedPhotos = getPhotosFeedUseCase.execute(PAGE_SIZE)
     }
     fun changeLike(id: String, bool:Boolean){
