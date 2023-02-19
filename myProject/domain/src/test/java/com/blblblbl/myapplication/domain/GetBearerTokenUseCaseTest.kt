@@ -3,6 +3,7 @@ package com.blblblbl.myapplication.domain
 import androidx.core.net.toUri
 import com.blblblbl.myapplication.domain.repository.Repository
 import com.blblblbl.myapplication.domain.usecase.GetBearerTokenUseCase
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.Assert
 import org.junit.Test
 import org.junit.runner.RunWith
@@ -22,8 +23,11 @@ class GetBearerTokenUseCaseTest {
         val code = "12345546"
         val redirectUri = (GetBearerTokenUseCase.START+code).toUri()
         val argCaptor = argumentCaptor<String>()
-        useCase.execute(redirectUri)
-        Mockito.verify(repository, times(1)).authorize(argCaptor.capture())
+        val authSuccess = MutableStateFlow<Boolean?>(null)
+        val authSuccessCaptor = argumentCaptor<MutableStateFlow<Boolean?>>()
+        useCase.execute(redirectUri,authSuccess)
+        Mockito.verify(repository, times(1)).authorize(argCaptor.capture(),authSuccessCaptor.capture())
         Assert.assertEquals(code,argCaptor.firstValue)
+        Assert.assertEquals(authSuccess,authSuccessCaptor.firstValue)
     }
 }
