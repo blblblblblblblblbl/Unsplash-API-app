@@ -7,10 +7,11 @@ import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
 
 interface Repository {
 
-    fun authorize(code: String)
+    fun authorize(code: String, authSuccess: MutableStateFlow<Boolean?>)
 
     fun getAllImgs(pageSize: Int): Flow<PagingData<Photo>>
     suspend fun getCollectionImgList(id:String, page: Int):List<Photo>

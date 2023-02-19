@@ -23,6 +23,8 @@ import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.map
 import net.openid.appauth.*
 import javax.inject.Inject
@@ -36,7 +38,7 @@ class RepositoryImpl @Inject constructor(
     private val collectionsPagingSource: CollectionsPagingSource,
     private val likedPhotosPagingSource: LikedPhotosPagingSource
 ): Repository {
-    override fun authorize(code: String) {
+    override fun authorize(code: String, authSuccess: MutableStateFlow<Boolean?>) {
         var authService = AuthorizationService(context)
         val serviceConfig = AuthorizationServiceConfiguration(
             Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
@@ -52,9 +54,11 @@ class RepositoryImpl @Inject constructor(
             AuthorizationService.TokenResponseCallback { resp, ex ->
                 if (resp != null) {
                     persistentStorage.addProperty(PersistentStorage.AUTH_TOKEN,resp.accessToken.toString())
+                    authSuccess.value = true
                     // exchange succeeded
                 } else {
                     ex?.printStackTrace()
+                    authSuccess.value = false
                     // authorization failed, check ex for more details
                 }
             })
