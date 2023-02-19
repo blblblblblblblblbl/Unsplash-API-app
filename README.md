@@ -27,6 +27,7 @@ This android application works with unspash api
 
 
 
+
 ## tech stack
 - Android studio
 - Kotlin
@@ -46,6 +47,7 @@ This android application works with unspash api
 - Hilt
 - OkHttpClient to mock Retrofit2 responses
 - Mockito for unit testing
+- CI/CD with github actions
 
 
 
