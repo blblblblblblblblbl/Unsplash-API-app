@@ -43,7 +43,6 @@ class MainActivity : AppCompatActivity() {
             }
             }
         }
-
         else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
@@ -61,8 +60,5 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.setupWithNavController(navController)
             setContentView(binding.root)
         }
-
     }
-
-
 }
