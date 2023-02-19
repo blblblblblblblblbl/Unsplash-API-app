@@ -1,8 +1,17 @@
 package com.blblblbl.myapplication.presentation.view.compose_utils
 
+import android.annotation.SuppressLint
+import android.os.Parcel
+import android.os.Parcelable
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
+import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
+import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
+import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -15,6 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
@@ -75,10 +85,12 @@ fun PhotoView(
                         painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
                         contentDescription = "like icon",
                         tint = Color.Red,
-                        modifier = Modifier.clickable {
-                            isLiked=!isLiked
-                            photo.id?.let {changeLike(it,isLiked)}
-                        }.testTag("likeIconTrue")
+                        modifier = Modifier
+                            .clickable {
+                                isLiked = !isLiked
+                                photo.id?.let { changeLike(it, isLiked) }
+                            }
+                            .testTag("likeIconTrue")
                     )
                 }
                 else {
@@ -86,10 +98,12 @@ fun PhotoView(
                         painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
                         contentDescription = "like icon",
                         tint = Color.White,
-                        modifier = Modifier.clickable {
-                            isLiked=!isLiked
-                            photo.id?.let {changeLike(it,isLiked)}
-                        }.testTag("likeIconFalse")
+                        modifier = Modifier
+                            .clickable {
+                                isLiked = !isLiked
+                                photo.id?.let { changeLike(it, isLiked) }
+                            }
+                            .testTag("likeIconFalse")
                     )
                 }
             }
@@ -127,4 +141,88 @@ fun StatesUI(items: LazyPagingItems<Photo>){
             }
         }
     }
+}
+
+@Preview
+@Composable
+fun PhotoViewPreview(
+){
+    val photo = Photo()
+    photo.likes = 200
+    photo.user?.name = "first last"
+    photo.user?.username = " username"
+    photo.user?.profileImage?.large = "https://images.unsplash.com/profile-1450003783594-db47c765cea3?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=128&w=128"
+    photo.urls?.regular = "https://images.unsplash.com/face-springmorning.jpg?q=75&fm=jpg&w=1080&fit=max"
+    PhotoView(photo = photo, onClick = {}, changeLike = {s,b->{}})
+}
+
+// staggered variant. it works but have problems because it always resizes
+@SuppressLint("BanParcelableUsage")
+private data class PagingPlaceholderKey(private val index: Int) : Parcelable {
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeInt(index)
+    }
+    override fun describeContents(): Int {
+        return 0
+    }
+    companion object {
+        @Suppress("unused")
+        @JvmField
+        val CREATOR: Parcelable.Creator<PagingPlaceholderKey> =
+            object : Parcelable.Creator<PagingPlaceholderKey> {
+                override fun createFromParcel(parcel: Parcel) =
+                    PagingPlaceholderKey(parcel.readInt())
+
+                override fun newArray(size: Int) = arrayOfNulls<PagingPlaceholderKey?>(size)
+            }
+    }
+}
+@OptIn(ExperimentalFoundationApi::class)
+public fun <T : Any> LazyStaggeredGridScope.items(
+    items: LazyPagingItems<T>,
+    key: ((item: T) -> Any)? = null,
+    itemContent: @Composable LazyStaggeredGridScope.(value: T?) -> Unit
+) {
+    items(
+        count = items.itemCount,
+        key = if (key == null) null else { index ->
+            val item = items.peek(index)
+            if (item == null) {
+                PagingPlaceholderKey(index)
+            } else {
+                key(item)
+            }
+        }
+    ) { index ->
+        itemContent(items[index])
+    }
+}
+@OptIn(ExperimentalFoundationApi::class)
+@Preview
+@Composable
+fun StagGridPrev(){
+    val images = listOf(
+        R.drawable.img1,
+        R.drawable.img2,
+        R.drawable.img3,
+        R.drawable.img4,
+        R.drawable.img2,
+        R.drawable.img1,
+        R.drawable.img4,
+        R.drawable.img3,
+        R.drawable.img1,
+        R.drawable.img1,
+        R.drawable.img4,
+        R.drawable.img4,
+        R.drawable.img2,
+        R.drawable.img3)
+    LazyVerticalStaggeredGrid(columns = StaggeredGridCells.Fixed(2) ){
+        items(images) { item->
+            Image(
+                painterResource(item),
+                contentDescription = ""
+            )
+        }
+    }
+
 }

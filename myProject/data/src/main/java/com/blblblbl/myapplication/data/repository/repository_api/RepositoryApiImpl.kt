@@ -18,10 +18,14 @@ class RepositoryApiImpl @Inject constructor(
 ):RepositoryApi {
     val token: () -> String? = { persistentStorage.getProperty(PersistentStorage.AUTH_TOKEN) }
     override suspend fun getPhotosPage(page: Int): List<Photo> {
+        val a = token.invoke()
+        Log.d("MyLog", a.toString())
         return retrofitServices.photosApi.getPhotos(page, 10, "Bearer " + token.invoke())
     }
 
     override suspend fun getPhotosPage(page: Int, perPage: Int): List<Photo> {
+        val a = token.invoke()
+        Log.d("MyLog", a.toString())
         return retrofitServices.photosApi.getPhotos(page, perPage, "Bearer " + token.invoke())
     }
 

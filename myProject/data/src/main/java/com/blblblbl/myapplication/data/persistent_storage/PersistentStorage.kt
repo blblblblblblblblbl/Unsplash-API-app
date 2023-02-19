@@ -2,6 +2,7 @@ package com.blblblbl.myapplication.data.persistent_storage
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.util.Log
 import com.blblblbl.myapplication.data.data_classes.user_info.UserInfo
 import com.blblblbl.myapplication.data.persistent_storage.utils.StorageConverter
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,6 +27,7 @@ class PersistentStorage @Inject constructor(
         if (sharedPreferences == null) {
             init()
         }
+        Log.d("MyLog","addProperty:$name $value")
         editor!!.putString(name, value)
         editor!!.apply()
     }
