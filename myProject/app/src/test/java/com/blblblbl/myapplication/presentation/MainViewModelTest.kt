@@ -8,6 +8,7 @@ import com.blblblbl.myapplication.MainDispatcherRule
 import com.blblblbl.myapplication.domain.usecase.GetBearerTokenUseCase
 import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Mockito
@@ -49,8 +50,10 @@ class MainViewModelTest {
     fun saveAuthTokenTest(){
         val uri = "grfebwhjwberj".toUri()
         val uriCaptor = argumentCaptor<Uri>()
+        val authSuccessCaptor = argumentCaptor<MutableStateFlow<Boolean?>>()
         viewModel.saveAuthToken(uri)
-        verify(getBearerTokenUseCase, times(1)).execute(uriCaptor.capture())
+        verify(getBearerTokenUseCase, times(1)).execute(uriCaptor.capture(),authSuccessCaptor.capture())
         Assert.assertEquals(uriCaptor.firstValue,uri)
+        Assert.assertEquals(authSuccessCaptor.firstValue,viewModel.authSuccess)
     }
 }
