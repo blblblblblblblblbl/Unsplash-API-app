@@ -43,8 +43,7 @@ class MainActivity : AppCompatActivity() {
             }
             }
         }
-
-        if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
+        else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
             var id = redirectUri.toString().substring(start,redirectUri.toString().length)
@@ -55,7 +54,12 @@ class MainActivity : AppCompatActivity() {
             binding.bottomNav.setupWithNavController(navController)
             setContentView(binding.root)
         }
-
+        else{
+            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            binding.bottomNav.setupWithNavController(navController)
+            setContentView(binding.root)
+        }
 
 
     }
