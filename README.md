@@ -42,11 +42,12 @@ This android application works with unspash api
 - Room
 - Remote mediator
 - Material Design 3
-- Navigation
+- Jetpack Navigation
 - Glide
 - Hilt
 - OkHttpClient to mock Retrofit2 responses
-- Mockito for unit testing
+- Unit testing, Mockito
+- UI testing
 - CI/CD with github actions
 
 
