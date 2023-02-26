@@ -39,7 +39,7 @@ fun PhotoDetailedScreen(
     detailedPhotoInfo?.let {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             DetailedPhotoView(detailedPhotoInfo = it,changeLike)
-            PhotoDescription(detailedPhotoInfo = it,isLocationShow,locationAction,downloadAction,shareAction)
+            PhotoDescription(photo = it,isLocationShow,locationAction,downloadAction,shareAction)
         }
     }
 }
@@ -83,7 +83,7 @@ fun DetailedPhotoView(
 }
 @Composable
 fun PhotoDescription(
-    detailedPhotoInfo: DetailedPhotoInfo,
+    photo: DetailedPhotoInfo,
     isLocationShow:Boolean,
     locationAction:()->Unit,
     downloadAction:()->Unit,
@@ -91,7 +91,7 @@ fun PhotoDescription(
 ){
     val textStyle = MaterialTheme.typography.bodyMedium
     Column(modifier = Modifier.padding(10.dp)) {
-        detailedPhotoInfo.location?.let { location->
+        photo.location?.let { location->
             if (isLocationShow){
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     LocationButton(locationAction)
@@ -100,34 +100,43 @@ fun PhotoDescription(
             }
         }
         var hashTags:String = ""
-        detailedPhotoInfo.tags.forEach {
+        photo.tags.forEach {
             hashTags += "#${it.title}"
         }
         if (hashTags!="") Text(text = hashTags, style = textStyle, modifier = Modifier.padding(20.dp))
         Row() {
-            detailedPhotoInfo.exif?.let {exif->
-                Column(modifier = Modifier.testTag("exifDescription")) {
-                    exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",style = textStyle) }
-                    exif.model?.let {model-> Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",style = textStyle) }
-                    exif.exposureTime?.let {exposureTime-> Text(text = "${stringResource(id = R.string.exposure)}: ${exposureTime}",style = textStyle) }
-                    exif.aperture?.let {aperture-> Text(text = "${stringResource(id = R.string.aperture)}: ${aperture}",style = textStyle) }
-                    exif.focalLength?.let {focalLength-> Text(text = "${stringResource(id = R.string.focal_length)}: ${focalLength}",style = textStyle) }
-                    exif.iso?.let {iso-> Text(text = "${stringResource(id = R.string.iso)}: ${iso}",style = textStyle) }
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            detailedPhotoInfo.user?.bio?.let { bio->
-                Column() {
-                    Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",style = textStyle)
-                    Text(text = "${bio}:",style = textStyle)
-                }
-            }
-
+            PhotoAbout(photo)
         }
         Row(modifier = Modifier.align(Alignment.End), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",style = textStyle)
+            Text(text = "${stringResource(id = R.string.download)} (${photo.downloads})",style = textStyle)
             DownloadButton(downloadAction)
             ShareButton(shareAction)
+        }
+    }
+}
+
+@Composable
+fun PhotoAbout(
+    photo: DetailedPhotoInfo
+){
+    val textStyle = MaterialTheme.typography.bodyMedium
+    Row() {
+        photo.exif?.let { exif->
+            Column(modifier = Modifier.testTag("exifDescription")) {
+                exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: $make",style = textStyle) }
+                exif.model?.let {model-> Text(text = "${stringResource(id = R.string.camera_Model)}: $model",style = textStyle) }
+                exif.exposureTime?.let {exposureTime-> Text(text = "${stringResource(id = R.string.exposure)}: $exposureTime",style = textStyle) }
+                exif.aperture?.let {aperture-> Text(text = "${stringResource(id = R.string.aperture)}: $aperture",style = textStyle) }
+                exif.focalLength?.let {focalLength-> Text(text = "${stringResource(id = R.string.focal_length)}: $focalLength",style = textStyle) }
+                exif.iso?.let {iso-> Text(text = "${stringResource(id = R.string.iso)}: $iso",style = textStyle) }
+            }
+        }
+        Spacer(modifier = Modifier.weight(1f))
+        photo.user?.bio?.let { bio->
+            Column() {
+                Text(text = "${stringResource(id = R.string.about)} @${photo.user?.username}:",style = textStyle)
+                Text(text = "${bio}:",style = textStyle)
+            }
         }
     }
 }
@@ -175,7 +184,7 @@ fun ShareButton(
 
 @Preview
 @Composable
-fun iconPreviewDownload(){
+fun IconPreviewDownload(){
     Icon(
         Icons.Default.Download,
         contentDescription = "share icon",
@@ -183,7 +192,7 @@ fun iconPreviewDownload(){
 }
 @Preview
 @Composable
-fun iconPreviewShare(){
+fun IconPreviewShare(){
     Icon(
         Icons.Default.Share,
         contentDescription = "share icon",
@@ -191,7 +200,7 @@ fun iconPreviewShare(){
 }
 @Preview
 @Composable
-fun iconPreviewLocation(){
+fun IconPreviewLocation(){
     Icon(
         Icons.Outlined.LocationOn,
         contentDescription = "share icon",
@@ -199,7 +208,7 @@ fun iconPreviewLocation(){
 }
 @Preview
 @Composable
-fun iconPreviewFavourite(){
+fun IconPreviewFavourite(){
     Icon(
         Icons.Default.Favorite,
         contentDescription = "share icon",
@@ -207,7 +216,7 @@ fun iconPreviewFavourite(){
 }
 @Preview
 @Composable
-fun iconPreviewFavouriteOutlined(){
+fun IconPreviewFavouriteOutlined(){
     Icon(
         Icons.Default.FavoriteBorder,
         contentDescription = "share icon",
