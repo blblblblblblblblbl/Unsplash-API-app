@@ -58,11 +58,14 @@ class CollectionPhotoListFragment : Fragment() {
                 val pagedPhotos = viewModel.pagedPhotos.collectAsState()
                 pagedPhotos.value?.let { imgFlow->
                     UnsplashTheme() {
-                        PhotoListView(
-                            photos = imgFlow,
-                            {photo -> openDetailed(photo)},
-                            { id, bool -> viewModel.changeLike(id,bool) }
-                        )
+                        Surface() {
+                            PhotoListView(
+                                photos = imgFlow,
+                                {photo -> openDetailed(photo)},
+                                { id, bool -> viewModel.changeLike(id,bool) }
+                            )
+                        }
+
                     }
                 }
 

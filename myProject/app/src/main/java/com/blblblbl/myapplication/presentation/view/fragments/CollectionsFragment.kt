@@ -52,7 +52,9 @@ class CollectionsFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 UnsplashTheme() {
-                    PhotoCollectionsList(photoCollections = viewModel.pagedCollections)
+                    Surface() {
+                        PhotoCollectionsList(photoCollections = viewModel.pagedCollections)
+                    }
                 }
             }
         }
@@ -60,7 +62,9 @@ class CollectionsFragment : Fragment() {
     @Composable
     fun PhotoCollectionsList(photoCollections: Flow<PagingData<PhotoCollection>>) {
         val lazyPhotosItems: LazyPagingItems<PhotoCollection> = photoCollections.collectAsLazyPagingItems()
-        LazyColumn{
+        LazyColumn(
+            verticalArrangement = Arrangement.spacedBy(10.dp)
+        ){
             items(lazyPhotosItems){item->
                 if (item != null) {
                     Surface(modifier = Modifier
@@ -73,7 +77,9 @@ class CollectionsFragment : Fragment() {
                                 R.id.action_collectionsFragment_to_collectionPhotoListFragment,
                                 bundle
                             )
-                        }) {
+                        },
+                        shape = MaterialTheme.shapes.large
+                    ) {
                         PhotoCollectionItem(photoCollection = item)
                     }
                 }

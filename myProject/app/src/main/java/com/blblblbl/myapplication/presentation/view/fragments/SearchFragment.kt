@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -115,11 +116,11 @@ class SearchFragment : Fragment() {
         Surface(
             modifier = Modifier
                 .fillMaxWidth()
-                .height(56.dp)
                 .semantics {
                     contentDescription = "SearchWidget"
-                },
-            color = MaterialTheme.colorScheme.primary
+                }.border(width = 2.dp, color = MaterialTheme.colorScheme.secondary ,shape = MaterialTheme.shapes.medium),
+            color = MaterialTheme.colorScheme.primary,
+            shape = MaterialTheme.shapes.medium
         ) {
             TextField(
                 modifier = Modifier
@@ -133,13 +134,9 @@ class SearchFragment : Fragment() {
                     Text(
                         modifier = Modifier
                             .alpha(alpha = 0.5f),
-                        text = "Search here...",
-                        color = Color.White
+                        text = "Search here..."
                     )
                 },
-                textStyle = TextStyle(
-                    color = Color.White
-                ),
                 singleLine = true,
                 leadingIcon = {
                     IconButton(
@@ -149,8 +146,7 @@ class SearchFragment : Fragment() {
                     ) {
                         Icon(
                             imageVector = Icons.Default.Search,
-                            contentDescription = "Search Icon",
-                            tint = Color.White
+                            contentDescription = "Search Icon"
                         )
                     }
                 },
@@ -170,8 +166,7 @@ class SearchFragment : Fragment() {
                     ) {
                         Icon(
                             imageVector = Icons.Default.Close,
-                            contentDescription = "Close Icon",
-                            tint = Color.White
+                            contentDescription = "Close Icon"
                         )
                     }
                 },
@@ -182,11 +177,6 @@ class SearchFragment : Fragment() {
                     onSearch = {
                         onSearchClicked(text)
                     }
-                ),
-                colors = TextFieldDefaults.textFieldColors(
-                    focusedIndicatorColor = Color.Transparent,
-                    unfocusedIndicatorColor = Color.Transparent,
-                    cursorColor = Color.Black
                 )
             )
         }

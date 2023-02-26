@@ -17,10 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.sharp.Favorite
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -69,11 +66,14 @@ fun PhotoView(
     val textSizeName = 15.sp
     val textSizeUserName = 10.sp
     var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
-    Surface(modifier = Modifier
+    Surface(
+        modifier = Modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
         .padding(10.dp)
-        .clickable { onClick(photo) }) {
+        .clickable { onClick(photo) },
+        shape = MaterialTheme.shapes.large
+    ) {
         GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
         Column() {
             Spacer(modifier = Modifier.weight(1f))
