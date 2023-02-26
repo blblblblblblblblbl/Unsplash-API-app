@@ -13,7 +13,12 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.sharp.Favorite
 import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.*
@@ -21,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -80,36 +86,44 @@ fun PhotoView(
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(modifier = Modifier.testTag("likes"),text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                if (isLiked) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
-                        contentDescription = "like icon",
-                        tint = Color.Red,
-                        modifier = Modifier
-                            .clickable {
-                                isLiked = !isLiked
-                                photo.id?.let { changeLike(it, isLiked) }
-                            }
-                            .testTag("likeIconTrue")
-                    )
-                }
-                else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-                        contentDescription = "like icon",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .clickable {
-                                isLiked = !isLiked
-                                photo.id?.let { changeLike(it, isLiked) }
-                            }
-                            .testTag("likeIconFalse")
-                    )
-                }
+                LikeButton(
+                    state = isLiked,
+                    onClick = {
+                        isLiked = !isLiked
+                        photo.id?.let { changeLike(it, isLiked)
+                        }
+                    }
+                )
             }
         }
     }
 }
+@Composable
+fun LikeButton(
+    state:Boolean,
+    onClick:()->Unit
+){
+    val icon: ImageVector
+    val tint: Color
+    if(state){
+        icon = Icons.Default.Favorite
+        tint = Color.Red
+    }
+    else{
+        icon = Icons.Default.FavoriteBorder
+        tint = Color.White
+    }
+    IconButton(onClick = { onClick() }) {
+        Icon(
+            icon,
+            contentDescription = "like icon",
+            tint = tint,
+            modifier = Modifier
+                .testTag("likeIcon")
+        )
+    }
+}
+
 @Composable
 fun StatesUI(items: LazyPagingItems<Photo>){
     items.apply {

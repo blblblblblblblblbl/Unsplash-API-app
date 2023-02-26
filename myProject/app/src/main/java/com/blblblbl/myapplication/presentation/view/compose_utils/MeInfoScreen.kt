@@ -32,19 +32,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun MeInfoScreen(
-    privateUserInfo: StateFlow<UserInfo?>,
-    publicUserInfo: StateFlow<PublicUserInfo?>,
-    pagedPhotosFlow: StateFlow<Flow<PagingData<Photo>>?> ,
+    privateUserInfo: UserInfo?,
+    publicUserInfo: PublicUserInfo?,
+    pagedPhotosFlow: Flow<PagingData<Photo>>? ,
     changeLike:(String,Boolean)->Unit,
     onClick:(Photo)->Unit
 ){
-    val privateInfoState = privateUserInfo.collectAsState().value
-    val publicInfoState = publicUserInfo.collectAsState().value
-    val pagedPhotos = pagedPhotosFlow.collectAsState().value
-    privateInfoState?.let {privateInfo->
-        val lazyPhotosItems: LazyPagingItems<Photo>? = pagedPhotos?.collectAsLazyPagingItems()
+
+    privateUserInfo?.let {privateInfo->
+        val lazyPhotosItems: LazyPagingItems<Photo>? = pagedPhotosFlow?.collectAsLazyPagingItems()
         LazyColumn{
-            item { UserInfoView(privateInfo,publicInfoState)}
+            item { UserInfoView(privateInfo,publicUserInfo)}
 
             lazyPhotosItems?.let {items->
                 items(items){item->
