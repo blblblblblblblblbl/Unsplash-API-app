@@ -3,9 +3,7 @@ package com.blblblbl.myapplication.presentation.view.compose_utils
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
@@ -13,14 +11,17 @@ import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Favorite
+import androidx.compose.material.icons.filled.FavoriteBorder
+import androidx.compose.material.icons.sharp.Favorite
+import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -63,53 +64,64 @@ fun PhotoView(
     val textSizeName = 15.sp
     val textSizeUserName = 10.sp
     var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
-    Surface(modifier = Modifier
+    Surface(
+        modifier = Modifier
         .fillMaxWidth()
         .height(IntrinsicSize.Max)
         .padding(10.dp)
-        .clickable { onClick(photo) }) {
+        .clickable { onClick(photo) },
+        shape = MaterialTheme.shapes.large
+    ) {
         GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
-        Column() {
+        Column(modifier = Modifier.padding(4.dp)) {
             Spacer(modifier = Modifier.weight(1f))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val avatar:String? = photo.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
+                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape).border(width = 2.dp,color = MaterialTheme.colorScheme.primary, shape = CircleShape))
                 Column(Modifier.padding(start = 5.dp)) {
                     Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName,modifier = Modifier.testTag("name"))
                     Text(modifier = Modifier.testTag("username"),text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Text(modifier = Modifier.testTag("likes"),text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                if (isLiked) {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
-                        contentDescription = "like icon",
-                        tint = Color.Red,
-                        modifier = Modifier
-                            .clickable {
-                                isLiked = !isLiked
-                                photo.id?.let { changeLike(it, isLiked) }
-                            }
-                            .testTag("likeIconTrue")
-                    )
-                }
-                else {
-                    Icon(
-                        painter = painterResource(id = R.drawable.ic_baseline_favorite_border_24),
-                        contentDescription = "like icon",
-                        tint = Color.White,
-                        modifier = Modifier
-                            .clickable {
-                                isLiked = !isLiked
-                                photo.id?.let { changeLike(it, isLiked) }
-                            }
-                            .testTag("likeIconFalse")
-                    )
-                }
+                LikeButton(
+                    state = isLiked,
+                    onClick = {
+                        isLiked = !isLiked
+                        photo.id?.let { changeLike(it, isLiked)
+                        }
+                    }
+                )
             }
         }
     }
 }
+@Composable
+fun LikeButton(
+    state:Boolean,
+    onClick:()->Unit
+){
+    val icon: ImageVector
+    val tint: Color
+    if(state){
+        icon = Icons.Default.Favorite
+        tint = Color.Red
+    }
+    else{
+        icon = Icons.Default.FavoriteBorder
+        tint = Color.White
+    }
+    IconButton(onClick = { onClick() }) {
+        Icon(
+            icon,
+            contentDescription = "like icon",
+            tint = tint,
+            modifier = Modifier
+                .testTag("likeIcon")
+        )
+    }
+}
+
 @Composable
 fun StatesUI(items: LazyPagingItems<Photo>){
     items.apply {

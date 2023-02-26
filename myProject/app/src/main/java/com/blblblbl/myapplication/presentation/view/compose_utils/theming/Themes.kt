@@ -8,10 +8,13 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 
 private val LightColors = lightColorScheme(
-    primary = Purple500,
+    primary = Victoria,
     onPrimary = Color.White,
-    secondary = Purple200,
+    secondary = HalfBacked,
     onSecondary = Color.White,
+    tertiary = PastelPink,
+    background = PastelPink,
+    surface = HalfBacked,
     error = Red800
 )
 

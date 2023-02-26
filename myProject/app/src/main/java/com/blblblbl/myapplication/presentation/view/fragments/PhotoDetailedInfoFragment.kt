@@ -76,9 +76,10 @@ class PhotoDetailedInfoFragment : Fragment() {
         return ComposeView(requireContext()).apply {
             setContent {
                 val isLocationShow = viewModel.isToShowLocation.collectAsState()
+                val detailedPhotoInfo by viewModel.detailedPhotoInfo. collectAsState()
                 UnsplashTheme() {
                     PhotoDetailedScreen(
-                        detailedPhotoInfo = viewModel.detailedPhotoInfo,
+                        detailedPhotoInfo = detailedPhotoInfo,
                         { id, bool -> viewModel.changeLike(id,bool) } ,
                         isLocationShow.value,
                         { locationAction() },

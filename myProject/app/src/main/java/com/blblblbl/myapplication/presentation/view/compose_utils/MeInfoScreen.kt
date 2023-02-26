@@ -7,10 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mail
-import androidx.compose.material3.Card
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
@@ -32,19 +29,17 @@ import kotlinx.coroutines.flow.StateFlow
 
 @Composable
 fun MeInfoScreen(
-    privateUserInfo: StateFlow<UserInfo?>,
-    publicUserInfo: StateFlow<PublicUserInfo?>,
-    pagedPhotosFlow: StateFlow<Flow<PagingData<Photo>>?> ,
+    privateUserInfo: UserInfo?,
+    publicUserInfo: PublicUserInfo?,
+    pagedPhotosFlow: Flow<PagingData<Photo>>? ,
     changeLike:(String,Boolean)->Unit,
     onClick:(Photo)->Unit
 ){
-    val privateInfoState = privateUserInfo.collectAsState().value
-    val publicInfoState = publicUserInfo.collectAsState().value
-    val pagedPhotos = pagedPhotosFlow.collectAsState().value
-    privateInfoState?.let {privateInfo->
-        val lazyPhotosItems: LazyPagingItems<Photo>? = pagedPhotos?.collectAsLazyPagingItems()
+
+    privateUserInfo?.let {privateInfo->
+        val lazyPhotosItems: LazyPagingItems<Photo>? = pagedPhotosFlow?.collectAsLazyPagingItems()
         LazyColumn{
-            item { UserInfoView(privateInfo,publicInfoState)}
+            item { UserInfoView(privateInfo,publicUserInfo)}
 
             lazyPhotosItems?.let {items->
                 items(items){item->
@@ -63,7 +58,8 @@ fun UserInfoView(
     userInfo: UserInfo,
     publicUserInfo: PublicUserInfo?){
     Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
-        Column(modifier = Modifier.fillMaxWidth()) {
+
+        Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
             val avatar:String? = publicUserInfo?.profileImage?.large
             avatar?.let { avatar->
                 GlideImage(imageModel = {avatar}, modifier = Modifier

@@ -94,7 +94,8 @@ class PhotosFragment : Fragment() {
                 IconButton(onClick = onSearchClicked) {
                     Icon(
                         imageVector = Icons.Default.Search,
-                        contentDescription = "Search Icon"
+                        contentDescription = "Search Icon",
+                        tint = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

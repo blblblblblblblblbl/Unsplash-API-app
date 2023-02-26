@@ -23,5 +23,6 @@
         android:layout_height="wrap_content"
         app:menu="@menu/bot_nav_menu"
         app:itemIconSize = "36dp"
+        android:background = "?attr/colorPrimaryVariant"
         android:layout_weight="0"/>
 </LinearLayout>

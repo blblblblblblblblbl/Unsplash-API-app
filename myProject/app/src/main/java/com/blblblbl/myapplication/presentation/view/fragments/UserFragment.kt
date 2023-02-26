@@ -53,9 +53,13 @@ class UserFragment : Fragment() {
         viewModel.getUserInfo()
         return ComposeView(requireContext()).apply {
             setContent {
+                val privateInfoState by viewModel.privateUserInfo.collectAsState()
+                val publicInfoState by viewModel.publicUserInfo.collectAsState()
+                val pagedPhotos by viewModel.pagedPhotos.collectAsState()
                 UnsplashTheme() {
                     val openDialog = remember { mutableStateOf(false) }
                     Scaffold(
+                        containerColor = MaterialTheme.colorScheme.surface,
                         topBar = {
                             UserTopBar(onLogOutClicked = { openDialog.value = true })
                         }
@@ -65,9 +69,9 @@ class UserFragment : Fragment() {
                         }
                         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
                             MeInfoScreen(
-                                privateUserInfo = viewModel.privateUserInfo,
-                                publicUserInfo = viewModel.publicUserInfo,
-                                viewModel.pagedPhotos,
+                                privateUserInfo = privateInfoState,
+                                publicUserInfo = publicInfoState,
+                                pagedPhotosFlow =  pagedPhotos,
                                 { id, bool -> viewModel.changeLike(id,bool) },
                                 {photo -> openDetailed(photo)}
                             )
@@ -126,7 +130,8 @@ class UserFragment : Fragment() {
                 )
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
             ),
             actions = {
                 IconButton(onClick = onLogOutClicked) {

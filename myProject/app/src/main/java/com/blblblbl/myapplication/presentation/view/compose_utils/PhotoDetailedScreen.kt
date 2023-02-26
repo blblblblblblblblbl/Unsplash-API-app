@@ -1,6 +1,5 @@
 package com.blblblbl.myapplication.presentation.view.compose_utils
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -25,25 +24,22 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.domain.models.photo_detailed.Location
 import com.skydoves.landscapist.glide.GlideImage
-import kotlinx.coroutines.flow.StateFlow
 
 
 @Composable
 fun PhotoDetailedScreen(
-    detailedPhotoInfo: StateFlow<DetailedPhotoInfo?>,
+    detailedPhotoInfo: DetailedPhotoInfo?,
     changeLike:(String,Boolean)->Unit,
     isLocationShow:Boolean,
     locationAction:()->Unit,
     downloadAction:()->Unit,
     shareAction:()->Unit
 ){
-    val state = detailedPhotoInfo.collectAsState().value
-    state?.let {
+    detailedPhotoInfo?.let {
         Column(Modifier.verticalScroll(rememberScrollState())) {
             DetailedPhotoView(detailedPhotoInfo = it,changeLike)
-            PhotoDescription(detailedPhotoInfo = it,isLocationShow,locationAction,downloadAction,shareAction)
+            PhotoDescription(photo = it,isLocationShow,locationAction,downloadAction,shareAction)
         }
     }
 }
@@ -53,7 +49,6 @@ fun DetailedPhotoView(
     detailedPhotoInfo: DetailedPhotoInfo,
     changeLike:(String,Boolean)->Unit
 ){
-    val textColor = Color.White
     val textSizeTotalLikes = 15.sp
     val textSizeName = 15.sp
     val textSizeUserName = 10.sp
@@ -69,115 +64,127 @@ fun DetailedPhotoView(
                 val avatar:String? = detailedPhotoInfo.user?.profileImage?.large
                 GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
                 Column(Modifier.padding(start = 5.dp)) {
-                    Text(text = "${detailedPhotoInfo.user?.name}", color = textColor, fontSize = textSizeName)
-                    Text(text = "@${detailedPhotoInfo.user?.username}", color = textColor, fontSize = textSizeUserName)
+                    Text(text = "${detailedPhotoInfo.user?.name}", fontSize = textSizeName)
+                    Text(text = "@${detailedPhotoInfo.user?.username}", fontSize = textSizeUserName)
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = "${detailedPhotoInfo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                if (isLiked) {
-                    Icon(
-                        Icons.Default.Favorite,
-                        contentDescription = "like icon",
-                        tint = Color.Red,
-                        modifier = Modifier.clickable {
-                            isLiked=!isLiked
-                            detailedPhotoInfo.id?.let {changeLike(it,isLiked)  }
+                Text(text = "${detailedPhotoInfo.likes}", fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
+                LikeButton(
+                    state = isLiked,
+                    onClick = {
+                        isLiked = !isLiked
+                        detailedPhotoInfo.id?.let { changeLike(it, isLiked)
                         }
-                    )
-                }
-                else {
-                    Icon(
-                        Icons.Default.FavoriteBorder,
-                        contentDescription = "like icon",
-                        tint = Color.White,
-                        modifier = Modifier.clickable {
-                            isLiked=!isLiked
-                            detailedPhotoInfo.id?.let {changeLike(it,isLiked)  }
-                        }
-                    )
-                }
+                    }
+                )
             }
         }
     }
 }
 @Composable
 fun PhotoDescription(
-    detailedPhotoInfo: DetailedPhotoInfo,
+    photo: DetailedPhotoInfo,
     isLocationShow:Boolean,
     locationAction:()->Unit,
     downloadAction:()->Unit,
     shareAction:()->Unit
 ){
+    val textStyle = MaterialTheme.typography.bodyMedium
     Column(modifier = Modifier.padding(10.dp)) {
-        detailedPhotoInfo.location?.let { location->
+        photo.location?.let { location->
             if (isLocationShow){
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    IconButton(modifier = Modifier.testTag("locationButton"),
-                        onClick = {
-                            locationAction()
-                        } ) {
-                        Icon(
-                            Icons.Outlined.LocationOn,
-                            contentDescription = "location icon",
-                        )
-                    }
-                    Text(text = "${location.city?:""} ${location.country?:""}", style = MaterialTheme.typography.bodyMedium)
+                    LocationButton(locationAction)
+                    Text(text = "${location.city?:""} ${location.country?:""}", style = textStyle)
                 }
             }
         }
-
         var hashTags:String = ""
-        detailedPhotoInfo.tags.forEach {
+        photo.tags.forEach {
             hashTags += "#${it.title}"
         }
-        if (hashTags!="") Text(text = hashTags, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(20.dp))
+        if (hashTags!="") Text(text = hashTags, style = textStyle, modifier = Modifier.padding(20.dp))
         Row() {
-            detailedPhotoInfo.exif?.let {exif->
-                Column(modifier = Modifier.testTag("exifDescription")) {
-                    exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: ${make}",style = MaterialTheme.typography.bodyMedium) }
-                    exif.model?.let {model-> Text(text = "${stringResource(id = R.string.camera_Model)}: ${model}",style = MaterialTheme.typography.bodyMedium) }
-                    exif.exposureTime?.let {exposureTime-> Text(text = "${stringResource(id = R.string.exposure)}: ${exposureTime}",style = MaterialTheme.typography.bodyMedium) }
-                    exif.aperture?.let {aperture-> Text(text = "${stringResource(id = R.string.aperture)}: ${aperture}",style = MaterialTheme.typography.bodyMedium) }
-                    exif.focalLength?.let {focalLength-> Text(text = "${stringResource(id = R.string.focal_length)}: ${focalLength}",style = MaterialTheme.typography.bodyMedium) }
-                    exif.iso?.let {iso-> Text(text = "${stringResource(id = R.string.iso)}: ${iso}",style = MaterialTheme.typography.bodyMedium) }
-                }
-            }
-            Spacer(modifier = Modifier.weight(1f))
-            detailedPhotoInfo.user?.bio?.let { bio->
-                Column() {
-                    Text(text = "${stringResource(id = R.string.about)} @${detailedPhotoInfo.user?.username}:",style = MaterialTheme.typography.bodyMedium)
-                    Text(text = "${bio}:",style = MaterialTheme.typography.bodyMedium)
-                }
-            }
-
+            PhotoAbout(photo)
         }
-
         Row(modifier = Modifier.align(Alignment.End), verticalAlignment = Alignment.CenterVertically) {
-            Text(text = "${stringResource(id = R.string.download)} (${detailedPhotoInfo.downloads})",style = MaterialTheme.typography.bodyMedium)
-            IconButton(modifier = Modifier.testTag("downloadButton"),
-                onClick = { downloadAction()
-                }) {
-                Icon(
-                    Icons.Default.Download,
-                    contentDescription = "download icon"
-                )
-            }
-            IconButton(modifier = Modifier.testTag("shareButton"),
-                onClick = { shareAction()
-                }) {
-                Icon(
-                    Icons.Default.Share,
-                    contentDescription = "share icon"
-                )
+            Text(text = "${stringResource(id = R.string.download)} (${photo.downloads})",style = textStyle)
+            DownloadButton(downloadAction)
+            ShareButton(shareAction)
+        }
+    }
+}
+
+@Composable
+fun PhotoAbout(
+    photo: DetailedPhotoInfo
+){
+    val textStyle = MaterialTheme.typography.bodyMedium
+    Row() {
+        photo.exif?.let { exif->
+            Column(modifier = Modifier.testTag("exifDescription")) {
+                exif.make?.let { make-> Text(text = "${stringResource(id = R.string.made_with_camera)}: $make",style = textStyle) }
+                exif.model?.let {model-> Text(text = "${stringResource(id = R.string.camera_Model)}: $model",style = textStyle) }
+                exif.exposureTime?.let {exposureTime-> Text(text = "${stringResource(id = R.string.exposure)}: $exposureTime",style = textStyle) }
+                exif.aperture?.let {aperture-> Text(text = "${stringResource(id = R.string.aperture)}: $aperture",style = textStyle) }
+                exif.focalLength?.let {focalLength-> Text(text = "${stringResource(id = R.string.focal_length)}: $focalLength",style = textStyle) }
+                exif.iso?.let {iso-> Text(text = "${stringResource(id = R.string.iso)}: $iso",style = textStyle) }
             }
         }
+        Spacer(modifier = Modifier.weight(1f))
+        photo.user?.bio?.let { bio->
+            Column() {
+                Text(text = "${stringResource(id = R.string.about)} @${photo.user?.username}:",style = textStyle)
+                Text(text = "${bio}:",style = textStyle)
+            }
+        }
+    }
+}
 
+@Composable
+fun LocationButton(
+    onClick:()->Unit
+){
+    IconButton(modifier = Modifier.testTag("locationButton"),
+        onClick = { onClick() } )
+    {
+        Icon(
+            Icons.Outlined.LocationOn,
+            contentDescription = "location icon",
+        )
+    }
+}
+
+@Composable
+fun DownloadButton(
+    onClick:()->Unit
+){
+    IconButton(modifier = Modifier.testTag("downloadButton"),
+        onClick = { onClick() })
+    {
+        Icon(
+            Icons.Default.Download,
+            contentDescription = "download icon"
+        )
+    }
+}
+@Composable
+fun ShareButton(
+    onClick:()->Unit
+){
+    IconButton(modifier = Modifier.testTag("shareButton"),
+        onClick = { onClick() })
+    {
+        Icon(
+            Icons.Default.Share,
+            contentDescription = "share icon"
+        )
     }
 }
 
 @Preview
 @Composable
-fun iconPreviewDownload(){
+fun IconPreviewDownload(){
     Icon(
         Icons.Default.Download,
         contentDescription = "share icon",
@@ -185,7 +192,7 @@ fun iconPreviewDownload(){
 }
 @Preview
 @Composable
-fun iconPreviewShare(){
+fun IconPreviewShare(){
     Icon(
         Icons.Default.Share,
         contentDescription = "share icon",
@@ -193,7 +200,7 @@ fun iconPreviewShare(){
 }
 @Preview
 @Composable
-fun iconPreviewLocation(){
+fun IconPreviewLocation(){
     Icon(
         Icons.Outlined.LocationOn,
         contentDescription = "share icon",
@@ -201,7 +208,7 @@ fun iconPreviewLocation(){
 }
 @Preview
 @Composable
-fun iconPreviewFavourite(){
+fun IconPreviewFavourite(){
     Icon(
         Icons.Default.Favorite,
         contentDescription = "share icon",
@@ -209,7 +216,7 @@ fun iconPreviewFavourite(){
 }
 @Preview
 @Composable
-fun iconPreviewFavouriteOutlined(){
+fun IconPreviewFavouriteOutlined(){
     Icon(
         Icons.Default.FavoriteBorder,
         contentDescription = "share icon",
