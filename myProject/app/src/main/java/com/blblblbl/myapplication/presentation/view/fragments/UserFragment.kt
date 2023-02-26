@@ -59,6 +59,7 @@ class UserFragment : Fragment() {
                 UnsplashTheme() {
                     val openDialog = remember { mutableStateOf(false) }
                     Scaffold(
+                        containerColor = MaterialTheme.colorScheme.surface,
                         topBar = {
                             UserTopBar(onLogOutClicked = { openDialog.value = true })
                         }
@@ -129,7 +130,8 @@ class UserFragment : Fragment() {
                 )
             },
             colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
+                containerColor = MaterialTheme.colorScheme.primary,
+                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
             ),
             actions = {
                 IconButton(onClick = onLogOutClicked) {

@@ -10,6 +10,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -67,6 +68,7 @@ class SearchFragment : Fragment() {
                 val searchedImages = viewModel.searchedImages.collectAsState()
                 UnsplashTheme() {
                     Scaffold(
+                        containerColor = MaterialTheme.colorScheme.surface,
                         topBar = {
                             SearchWidget(
                                 text = searchQuery,
@@ -118,9 +120,9 @@ class SearchFragment : Fragment() {
                 .fillMaxWidth()
                 .semantics {
                     contentDescription = "SearchWidget"
-                }.border(width = 2.dp, color = MaterialTheme.colorScheme.secondary ,shape = MaterialTheme.shapes.medium),
+                }.border(width = 2.dp, color = MaterialTheme.colorScheme.secondary ,shape = CircleShape),
             color = MaterialTheme.colorScheme.primary,
-            shape = MaterialTheme.shapes.medium
+            shape = CircleShape
         ) {
             TextField(
                 modifier = Modifier

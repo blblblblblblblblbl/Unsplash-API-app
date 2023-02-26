@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
@@ -63,7 +64,8 @@ class CollectionsFragment : Fragment() {
     fun PhotoCollectionsList(photoCollections: Flow<PagingData<PhotoCollection>>) {
         val lazyPhotosItems: LazyPagingItems<PhotoCollection> = photoCollections.collectAsLazyPagingItems()
         LazyColumn(
-            verticalArrangement = Arrangement.spacedBy(10.dp)
+            verticalArrangement = Arrangement.spacedBy(10.dp),
+            modifier = Modifier.padding(10.dp)
         ){
             items(lazyPhotosItems){item->
                 if (item != null) {
@@ -136,21 +138,21 @@ class CollectionsFragment : Fragment() {
                 .fillMaxSize()
                 .background(Color.Black.copy(alpha = 0.5f))
         )
-        Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 5.dp)) {
-            val textColor = Color.White
+        Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)) {
+
             val textSizeTitle = 30.sp
             val textSizeTotalPhotos = 20.sp
             val textSizeName = 15.sp
             val textSizeUserName = 10.sp
-            Text(text = "${photoCollection.totalPhotos} ${stringResource(id = R.string.collection_total_photos)}", color =textColor, fontSize = textSizeTotalPhotos)
-            Text(text = "${photoCollection.title}", color = textColor, fontSize = textSizeTitle, fontWeight = FontWeight.Bold)
+            Text(text = "${photoCollection.totalPhotos} ${stringResource(id = R.string.collection_total_photos)}", fontSize = textSizeTotalPhotos)
+            Text(text = "${photoCollection.title}", fontSize = textSizeTitle, fontWeight = FontWeight.Bold)
             Spacer(modifier = Modifier.weight(1f))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val avatar:String? = photoCollection.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
+                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape).border(width = 2.dp,color = MaterialTheme.colorScheme.primary, shape = CircleShape))
                 Column(Modifier.padding(start = 5.dp)) {
-                    Text(text = "${photoCollection.user?.name}", color = textColor, fontSize = textSizeName)
-                    Text(text = "@${photoCollection.user?.username}", color = textColor, fontSize = textSizeUserName)
+                    Text(text = "${photoCollection.user?.name}", fontSize = textSizeName)
+                    Text(text = "@${photoCollection.user?.username}", fontSize = textSizeUserName)
                 }
             }
 

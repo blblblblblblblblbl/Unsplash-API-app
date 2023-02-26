@@ -3,9 +3,7 @@ package com.blblblbl.myapplication.presentation.view.compose_utils
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
@@ -75,11 +73,11 @@ fun PhotoView(
         shape = MaterialTheme.shapes.large
     ) {
         GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
-        Column() {
+        Column(modifier = Modifier.padding(4.dp)) {
             Spacer(modifier = Modifier.weight(1f))
             Row(verticalAlignment = Alignment.CenterVertically) {
                 val avatar:String? = photo.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
+                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape).border(width = 2.dp,color = MaterialTheme.colorScheme.primary, shape = CircleShape))
                 Column(Modifier.padding(start = 5.dp)) {
                     Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName,modifier = Modifier.testTag("name"))
                     Text(modifier = Modifier.testTag("username"),text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
