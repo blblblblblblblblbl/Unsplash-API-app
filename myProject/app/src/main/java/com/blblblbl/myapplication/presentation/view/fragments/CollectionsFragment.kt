@@ -5,14 +5,18 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,6 +45,7 @@ import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @AndroidEntryPoint
 class CollectionsFragment : Fragment() {
@@ -63,7 +68,10 @@ class CollectionsFragment : Fragment() {
     @Composable
     fun PhotoCollectionsList(photoCollections: Flow<PagingData<PhotoCollection>>) {
         val lazyPhotosItems: LazyPagingItems<PhotoCollection> = photoCollections.collectAsLazyPagingItems()
+        val listState = rememberLazyListState()
+
         LazyColumn(
+            state = listState,
             verticalArrangement = Arrangement.spacedBy(10.dp),
             modifier = Modifier.padding(10.dp)
         ){
@@ -87,6 +95,37 @@ class CollectionsFragment : Fragment() {
                 }
             }
         }
+
+        val showButton by remember {
+            derivedStateOf {
+                listState.firstVisibleItemIndex > 0
+            }
+        }
+        AnimatedVisibility (
+            showButton,
+            enter = slideInHorizontally( initialOffsetX = {fullWidth -> fullWidth }),
+            exit = slideOutHorizontally( targetOffsetX = {fullWidth -> fullWidth })
+        ) {
+            Box(Modifier.fillMaxSize()) {
+                val coroutineScope = rememberCoroutineScope()
+                FloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        //.navigationBarsPadding()
+                        .padding(bottom = 8.dp, end = 8.dp),
+                    shape = CircleShape,
+                    onClick = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    }
+                ) {
+                    androidx.compose.material.Text("Up!")
+                }
+            }
+        }
+
+
         lazyPhotosItems.apply {
             when {
                 loadState.refresh is LoadState.Loading -> {
@@ -139,7 +178,6 @@ class CollectionsFragment : Fragment() {
                 .background(Color.Black.copy(alpha = 0.5f))
         )
         Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)) {
-
             val textSizeTitle = 30.sp
             val textSizeTotalPhotos = 20.sp
             val textSizeName = 15.sp

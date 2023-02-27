@@ -1,15 +1,18 @@
 package com.blblblbl.myapplication.presentation.view.compose_utils
 
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.LocationOn
 import androidx.compose.material.icons.outlined.Mail
 import androidx.compose.material3.*
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,6 +29,7 @@ import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 
 @Composable
 fun MeInfoScreen(
@@ -38,7 +42,8 @@ fun MeInfoScreen(
 
     privateUserInfo?.let {privateInfo->
         val lazyPhotosItems: LazyPagingItems<Photo>? = pagedPhotosFlow?.collectAsLazyPagingItems()
-        LazyColumn{
+        val listState = rememberLazyListState()
+        LazyColumn(state = listState){
             item { UserInfoView(privateInfo,publicUserInfo)}
 
             lazyPhotosItems?.let {items->
@@ -47,6 +52,34 @@ fun MeInfoScreen(
                 }
             }
 
+        }
+        val showButton by remember {
+            derivedStateOf {
+                listState.firstVisibleItemIndex > 0
+            }
+        }
+        AnimatedVisibility (
+            showButton,
+            enter = slideInHorizontally( initialOffsetX = {fullWidth -> fullWidth }),
+            exit = slideOutHorizontally( targetOffsetX = {fullWidth -> fullWidth })
+        ) {
+            Box(Modifier.fillMaxSize()) {
+                val coroutineScope = rememberCoroutineScope()
+                FloatingActionButton(
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        //.navigationBarsPadding()
+                        .padding(bottom = 8.dp, end = 8.dp),
+                    shape = CircleShape,
+                    onClick = {
+                        coroutineScope.launch {
+                            listState.animateScrollToItem(0)
+                        }
+                    }
+                ) {
+                    androidx.compose.material.Text("Up!")
+                }
+            }
         }
         lazyPhotosItems?.let {items->
             StatesUI(items = items) }
@@ -59,7 +92,9 @@ fun UserInfoView(
     publicUserInfo: PublicUserInfo?){
     Card(modifier = Modifier.padding(10.dp), shape = MaterialTheme.shapes.large) {
 
-        Column(modifier = Modifier.fillMaxWidth().padding(10.dp)) {
+        Column(modifier = Modifier
+            .fillMaxWidth()
+            .padding(10.dp)) {
             val avatar:String? = publicUserInfo?.profileImage?.large
             avatar?.let { avatar->
                 GlideImage(imageModel = {avatar}, modifier = Modifier
