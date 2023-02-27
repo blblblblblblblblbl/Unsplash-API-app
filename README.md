@@ -49,7 +49,8 @@ This android application works with unspash api
 - Unit testing, Mockito
 - UI testing
 - CI/CD with github actions
-
+- LeakCanary
+- Workers
 
 
 ## Screenshots
