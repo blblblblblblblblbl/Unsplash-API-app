@@ -3,6 +3,7 @@ package com.blblblbl.myapplication.presentation.view.compose_utils
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
@@ -10,10 +11,7 @@ import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
-import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
-import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
-import androidx.compose.foundation.lazy.staggeredgrid.items
+import androidx.compose.foundation.lazy.staggeredgrid.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Favorite
@@ -26,10 +24,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.layout.Layout
+import androidx.compose.ui.layout.MeasurePolicy
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Constraints
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.paging.LoadState
@@ -42,6 +44,7 @@ import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlin.math.roundToInt
 
 @Composable
 fun PhotoListView(
@@ -90,6 +93,61 @@ fun PhotoListView(
     lazyPhotosItems?.let {items->
         StatesUI(items = items) }
 }
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun PhotoGridView(
+    photos: Flow<PagingData<Photo>>,
+    onClick:(Photo)->Unit,
+    changeLike:(String,Boolean)->Unit
+){
+    val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
+    val listStaggeredState = rememberLazyStaggeredGridState()
+
+    LazyVerticalStaggeredGrid(
+        columns = StaggeredGridCells.Fixed(2),
+        state = listStaggeredState,
+        verticalArrangement = Arrangement.spacedBy(6.dp),
+        horizontalArrangement = Arrangement.spacedBy(6.dp),
+        modifier = Modifier.padding(6.dp)){
+        items(lazyPhotosItems){item->
+            item?.let { PhotoViewGirdElement(photo = it,onClick,changeLike) }
+        }
+    }
+
+    val showButton by remember {
+        derivedStateOf {
+            listStaggeredState.firstVisibleItemIndex > 0
+        }
+    }
+    AnimatedVisibility (
+        showButton,
+        enter = slideInHorizontally( initialOffsetX = {fullWidth -> fullWidth }),
+        exit = slideOutHorizontally( targetOffsetX = {fullWidth -> fullWidth })
+    ) {
+        Box(Modifier.fillMaxSize()) {
+            val coroutineScope = rememberCoroutineScope()
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 8.dp, end = 8.dp),
+                shape = CircleShape,
+                onClick = {
+                    coroutineScope.launch {
+                        listStaggeredState.animateScrollToItem(0)
+                    }
+                }
+            ) {
+                androidx.compose.material.Text("Up!")
+            }
+        }
+    }
+
+
+    lazyPhotosItems?.let {items->
+        StatesUI(items = items) }
+}
+
 @Composable
 fun PhotoView(
     photo: Photo,
@@ -101,34 +159,122 @@ fun PhotoView(
     val textSizeName = 15.sp
     val textSizeUserName = 10.sp
     var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
-    Surface(
+    BoxWithConstraints(
         modifier = Modifier
-        .fillMaxWidth()
-        .height(IntrinsicSize.Max)
-        .padding(10.dp)
-        .clickable { onClick(photo) },
-        shape = MaterialTheme.shapes.large
-    ) {
-        GlideImage(imageModel = {photo.urls?.regular},modifier = Modifier.fillMaxSize())
-        Column(modifier = Modifier.padding(4.dp)) {
-            Spacer(modifier = Modifier.weight(1f))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val avatar:String? = photo.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape).border(width = 2.dp,color = MaterialTheme.colorScheme.primary, shape = CircleShape))
-                Column(Modifier.padding(start = 5.dp)) {
-                    Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName,modifier = Modifier.testTag("name"))
-                    Text(modifier = Modifier.testTag("username"),text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Text(modifier = Modifier.testTag("likes"),text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                LikeButton(
-                    state = isLiked,
-                    onClick = {
-                        isLiked = !isLiked
-                        photo.id?.let { changeLike(it, isLiked)
-                        }
+        .fillMaxWidth())
+    {
+        val width = maxWidth
+        val height: Dp
+        if (photo.height!=null&&photo.width!=null){
+            height = (width.value * photo.height!! / photo.width!!).roundToInt().dp
+        }
+        else{
+            height = width
+        }
+        Surface(
+            modifier = Modifier
+                //.fillMaxWidth()
+                .width(width)
+                .height(height)
+                .padding(10.dp)
+                .clickable { onClick(photo) },
+            shape = MaterialTheme.shapes.large
+        ) {
+            val bitmap = BlurHashDecoder.decode(photo.blurHash,50,50)
+            GlideImage(imageModel = {bitmap},Modifier.fillMaxSize())
+            GlideImage(imageModel = {photo.urls?.regular},Modifier.fillMaxSize())
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .fillMaxSize()) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.BottomCenter)) {
+                    val avatar:String? = photo.user?.profileImage?.large
+                    GlideImage(imageModel = {avatar}, modifier = Modifier
+                        .clip(CircleShape)
+                        .border(
+                            width = 2.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        ))
+                    Column(Modifier.padding(start = 5.dp)) {
+                        Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName,modifier = Modifier.testTag("name"))
+                        Text(modifier = Modifier.testTag("username"),text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
                     }
-                )
+                    Spacer(modifier = Modifier.weight(1f))
+                    Text(modifier = Modifier.testTag("likes"),text = "${photo.likes}", color = textColor, fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
+                    LikeButton(
+                        state = isLiked,
+                        onClick = {
+                            isLiked = !isLiked
+                            photo.id?.let { changeLike(it, isLiked)
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    }
+}
+@Composable
+fun PhotoViewGirdElement(
+    photo: Photo,
+    onClick:(Photo)->Unit,
+    changeLike:(String,Boolean)->Unit
+){
+    val textColor = Color.White
+    val textSizeName = 15.sp
+    val textSizeUserName = 10.sp
+    var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
+    BoxWithConstraints(
+        modifier = Modifier
+            .fillMaxWidth())
+    {
+        val width = maxWidth
+        val height: Dp
+        if (photo.height!=null&&photo.width!=null){
+            height = (width.value * photo.height!! / photo.width!!).roundToInt().dp
+        }
+        else{
+            height = width
+        }
+        Surface(
+            modifier = Modifier
+                //.fillMaxWidth()
+                .width(width)
+                .height(height)
+                .clickable { onClick(photo) },
+            shape = MaterialTheme.shapes.large
+        ) {
+            val bitmap = BlurHashDecoder.decode(photo.blurHash,50,50)
+            GlideImage(imageModel = {bitmap},Modifier.fillMaxSize())
+            GlideImage(imageModel = {photo.urls?.small},Modifier.fillMaxSize())
+            Box(modifier = Modifier
+                .padding(4.dp)
+                .fillMaxSize()) {
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.TopCenter)) {
+                    Spacer(modifier = Modifier.weight(1f))
+                    LikeButton(
+                        state = isLiked,
+                        onClick = {
+                            isLiked = !isLiked
+                            photo.id?.let { changeLike(it, isLiked)
+                            }
+                        }
+                    )
+                }
+                Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.align(Alignment.BottomStart)) {
+                    val avatar:String? = photo.user?.profileImage?.large
+                    GlideImage(imageModel = {avatar}, modifier = Modifier
+                        .clip(CircleShape)
+                        .border(
+                            width = 2.dp,
+                            color = MaterialTheme.colorScheme.primary,
+                            shape = CircleShape
+                        ))
+                    Column(Modifier.padding(start = 5.dp)) {
+                        Text(text = "${photo.user?.name}", color = textColor, fontSize = textSizeName,modifier = Modifier.testTag("name"))
+                        Text(modifier = Modifier.testTag("username"),text = "@${photo.user?.username}", color = textColor, fontSize = textSizeUserName)
+                    }
+                }
             }
         }
     }

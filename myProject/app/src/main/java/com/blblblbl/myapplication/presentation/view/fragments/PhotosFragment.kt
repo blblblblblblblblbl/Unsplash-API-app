@@ -23,6 +23,7 @@ import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photos.Photo
+import com.blblblbl.myapplication.presentation.view.compose_utils.PhotoGridView
 import com.blblblbl.myapplication.presentation.view.compose_utils.PhotoListView
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.PhotosFragmentViewModel
@@ -54,7 +55,7 @@ class PhotosFragment : Fragment() {
                         },
                         content = {
                             Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                                PhotoListView(
+                                PhotoGridView(
                                     photos = viewModel.pagedPhotos,
                                     onClick = {photo -> openDetailed(photo)},
                                     changeLike = { id, bool -> viewModel.changeLike(id,bool) } )
