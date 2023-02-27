@@ -3,9 +3,13 @@ package com.blblblbl.myapplication.presentation.view.compose_utils
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.lazy.staggeredgrid.LazyStaggeredGridScope
 import androidx.compose.foundation.lazy.staggeredgrid.LazyVerticalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -37,6 +41,7 @@ import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.skydoves.landscapist.glide.GlideImage
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.launch
 
 @Composable
 fun PhotoListView(
@@ -45,11 +50,43 @@ fun PhotoListView(
     changeLike:(String,Boolean)->Unit
 ){
     val lazyPhotosItems: LazyPagingItems<Photo> = photos.collectAsLazyPagingItems()
-    LazyColumn{
+    val listState = rememberLazyListState()
+    LazyColumn(state = listState){
         items(lazyPhotosItems){item->
             item?.let { PhotoView(photo = it,onClick,changeLike) }
         }
     }
+
+    val showButton by remember {
+        derivedStateOf {
+            listState.firstVisibleItemIndex > 0
+        }
+    }
+    AnimatedVisibility (
+        showButton,
+        enter = slideInHorizontally( initialOffsetX = {fullWidth -> fullWidth }),
+        exit = slideOutHorizontally( targetOffsetX = {fullWidth -> fullWidth })
+    ) {
+        Box(Modifier.fillMaxSize()) {
+            val coroutineScope = rememberCoroutineScope()
+            FloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    //.navigationBarsPadding()
+                    .padding(bottom = 8.dp, end = 8.dp),
+                shape = CircleShape,
+                onClick = {
+                    coroutineScope.launch {
+                        listState.animateScrollToItem(0)
+                    }
+                }
+            ) {
+                androidx.compose.material.Text("Up!")
+            }
+        }
+    }
+
+
     lazyPhotosItems?.let {items->
         StatesUI(items = items) }
 }
