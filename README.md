@@ -51,8 +51,11 @@ This android application works with unspash api
 - CI/CD with github actions
 - LeakCanary
 - Workers
+- BlurHash
 
 
 ## Screenshots
+now design differs from this(it's much cooler), I will update gifs soon
+
 <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(0).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(1).gif" width = 300>
 <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(2).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(3).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(4).gif" width = 300>
