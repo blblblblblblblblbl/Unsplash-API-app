@@ -95,7 +95,7 @@ fun AppScreen(){
                 AppTabRow(
                     allScreens = appTabRowScreens,
                     onTabSelected = { screen ->
-                        navController.navigate(screen.route)
+                        navController.navigate(screen.route){ launchSingleTop = true }
                     },
                     currentScreen = currentScreen
                 )

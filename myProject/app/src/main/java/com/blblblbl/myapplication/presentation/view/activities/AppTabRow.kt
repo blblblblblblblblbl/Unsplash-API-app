@@ -37,7 +37,10 @@ fun AppTabRow(
             .height(TabHeight)
             .fillMaxWidth()
     ) {
-        Row(modifier = Modifier.selectableGroup().fillMaxWidth()) {
+        Row(
+            modifier = Modifier.selectableGroup().fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround
+        ) {
             allScreens.forEach { screen ->
                 AppTab(
                     text = screen.route,
