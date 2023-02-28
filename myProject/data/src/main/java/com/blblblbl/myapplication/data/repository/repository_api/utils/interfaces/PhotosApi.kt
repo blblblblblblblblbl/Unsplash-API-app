@@ -6,7 +6,7 @@ import com.blblblbl.myapplication.data.data_classes.search.SearchResult
 import retrofit2.http.*
 
 interface PhotosApi {
-    //@Headers("mock:true")
+    @Headers("mock:true")
     @GET("photos")
     suspend fun getPhotos(
         @Query("page") page: Int,
