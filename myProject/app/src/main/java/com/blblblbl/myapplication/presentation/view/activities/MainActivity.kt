@@ -13,15 +13,22 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
+import androidx.navigation.Navigation
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.navigation
 import androidx.navigation.ui.setupWithNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.databinding.ActivityMainBinding
+import com.blblblbl.myapplication.presentation.view.activities.graphs.collectionsGraph
+import com.blblblbl.myapplication.presentation.view.activities.graphs.mainFeedGraph
+import com.blblblbl.myapplication.presentation.view.activities.graphs.myProfileGraph
 import com.blblblbl.myapplication.presentation.view.compose_utils.MeInfoScreen
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.view.fragments.CollectionsFragmentTab
@@ -44,34 +51,36 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
 
 
-
         val redirectUri: Uri? = intent.data
-        if (redirectUri.toString().startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")){
+        if (redirectUri.toString()
+                .startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")
+        ) {
             viewModel.saveAuthToken(redirectUri!!)
-            lifecycleScope.launchWhenCreated { viewModel.authSuccess.collect {
-                it?.let {
-                    if (it){
-                        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                        val navController = navHostFragment.navController
-                        binding.bottomNav.setupWithNavController(navController)
-                        setContentView(binding.root)
+            lifecycleScope.launchWhenCreated {
+                viewModel.authSuccess.collect {
+                    it?.let {
+                        if (it) {
+                            val navHostFragment =
+                                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                            val navController = navHostFragment.navController
+                            binding.bottomNav.setupWithNavController(navController)
+                            setContentView(binding.root)
+                        }
                     }
                 }
             }
-            }
-        }
-        else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")){
+        } else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
-            var id = redirectUri.toString().substring(start,redirectUri.toString().length)
+            var id = redirectUri.toString().substring(start, redirectUri.toString().length)
             bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
-            val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController
-            navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment,bundle)
+            navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment, bundle)
             binding.bottomNav.setupWithNavController(navController)
             setContentView(binding.root)
-        }
-        else{
+        } else {
             /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController
             binding.bottomNav.setupWithNavController(navController)
@@ -84,7 +93,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun AppScreen(){
+fun AppScreen() {
     UnsplashTheme() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -95,7 +104,7 @@ fun AppScreen(){
                 AppTabRow(
                     allScreens = appTabRowScreens,
                     onTabSelected = { screen ->
-                        navController.navigate(screen.route){ launchSingleTop = true }
+                        navController.navigateSingleTopTo(screen.route)
                     },
                     currentScreen = currentScreen
                 )
@@ -113,20 +122,32 @@ fun AppScreen(){
 fun AppNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier
-){
+) {
     NavHost(
         navController = navController,
-        startDestination = MainFeed.route,
+        startDestination = "MainFeedNested",
         modifier = modifier
-    ){
-        composable(route = MainFeed.route){
-            PhotosFragmentTab()
-        }
-        composable(route = Collections.route){
-            CollectionsFragmentTab()
-        }
-        composable(route = MyProfile.route){
-            UserFragmentTab()
-        }
+    ) {
+        mainFeedGraph(navController)
+        collectionsGraph(navController)
+        myProfileGraph(navController)
     }
 }
+
+
+
+
+
+
+
+
+fun NavHostController.navigateSingleTopTo(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            this@navigateSingleTopTo.graph.findStartDestination().id
+        ) {
+            saveState = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }

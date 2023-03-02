@@ -29,6 +29,18 @@ object MyProfile : AppDestination {
     override val icon = Icons.Default.AccountCircle
     override val route = "myProfile"
 }
+object DetailedPhoto :AppDestination{
+    override val icon = Icons.Default.Terrain
+    override val route = "detailedPhoto"
+}
+object Search :AppDestination{
+    override val icon = Icons.Default.Terrain
+    override val route = "search"
+}
+object CollectionPhotoList :AppDestination{
+    override val icon = Icons.Default.Terrain
+    override val route = "CollectionPhotoList"
+}
 
 @Preview
 @Composable

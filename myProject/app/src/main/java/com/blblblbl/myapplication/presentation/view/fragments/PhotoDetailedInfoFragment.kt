@@ -38,6 +38,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Observer
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
@@ -122,4 +123,21 @@ class PhotoDetailedInfoFragment : Fragment() {
             }
         }.toTypedArray()
     }
+}
+
+@Composable
+fun PhotoDetailedFragmentCompose(photoId:String?){
+    val viewModel: PhotoDetailedInfoFragmentViewModel = hiltViewModel()
+    val photoId = photoId
+    photoId?.let { viewModel.getPhotoById(it)}
+    val isLocationShow = viewModel.isToShowLocation.collectAsState()
+    val detailedPhotoInfo by viewModel.detailedPhotoInfo. collectAsState()
+    PhotoDetailedScreen(
+        detailedPhotoInfo = detailedPhotoInfo,
+        { id, bool -> viewModel.changeLike(id,bool) } ,
+        isLocationShow.value,
+        { /*locationAction()*/ },
+        { /*downloadAction()*/ },
+        { /*shareAction()*/ })
+
 }

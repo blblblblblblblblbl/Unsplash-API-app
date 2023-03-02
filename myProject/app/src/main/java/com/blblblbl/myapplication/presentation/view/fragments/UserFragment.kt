@@ -101,7 +101,9 @@ class UserFragment : Fragment() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun UserFragmentTab(){
+fun UserFragmentTab(
+    photoOnClick:(Photo)->Unit
+){
     val viewModel : UserFragmentViewModel = hiltViewModel<UserFragmentViewModel>()
     viewModel.getUserInfo()
     val privateInfoState by viewModel.privateUserInfo.collectAsState()
@@ -127,7 +129,7 @@ fun UserFragmentTab(){
                 publicUserInfo = publicInfoState,
                 pagedPhotosFlow =  pagedPhotos,
                 { id, bool -> viewModel.changeLike(id,bool) },
-                {}
+                {photo-> photoOnClick(photo)}
             )
         }
     }

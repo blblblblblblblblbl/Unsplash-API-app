@@ -64,14 +64,15 @@ class CollectionsFragment : Fragment() {
                     Surface() {
                         PhotoCollectionsList(
                             photoCollections = viewModel.pagedCollections,
-                            onClick = {collection -> collectionOnClick(collection)}
+                            onClick = { collection -> collectionOnClick(collection) }
                         )
                     }
                 }
             }
         }
     }
-    fun collectionOnClick(photoCollection: PhotoCollection){
+
+    fun collectionOnClick(photoCollection: PhotoCollection) {
         val bundle = bundleOf()
         bundle.putString(CollectionPhotoListFragment.COLLECTION_ID_KEY, photoCollection.id)
         findNavController().navigate(
@@ -82,13 +83,15 @@ class CollectionsFragment : Fragment() {
 }
 
 @Composable
-fun CollectionsFragmentTab(){
-    val viewModel : CollectionsFragmentViewModel = hiltViewModel<CollectionsFragmentViewModel>()
+fun CollectionsFragmentTab(
+    collectionOnClick: (PhotoCollection) -> Unit
+) {
+    val viewModel: CollectionsFragmentViewModel = hiltViewModel<CollectionsFragmentViewModel>()
     viewModel.getCollections()
     Surface() {
         PhotoCollectionsList(
             photoCollections = viewModel.pagedCollections,
-            onClick = {}
+            onClick = { collection -> collectionOnClick(collection) }
         )
     }
 }

@@ -84,6 +84,8 @@ class PhotosFragment : Fragment() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhotosFragmentTab(
+    onSearchClicked: () -> Unit,
+    onPhotoClicked: (Photo) -> Unit
 ){
     val viewModel :PhotosFragmentViewModel = hiltViewModel<PhotosFragmentViewModel>()
     viewModel.getPhotosFeed()
@@ -91,6 +93,7 @@ fun PhotosFragmentTab(
         topBar = {
             PhotosTopBar(
                 onSearchClicked = {
+                    onSearchClicked()
                 }
             )
         },
@@ -98,7 +101,7 @@ fun PhotosFragmentTab(
             Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
                 PhotoGridView(
                     photos = viewModel.pagedPhotos,
-                    onClick = {photo -> {}},
+                    onClick = {photo -> onPhotoClicked(photo)},
                     changeLike = { id, bool -> viewModel.changeLike(id,bool) } )
             }
         }
