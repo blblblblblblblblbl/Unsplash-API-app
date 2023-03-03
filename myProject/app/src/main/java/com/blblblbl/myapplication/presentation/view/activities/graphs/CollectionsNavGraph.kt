@@ -44,9 +44,11 @@ fun NavGraphBuilder.collectionsGraph(navController: NavHostController) {
                 }
             )
         ) { navBackStackEntry ->
-            val photoId =
-                navBackStackEntry.arguments?.getString(PhotoDetailedInfoFragment.PHOTO_ID_KEY)
-            PhotoDetailedFragmentCompose(photoId = photoId)
+            val photoId = navBackStackEntry.arguments?.getString(PhotoDetailedInfoFragment.PHOTO_ID_KEY)
+            if (photoId != null) {
+                PhotoDetailedFragmentCompose(photoId = photoId)
+            }
+            else navController.popBackStack()
         }
     }
 }

@@ -38,7 +38,10 @@ fun NavGraphBuilder.mainFeedGraph(navController: NavHostController) {
             )
         ) {navBackStackEntry ->
             val photoId = navBackStackEntry.arguments?.getString(PhotoDetailedInfoFragment.PHOTO_ID_KEY)
-            PhotoDetailedFragmentCompose(photoId = photoId)
+            if (photoId != null) {
+                PhotoDetailedFragmentCompose(photoId = photoId)
+            }
+            else navController.popBackStack()
         }
     }
 }
