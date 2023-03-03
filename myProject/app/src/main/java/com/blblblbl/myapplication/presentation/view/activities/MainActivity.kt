@@ -98,16 +98,18 @@ fun AppScreen() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
         val currentDestination = currentBackStack?.destination
-        val currentScreen = appTabRowScreens.find { it.route == currentDestination?.route } ?: MyProfile
+        val currentScreen = appTabRowScreens.find { it.route == currentDestination?.route }
         Scaffold(
             bottomBar = {
-                AppTabRow(
-                    allScreens = appTabRowScreens,
-                    onTabSelected = { screen ->
-                        navController.navigateSingleTopTo(screen.route)
-                    },
-                    currentScreen = currentScreen
-                )
+                currentScreen?.let { currentScreen->
+                    AppTabRow(
+                        allScreens = appTabRowScreens,
+                        onTabSelected = { screen ->
+                            navController.navigateSingleTopTo(screen.route)
+                        },
+                        currentScreen = currentScreen
+                    )
+                }
             }
         ) { innerPadding ->
             AppNavHost(

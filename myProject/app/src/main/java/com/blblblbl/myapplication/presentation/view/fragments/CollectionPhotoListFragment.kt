@@ -95,10 +95,10 @@ fun CollectionPhotoListFragmentCompose(
 ){
     val viewModel :CollectionPhotoListViewModel = hiltViewModel()
     viewModel.getCollectionPhotos(collectionId.toString())
-    val pagedPhotos = viewModel.pagedPhotos.collectAsState()
-    Log.d("MyLog","${pagedPhotos.value}")
-    pagedPhotos.value?.let { imgFlow->
-        Surface() {
+    Surface() {
+        val pagedPhotos = viewModel.pagedPhotos.collectAsState()
+        Log.d("MyLog","CollectionPhotoListFragmentCompose recomposed")
+        pagedPhotos.value?.let { imgFlow->
             PhotoListView(
                 photos = imgFlow,
                 {photo -> photoOnClick(photo)},
@@ -106,5 +106,6 @@ fun CollectionPhotoListFragmentCompose(
             )
         }
     }
+
 
 }

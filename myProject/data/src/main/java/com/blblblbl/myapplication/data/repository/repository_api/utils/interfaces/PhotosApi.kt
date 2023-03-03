@@ -28,6 +28,7 @@ interface PhotosApi {
         @Path("id") id: String,
         @Header("Authorization") authHeader: String
     ): DetailedPhotoInfo
+    @Headers("mock:true")
     @GET("collections/{id}/photos")
     suspend fun getCollectionPhotos(
         @Path("id") id: String,
