@@ -10,7 +10,7 @@ import com.blblblbl.myapplication.domain.models.photos.Photo
 import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.blblblbl.myapplication.domain.usecase.*
-import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
+import com.blblblbl.myapplication.presentation.view.activities.MainActivity
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.Flow
@@ -38,7 +38,7 @@ class UserFragmentViewModel @Inject constructor(
         viewModelScope.launch{
 
             clearStorageUseCase.execute()
-            val intent = Intent(context, AuthActivity::class.java)
+            val intent = Intent(context, MainActivity::class.java)
             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
             context.startActivity(intent);
         }
