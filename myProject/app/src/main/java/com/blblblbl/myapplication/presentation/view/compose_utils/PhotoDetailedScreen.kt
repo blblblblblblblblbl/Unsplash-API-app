@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.presentation.view.compose_utils
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
@@ -20,11 +21,13 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
 import com.skydoves.landscapist.glide.GlideImage
+import kotlin.math.roundToInt
 
 
 @Composable
@@ -37,47 +40,40 @@ fun PhotoDetailedScreen(
     shareAction:()->Unit
 ){
     detailedPhotoInfo?.let {
-        Column(Modifier.verticalScroll(rememberScrollState())) {
-            DetailedPhotoView(detailedPhotoInfo = it,changeLike)
-            PhotoDescription(photo = it,isLocationShow,locationAction,downloadAction,shareAction)
+        Surface(modifier = Modifier.fillMaxSize()) {
+            Column(Modifier.verticalScroll(rememberScrollState())) {
+                DetailedPhotoView(detailedPhotoInfo = it)
+                PhotoDescription(photo = it,isLocationShow,locationAction,downloadAction,shareAction,changeLike)
+            }
         }
     }
 }
 
 @Composable
 fun DetailedPhotoView(
-    detailedPhotoInfo: DetailedPhotoInfo,
-    changeLike:(String,Boolean)->Unit
+    detailedPhotoInfo: DetailedPhotoInfo
 ){
-    val textSizeTotalLikes = 15.sp
-    val textSizeName = 15.sp
-    val textSizeUserName = 10.sp
-    var isLiked by remember { mutableStateOf(detailedPhotoInfo.likedByUser?:false) }
-    Surface(modifier = Modifier
+    BoxWithConstraints(modifier = Modifier
         .fillMaxWidth()
-        .height(IntrinsicSize.Max)
-        .padding(10.dp)) {
-        GlideImage(imageModel = {detailedPhotoInfo.urls?.regular},modifier = Modifier.fillMaxSize())
-        Column() {
-            Spacer(modifier = Modifier.weight(1f))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val avatar:String? = detailedPhotoInfo.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
-                Column(Modifier.padding(start = 5.dp)) {
-                    Text(text = "${detailedPhotoInfo.user?.name}", fontSize = textSizeName)
-                    Text(text = "@${detailedPhotoInfo.user?.username}", fontSize = textSizeUserName)
-                }
-                Spacer(modifier = Modifier.weight(1f))
-                Text(text = "${detailedPhotoInfo.likes}", fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
-                LikeButton(
-                    state = isLiked,
-                    onClick = {
-                        isLiked = !isLiked
-                        detailedPhotoInfo.id?.let { changeLike(it, isLiked)
-                        }
-                    }
-                )
-            }
+        .padding(10.dp))
+    {
+        val width = maxWidth
+        val height: Dp
+        if (detailedPhotoInfo.height!=null&&detailedPhotoInfo.width!=null){
+            height = (width.value * detailedPhotoInfo.height!! / detailedPhotoInfo.width!!).roundToInt().dp
+        }
+        else{
+            height = width
+        }
+        Surface(
+            modifier = Modifier
+                .width(width)
+                .height(height)
+                .padding(10.dp)
+        ) {
+            val bitmap = BlurHashDecoder.decode(detailedPhotoInfo.blurHash,50,50)
+            GlideImage(imageModel = {bitmap},Modifier.fillMaxSize())
+            GlideImage(imageModel = {detailedPhotoInfo.urls?.regular},modifier = Modifier.fillMaxSize())
         }
     }
 }
@@ -87,10 +83,36 @@ fun PhotoDescription(
     isLocationShow:Boolean,
     locationAction:()->Unit,
     downloadAction:()->Unit,
-    shareAction:()->Unit
+    shareAction:()->Unit,
+    changeLike:(String,Boolean)->Unit
 ){
     val textStyle = MaterialTheme.typography.bodyMedium
+    val textSizeTotalLikes = 15.sp
+    val textSizeName = 15.sp
+    val textSizeUserName = 10.sp
     Column(modifier = Modifier.padding(10.dp)) {
+
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            var isLiked by remember { mutableStateOf(photo.likedByUser?:false) }
+            val avatar:String? = photo.user?.profileImage?.large
+            GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape))
+            Column(Modifier.padding(start = 5.dp)) {
+                Text(text = "${photo.user?.name}", fontSize = textSizeName)
+                Text(text = "@${photo.user?.username}", fontSize = textSizeUserName)
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            Text(text = "${photo.likes}", fontSize = textSizeTotalLikes, textAlign = TextAlign.End)
+            LikeButton(
+                state = isLiked,
+                onClick = {
+                    isLiked = !isLiked
+                    photo.id?.let { changeLike(it, isLiked)
+                    }
+                }
+            )
+        }
+
+
         photo.location?.let { location->
             if (isLocationShow){
                 Row(verticalAlignment = Alignment.CenterVertically) {

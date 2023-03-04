@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.presentation.view.fragments
 
 import android.Manifest
+import android.content.Context
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
@@ -29,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.ComposeView
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
@@ -38,6 +40,7 @@ import androidx.compose.ui.unit.sp
 import androidx.core.app.ShareCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Observer
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
@@ -45,6 +48,8 @@ import com.blblblbl.myapplication.domain.models.photo_detailed.Location
 import com.blblblbl.myapplication.presentation.view.compose_utils.PhotoDetailedScreen
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.PhotoDetailedInfoFragmentViewModel
+import com.google.accompanist.permissions.ExperimentalPermissionsApi
+import com.google.accompanist.permissions.rememberMultiplePermissionsState
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.CoroutineScope
@@ -121,5 +126,55 @@ class PhotoDetailedInfoFragment : Fragment() {
                 add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
             }
         }.toTypedArray()
+    }
+}
+
+@OptIn(ExperimentalPermissionsApi::class)
+@Composable
+fun PhotoDetailedFragmentCompose(photoId:String){
+    val viewModel: PhotoDetailedInfoFragmentViewModel = hiltViewModel()
+
+    viewModel.getPhotoById(photoId)
+    val isLocationShow = viewModel.isToShowLocation.collectAsState()
+    val detailedPhotoInfo by viewModel.detailedPhotoInfo. collectAsState()
+    val context = LocalContext.current
+
+    val multiplePermissionsState = rememberMultiplePermissionsState(
+        listOf(
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE,
+        )
+    )
+
+    PhotoDetailedScreen(
+        detailedPhotoInfo = detailedPhotoInfo,
+        { id, bool -> viewModel.changeLike(id,bool) } ,
+        isLocationShow.value,
+        locationAction = {
+            locationAction(context,viewModel.detailedPhotoInfo.value?.location) },
+        downloadAction = {
+            multiplePermissionsState.launchMultiplePermissionRequest()
+            if (multiplePermissionsState.allPermissionsGranted) viewModel.download()
+        },
+        shareAction = { shareAction(context, photoId = photoId) })
+
+}
+fun shareAction(context: Context, photoId: String){
+    ShareCompat.IntentBuilder(context)
+        .setType("text/plain")
+        .setChooserTitle("Share URL")
+        .setText("https://unsplash.com/photos/${photoId}")
+        .startChooser()
+}
+
+fun locationAction(context: Context,location: Location?){
+    val latitude = location?.position?.latitude
+    val longitude  = location?.position?.longitude
+    if (latitude!=null &&longitude!=null){
+        val intent = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("geo:$latitude,$longitude")
+        )
+        context.startActivity(intent)
     }
 }

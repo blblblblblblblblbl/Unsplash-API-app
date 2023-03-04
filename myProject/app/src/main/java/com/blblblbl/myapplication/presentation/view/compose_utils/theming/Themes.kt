@@ -15,6 +15,7 @@ private val LightColors = lightColorScheme(
     tertiary = PastelPink,
     background = PastelPink,
     surface = HalfBacked,
+    onSurface = Color.White,
     error = Red800
 )
 

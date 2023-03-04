@@ -29,6 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -42,6 +43,8 @@ import com.blblblbl.myapplication.presentation.view.compose_utils.LoadingView
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.CollectionsFragmentViewModel
 import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
+import com.blblblbl.myapplication.presentation.view.compose_utils.PhotoCollectionsList
+import com.blblblbl.myapplication.presentation.viewModel.UserFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.Flow
@@ -59,144 +62,36 @@ class CollectionsFragment : Fragment() {
             setContent {
                 UnsplashTheme() {
                     Surface() {
-                        PhotoCollectionsList(photoCollections = viewModel.pagedCollections)
+                        PhotoCollectionsList(
+                            photoCollections = viewModel.pagedCollections,
+                            onClick = { collection -> collectionOnClick(collection) }
+                        )
                     }
                 }
             }
         }
     }
-    @Composable
-    fun PhotoCollectionsList(photoCollections: Flow<PagingData<PhotoCollection>>) {
-        val lazyPhotosItems: LazyPagingItems<PhotoCollection> = photoCollections.collectAsLazyPagingItems()
-        val listState = rememberLazyListState()
 
-        LazyColumn(
-            state = listState,
-            verticalArrangement = Arrangement.spacedBy(10.dp),
-            modifier = Modifier.padding(10.dp)
-        ){
-            items(lazyPhotosItems){item->
-                if (item != null) {
-                    Surface(modifier = Modifier
-                        .fillMaxWidth()
-                        .height(200.dp)
-                        .clickable {
-                            val bundle = bundleOf()
-                            bundle.putString(CollectionPhotoListFragment.COLLECTION_ID_KEY, item.id)
-                            findNavController().navigate(
-                                R.id.action_collectionsFragment_to_collectionPhotoListFragment,
-                                bundle
-                            )
-                        },
-                        shape = MaterialTheme.shapes.large
-                    ) {
-                        PhotoCollectionItem(photoCollection = item)
-                    }
-                }
-            }
-        }
-
-        val showButton by remember {
-            derivedStateOf {
-                listState.firstVisibleItemIndex > 0
-            }
-        }
-        AnimatedVisibility (
-            showButton,
-            enter = slideInHorizontally( initialOffsetX = {fullWidth -> fullWidth }),
-            exit = slideOutHorizontally( targetOffsetX = {fullWidth -> fullWidth })
-        ) {
-            Box(Modifier.fillMaxSize()) {
-                val coroutineScope = rememberCoroutineScope()
-                FloatingActionButton(
-                    modifier = Modifier
-                        .align(Alignment.BottomEnd)
-                        //.navigationBarsPadding()
-                        .padding(bottom = 8.dp, end = 8.dp),
-                    shape = CircleShape,
-                    onClick = {
-                        coroutineScope.launch {
-                            listState.animateScrollToItem(0)
-                        }
-                    }
-                ) {
-                    androidx.compose.material.Text("Up!")
-                }
-            }
-        }
-
-
-        lazyPhotosItems.apply {
-            when {
-                loadState.refresh is LoadState.Loading -> {
-                    LoadingView(modifier = Modifier.fillMaxSize())
-                }
-                loadState.append is LoadState.Loading -> {
-                    LoadingItem()
-                }
-                loadState.refresh is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.refresh as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        modifier = Modifier.fillMaxSize(),
-                        onClickRetry = { retry() }
-                    )
-
-                }
-                loadState.append is LoadState.Error -> {
-                    val e = lazyPhotosItems.loadState.append as LoadState.Error
-
-                    ErrorItem(
-                        message = e.error.localizedMessage!!,
-                        onClickRetry = { retry() }
-                    )
-
-                }
-            }
-        }
-    }
-    @Preview
-    @Composable
-    fun ItemPreview(){
-        var pc = PhotoCollection()
-        pc.coverPhoto?.urls?.small = "https://images.unsplash.com/photo-1449614115178-cb924f730780?ixlib=rb-0.3.5&q=80&fm=jpg&crop=entropy&w=400&fit=max"
-        pc.totalPhotos = 200
-        pc.title = "Title"
-        pc.user?.name = "firstname lastname"
-        pc.user?.username = "username"
-        pc.user?.profileImage?.large = "https://images.unsplash.com/profile-1450003783594-db47c765cea3?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=128&w=128"
-        PhotoCollectionItem(pc)
-    }
-    @Composable
-    fun PhotoCollectionItem(photoCollection: PhotoCollection, modifier: Modifier = Modifier){
-        val imageUrl:String? = photoCollection.coverPhoto?.urls?.small
-        com.skydoves.landscapist.glide.GlideImage(imageModel = { imageUrl }, modifier = Modifier.fillMaxSize())
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-                .background(Color.Black.copy(alpha = 0.5f))
+    fun collectionOnClick(photoCollection: PhotoCollection) {
+        val bundle = bundleOf()
+        bundle.putString(CollectionPhotoListFragment.COLLECTION_ID_KEY, photoCollection.id)
+        findNavController().navigate(
+            R.id.action_collectionsFragment_to_collectionPhotoListFragment,
+            bundle
         )
-        Column(horizontalAlignment = Alignment.Start, modifier = Modifier.padding(start = 4.dp, bottom = 4.dp)) {
-            val textSizeTitle = 30.sp
-            val textSizeTotalPhotos = 20.sp
-            val textSizeName = 15.sp
-            val textSizeUserName = 10.sp
-            Text(text = "${photoCollection.totalPhotos} ${stringResource(id = R.string.collection_total_photos)}", fontSize = textSizeTotalPhotos)
-            Text(text = "${photoCollection.title}", fontSize = textSizeTitle, fontWeight = FontWeight.Bold)
-            Spacer(modifier = Modifier.weight(1f))
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                val avatar:String? = photoCollection.user?.profileImage?.large
-                GlideImage(imageModel = {avatar}, modifier = Modifier.clip(CircleShape).border(width = 2.dp,color = MaterialTheme.colorScheme.primary, shape = CircleShape))
-                Column(Modifier.padding(start = 5.dp)) {
-                    Text(text = "${photoCollection.user?.name}", fontSize = textSizeName)
-                    Text(text = "@${photoCollection.user?.username}", fontSize = textSizeUserName)
-                }
-            }
-
-        }
-
     }
+}
 
-
+@Composable
+fun CollectionsFragmentTab(
+    collectionOnClick: (PhotoCollection) -> Unit
+) {
+    val viewModel: CollectionsFragmentViewModel = hiltViewModel<CollectionsFragmentViewModel>()
+    viewModel.getCollections()
+    Surface() {
+        PhotoCollectionsList(
+            photoCollections = viewModel.pagedCollections,
+            onClick = { collection -> collectionOnClick(collection) }
+        )
+    }
 }

@@ -20,6 +20,8 @@ import androidx.compose.ui.platform.ComposeView
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.fragment.findNavController
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.domain.models.photos.Photo
@@ -76,40 +78,59 @@ class PhotosFragment : Fragment() {
         )
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun PhotosTopBar(
-        onSearchClicked: () -> Unit
-    ){
-        TopAppBar(
-            title = {
-                Text(
-                    text = "search photo",
-                    color = Color.White
-                )
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary
-            ),
-            actions = {
-                IconButton(onClick = onSearchClicked) {
-                    Icon(
-                        imageVector = Icons.Default.Search,
-                        contentDescription = "Search Icon",
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PhotosFragmentTab(
+    onSearchClicked: () -> Unit,
+    onPhotoClicked: (Photo) -> Unit
+){
+    val viewModel :PhotosFragmentViewModel = hiltViewModel<PhotosFragmentViewModel>()
+    viewModel.getPhotosFeed()
+    Scaffold(
+        topBar = {
+            PhotosTopBar(
+                onSearchClicked = {
+                    onSearchClicked()
                 }
+            )
+        },
+        content = {
+            Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+                PhotoGridView(
+                    photos = viewModel.pagedPhotos,
+                    onClick = {photo -> onPhotoClicked(photo)},
+                    changeLike = { id, bool -> viewModel.changeLike(id,bool) } )
             }
-        )
-    }
+        }
+    )
+}
 
-
-
-
-
-
-
-
-
-
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun PhotosTopBar(
+    onSearchClicked: () -> Unit
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = "search photo",
+                color = Color.White
+            )
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary
+        ),
+        actions = {
+            IconButton(onClick = onSearchClicked) {
+                Icon(
+                    imageVector = Icons.Default.Search,
+                    contentDescription = "Search Icon",
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+    )
 }

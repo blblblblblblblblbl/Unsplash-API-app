@@ -4,10 +4,7 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
+import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -36,33 +33,34 @@ fun OnBoardingScreen(
     )
     val pagerState = rememberPagerState()
     val coroutineScope = rememberCoroutineScope()
+    Surface() {
+        Column(modifier = Modifier.fillMaxSize()) {
+            HorizontalPager(
+                modifier = Modifier.weight(10f),
+                count = OnBoardingPage.ONBOARDING_PAGES_COUNT,
+                state = pagerState,
+                verticalAlignment = Alignment.Bottom
+            ) { position ->
+                PagerScreen(onBoardingPage = pages[position])
+            }
+            HorizontalPagerIndicator(
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .weight(1f),
+                pagerState = pagerState
+            )
+            SkipButton(modifier = Modifier.weight(1f),
+                pagerState = pagerState ) {
 
-    Column(modifier = Modifier.fillMaxSize()) {
-        HorizontalPager(
-            modifier = Modifier.weight(10f),
-            count = OnBoardingPage.ONBOARDING_PAGES_COUNT,
-            state = pagerState,
-            verticalAlignment = Alignment.Bottom
-        ) { position ->
-            PagerScreen(onBoardingPage = pages[position])
-        }
-        HorizontalPagerIndicator(
-            modifier = Modifier
-                .align(Alignment.CenterHorizontally)
-                .weight(1f),
-            pagerState = pagerState
-        )
-        SkipButton(modifier = Modifier.weight(1f),
-            pagerState = pagerState ) {
+                coroutineScope.launch { pagerState.animateScrollToPage(3) }
 
-            coroutineScope.launch { pagerState.animateScrollToPage(3) }
-
-        }
-        FinishButton(
-            modifier = Modifier.weight(1f),
-            pagerState = pagerState
-        ) {
-            logInOnClick()
+            }
+            FinishButton(
+                modifier = Modifier.weight(1f),
+                pagerState = pagerState
+            ) {
+                logInOnClick()
+            }
         }
     }
 }

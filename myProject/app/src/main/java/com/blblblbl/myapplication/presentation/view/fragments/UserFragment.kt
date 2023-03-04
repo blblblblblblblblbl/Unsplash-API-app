@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.paging.compose.LazyPagingItems
 import androidx.paging.compose.collectAsLazyPagingItems
@@ -38,6 +39,7 @@ import com.blblblbl.myapplication.presentation.view.compose_utils.theming.Unspla
 import com.blblblbl.myapplication.presentation.viewModel.UserFragmentViewModel
 import com.blblblbl.myapplication.domain.models.user_info.UserInfo
 import com.blblblbl.myapplication.presentation.view.compose_utils.MeInfoScreen
+import com.blblblbl.myapplication.presentation.viewModel.PhotosFragmentViewModel
 import com.skydoves.landscapist.glide.GlideImage
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.StateFlow
@@ -65,7 +67,10 @@ class UserFragment : Fragment() {
                         }
                     ) {
                         if (openDialog.value) {
-                            LogOutDialog(openDialog = openDialog)
+                            LogOutDialog(
+                                openDialog = openDialog,
+                                logoutOnClick = { viewModel.logout()
+                                })
                         }
                         Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
                             MeInfoScreen(
@@ -81,33 +86,7 @@ class UserFragment : Fragment() {
             }
         }
     }
-    @Composable
-    fun LogOutDialog(openDialog:MutableState<Boolean>){
-        AlertDialog(
-            onDismissRequest = {
-                openDialog.value = false
-            },
-            title = { Text(text = stringResource(id = R.string.action_confirmation)) },
-            text = { Text(stringResource(id = R.string.logout_confirmation)) },
-            confirmButton = {
-                Button(
-                    onClick = {
-                        viewModel.logout()
-                        openDialog.value = false },
-                    content = {
-                        Text(stringResource(id = R.string.logout))
-                    }
-                )
-            },
-            dismissButton = {
-                Button(
-                    onClick = { openDialog.value = false }
-                ) {
-                    Text(stringResource(id = R.string.cancel))
-                }
-            }
-        )
-    }
+
     fun openDetailed(photo:Photo){
         val bundle = bundleOf()
         bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
@@ -117,32 +96,100 @@ class UserFragment : Fragment() {
         )
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    @Composable
-    fun UserTopBar(
-        onLogOutClicked: () -> Unit
-    ){
-        TopAppBar(
-            title = {
-                Text(
-                    text = stringResource(id = R.string.user),
-                    color = Color.White
-                )
-            },
-            colors = TopAppBarDefaults.smallTopAppBarColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                actionIconContentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            actions = {
-                IconButton(onClick = onLogOutClicked) {
-                    Icon(
-                        imageVector = Icons.Default.ExitToApp,
-                        contentDescription = stringResource(id = R.string.logout_icon_description)
-                    )
-                }
-            }
-        )
+
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UserFragmentTab(
+    photoOnClick:(Photo)->Unit
+){
+    val viewModel : UserFragmentViewModel = hiltViewModel<UserFragmentViewModel>()
+    viewModel.getUserInfo()
+    val privateInfoState by viewModel.privateUserInfo.collectAsState()
+    val publicInfoState by viewModel.publicUserInfo.collectAsState()
+    val pagedPhotos by viewModel.pagedPhotos.collectAsState()
+
+    val openDialog = remember { mutableStateOf(false) }
+    Scaffold(
+        containerColor = MaterialTheme.colorScheme.surface,
+        topBar = {
+            UserTopBar(onLogOutClicked = { openDialog.value = true })
+        }
+    ) {
+        if (openDialog.value) {
+            LogOutDialog(
+                openDialog = openDialog,
+                logoutOnClick = { viewModel.logout()
+                })
+        }
+        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
+            MeInfoScreen(
+                privateUserInfo = privateInfoState,
+                publicUserInfo = publicInfoState,
+                pagedPhotosFlow =  pagedPhotos,
+                { id, bool -> viewModel.changeLike(id,bool) },
+                {photo-> photoOnClick(photo)}
+            )
+        }
     }
+}
 
 
+@Composable
+fun LogOutDialog(
+    openDialog:MutableState<Boolean>,
+    logoutOnClick:()->Unit
+){
+    AlertDialog(
+        onDismissRequest = {
+            openDialog.value = false
+        },
+        title = { Text(text = stringResource(id = R.string.action_confirmation)) },
+        text = { Text(stringResource(id = R.string.logout_confirmation)) },
+        confirmButton = {
+            Button(
+                onClick = {
+                    logoutOnClick()
+                    openDialog.value = false },
+                content = {
+                    Text(stringResource(id = R.string.logout))
+                }
+            )
+        },
+        dismissButton = {
+            Button(
+                onClick = { openDialog.value = false }
+            ) {
+                Text(stringResource(id = R.string.cancel))
+            }
+        }
+    )
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun UserTopBar(
+    onLogOutClicked: () -> Unit
+){
+    TopAppBar(
+        title = {
+            Text(
+                text = stringResource(id = R.string.user),
+                color = Color.White
+            )
+        },
+        colors = TopAppBarDefaults.smallTopAppBarColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+        ),
+        actions = {
+            IconButton(onClick = onLogOutClicked) {
+                Icon(
+                    imageVector = Icons.Default.ExitToApp,
+                    contentDescription = stringResource(id = R.string.logout_icon_description)
+                )
+            }
+        }
+    )
 }

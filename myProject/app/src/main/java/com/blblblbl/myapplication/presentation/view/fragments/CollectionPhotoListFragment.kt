@@ -1,6 +1,7 @@
 package com.blblblbl.myapplication.presentation.view.fragments
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,6 +25,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.fragment.findNavController
 import androidx.paging.LoadState
 import androidx.paging.PagingData
@@ -84,5 +86,26 @@ class CollectionPhotoListFragment : Fragment() {
     companion object{
         const val COLLECTION_ID_KEY = "collectionIdKey"
     }
+}
+
+@Composable
+fun CollectionPhotoListFragmentCompose(
+    collectionId:String?,
+    photoOnClick: (Photo)->Unit
+){
+    val viewModel :CollectionPhotoListViewModel = hiltViewModel()
+    viewModel.getCollectionPhotos(collectionId.toString())
+    Surface() {
+        val pagedPhotos = viewModel.pagedPhotos.collectAsState()
+        Log.d("MyLog","CollectionPhotoListFragmentCompose recomposed")
+        pagedPhotos.value?.let { imgFlow->
+            PhotoListView(
+                photos = imgFlow,
+                {photo -> photoOnClick(photo)},
+                { id, bool -> viewModel.changeLike(id,bool) }
+            )
+        }
+    }
+
 
 }
