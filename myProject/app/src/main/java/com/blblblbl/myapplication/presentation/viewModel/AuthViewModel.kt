@@ -6,7 +6,6 @@ import android.content.Intent
 import android.net.Uri
 import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
-import com.blblblbl.myapplication.presentation.view.activities.AuthActivity
 import com.blblblbl.myapplication.presentation.view.activities.MainActivity
 import com.blblblbl.myapplication.domain.usecase.GetSavedBearerTokenUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -46,7 +45,7 @@ class AuthViewModel @Inject constructor(
         authService.performAuthorizationRequest(
             authRequest,
             PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
-            PendingIntent.getActivity(context, 0, Intent(context, AuthActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
+            PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE))
     }
 
     companion object{

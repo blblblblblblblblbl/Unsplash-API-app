@@ -20,7 +20,7 @@
             android:authorities="${applicationId}.androidx-startup"
             tools:node="remove">
         </provider>
-        <activity
+        <!--<activity
             android:name=".presentation.view.activities.AuthActivity"
             android:exported="true">
             <intent-filter>
@@ -28,10 +28,15 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-        </activity>
+        </activity>-->
         <activity
             android:name=".presentation.view.activities.MainActivity"
             android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />

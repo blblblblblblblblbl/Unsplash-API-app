@@ -6,8 +6,10 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.ComposeView
 import androidx.fragment.app.viewModels
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.blblblbl.myapplication.presentation.view.auth.screen.OnBoardingScreen
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
 import com.blblblbl.myapplication.presentation.viewModel.AuthViewModel
@@ -34,5 +36,13 @@ class AuthFragment : Fragment() {
             }
         }
     }
+}
 
+@OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
+@Composable
+fun AuthFragmentCompose(){
+    val viewModel :AuthViewModel = hiltViewModel()
+    OnBoardingScreen(
+        logInOnClick = { viewModel.auth() }
+    )
 }
