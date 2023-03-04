@@ -6,6 +6,7 @@ import androidx.arch.core.executor.TaskExecutor
 import androidx.core.net.toUri
 import com.blblblbl.myapplication.MainDispatcherRule
 import com.blblblbl.myapplication.domain.usecase.GetBearerTokenUseCase
+import com.blblblbl.myapplication.domain.usecase.GetSavedBearerTokenUseCase
 import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -21,6 +22,7 @@ import org.robolectric.RobolectricTestRunner
 @RunWith(RobolectricTestRunner::class)
 class MainViewModelTest {
     val getBearerTokenUseCase = mock<GetBearerTokenUseCase>()
+    val getSavedBearerTokenUseCase = mock<GetSavedBearerTokenUseCase>()
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
     lateinit var viewModel: MainViewModel
@@ -31,7 +33,10 @@ class MainViewModelTest {
     }
     @Before
     fun beforeEach(){
-        viewModel = MainViewModel(getBearerTokenUseCase)
+        viewModel = MainViewModel(
+            getBearerTokenUseCase,
+            getSavedBearerTokenUseCase
+        )
         ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor(){
             override fun executeOnDiskIO(runnable: Runnable) {
                 runnable.run()
