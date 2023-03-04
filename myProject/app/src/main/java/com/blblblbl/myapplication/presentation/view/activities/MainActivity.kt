@@ -31,10 +31,7 @@ import com.blblblbl.myapplication.presentation.view.activities.graphs.mainFeedGr
 import com.blblblbl.myapplication.presentation.view.activities.graphs.myProfileGraph
 import com.blblblbl.myapplication.presentation.view.compose_utils.MeInfoScreen
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
-import com.blblblbl.myapplication.presentation.view.fragments.CollectionsFragmentTab
-import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment
-import com.blblblbl.myapplication.presentation.view.fragments.PhotosFragmentTab
-import com.blblblbl.myapplication.presentation.view.fragments.UserFragmentTab
+import com.blblblbl.myapplication.presentation.view.fragments.*
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -65,6 +62,9 @@ class MainActivity : AppCompatActivity() {
                             val navController = navHostFragment.navController
                             binding.bottomNav.setupWithNavController(navController)
                             setContentView(binding.root)
+                            /*setContent {
+                                AppScreen()
+                            }*/
                         }
                     }
                 }
@@ -80,6 +80,9 @@ class MainActivity : AppCompatActivity() {
             navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment, bundle)
             binding.bottomNav.setupWithNavController(navController)
             setContentView(binding.root)
+            /*setContent {
+                PhotoDetailedFragmentCompose(photoId = id)
+            }*/
         } else {
             /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
             val navController = navHostFragment.navController

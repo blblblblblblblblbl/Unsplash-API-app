@@ -1,5 +1,6 @@
 package com.blblblbl.myapplication.presentation.view.activities
 
+import android.util.Log
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.LinearEasing
@@ -9,10 +10,11 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Icon
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -35,11 +37,14 @@ fun AppTabRow(
     Surface(
         Modifier
             .height(TabHeight)
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        color = MaterialTheme.colorScheme.primary
     ) {
         Row(
-            modifier = Modifier.selectableGroup().fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround
+            modifier = Modifier
+                .selectableGroup()
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceAround,
         ) {
             allScreens.forEach { screen ->
                 AppTab(
@@ -51,6 +56,7 @@ fun AppTabRow(
             }
         }
     }
+
 }
 
 @Composable
@@ -60,7 +66,7 @@ private fun AppTab(
     onSelected: () -> Unit,
     selected: Boolean
 ) {
-    val color = MaterialTheme.colors.onSurface
+    val color = MaterialTheme.colorScheme.onSurface
     val durationMillis = if (selected) TabFadeInAnimationDuration else TabFadeOutAnimationDuration
     val animSpec = remember {
         tween<Color>(
@@ -85,8 +91,8 @@ private fun AppTab(
                 interactionSource = remember { MutableInteractionSource() },
                 indication = rememberRipple(
                     bounded = false,
-                    radius = Dp.Unspecified,
-                    color = Color.Unspecified
+                    radius = Dp.Unspecified
+                    //color = Color.Unspecified
                 )
             )
             .clearAndSetSemantics { contentDescription = text }
