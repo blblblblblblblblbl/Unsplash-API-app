@@ -56,10 +56,10 @@ This android application works with unspash api
 
 ## Screenshots
 
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/onboarding.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/mainfeed.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/upzoomed.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/onboarding.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/mainfeed.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/upzoomed.gif" width = 240>
 
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/likezoomed.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/detailedphoto.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/downloadphoto.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/likezoomed.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/detailedphoto.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/downloadphoto.gif" width = 240>
 
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/search.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/profile.gif" width = 300><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/logout.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/search.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/profile.gif" width = 240><img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/logout.gif" width = 240>
 
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/collections.gif" width = 300> 
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/collections.gif" width = 240> 
