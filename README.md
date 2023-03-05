@@ -55,7 +55,8 @@ This android application works with unspash api
 
 
 ## Screenshots
-now design differs from this(it's much cooler), I will update gifs soon
 
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(0).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(1).gif" width = 300>
-<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(2).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(3).gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/XRecorder_29012023_021329(4).gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/onboarding.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/mainfeed.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/upzoomed.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/likezoomed.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/detailedphoto.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/downloadphoto.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/search.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/profile.gif" width = 300> <img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/logout.gif" width = 300>
+<img src="https://github.com/blblblblblblblblbl/Unsplash-API-app/blob/main/gifs/collections.gif" width = 300> 
