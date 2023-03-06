@@ -10,6 +10,6 @@ import dagger.hilt.components.SingletonComponent
 @InstallIn(SingletonComponent::class)
 class DetailedPhotoRetrofitModule {
     @Provides
-    fun provideUserApi(retrofitCreator: RetrofitCreator): DetailedPhotoApi =
+    fun provideDetailedPhotoApi(retrofitCreator: RetrofitCreator): DetailedPhotoApi =
         retrofitCreator.createRetrofit().create(DetailedPhotoApi::class.java)
 }

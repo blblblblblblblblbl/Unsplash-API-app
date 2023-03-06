@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="collections_fragment_title">collections</string>
+    <string name="collection_total_photos">photos</string>
+</resources>

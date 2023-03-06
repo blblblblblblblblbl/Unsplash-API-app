@@ -1,21 +1,21 @@
 package com.blblblbl.myapplication.presentation.view.activities.graphs
 
-import androidx.compose.material3.Text
+
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import com.blblblbl.collections.ui.CollectionPhotoListFragment
+import com.blblblbl.collections.ui.CollectionPhotoListFragmentCompose
+import com.blblblbl.collections.ui.CollectionsFragmentCompose
 import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
 import com.blblblbl.detailedphoto.ui.PhotoDetailedInfoFragment
 import com.blblblbl.myapplication.presentation.view.activities.Collections
 import com.blblblbl.myapplication.presentation.view.activities.graphs.CollectionsNav.DETAILED_PHOTO_ROUTE
 import com.blblblbl.myapplication.presentation.view.activities.graphs.CollectionsNav.PHOTO_LIST_ROUTE
-import com.blblblbl.myapplication.presentation.view.fragments.CollectionPhotoListFragment
-import com.blblblbl.myapplication.presentation.view.fragments.CollectionPhotoListFragmentCompose
-import com.blblblbl.myapplication.presentation.view.fragments.CollectionsFragmentTab
 
 fun NavGraphBuilder.collectionsGraph(navController: NavHostController) {
     navigation(startDestination = Collections.route, route = "CollectionsNested") {
         composable(route = Collections.route) {
-            CollectionsFragmentTab(
+            CollectionsFragmentCompose(
                 collectionOnClick = {collection->
                     navController.navigate("${PHOTO_LIST_ROUTE}/${collection.id}")
                 }
