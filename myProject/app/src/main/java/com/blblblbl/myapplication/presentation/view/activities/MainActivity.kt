@@ -1,5 +1,7 @@
 package com.blblblbl.myapplication.presentation.view.activities
 
+import android.app.PendingIntent
+import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -25,6 +27,7 @@ import androidx.navigation.compose.rememberNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.navigation
 import androidx.navigation.ui.setupWithNavController
+import com.blblblbl.auth.ui.AuthFragmentCompose
 import com.blblblbl.myapplication.R
 import com.blblblbl.myapplication.databinding.ActivityMainBinding
 import com.blblblbl.myapplication.presentation.view.activities.graphs.collectionsGraph
@@ -32,7 +35,7 @@ import com.blblblbl.myapplication.presentation.view.activities.graphs.mainFeedGr
 import com.blblblbl.myapplication.presentation.view.activities.graphs.myProfileGraph
 import com.blblblbl.myapplication.presentation.view.compose_utils.MeInfoScreen
 import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
-import com.blblblbl.myapplication.presentation.view.fragments.*
+import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedFragmentCompose
 import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.delay
@@ -47,64 +50,66 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
-
-            Log.d("MyLog","checkOnSavedToken(): true")
-            val redirectUri: Uri? = intent.data
-            if (redirectUri.toString()
-                    .startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")
-            ) {
-                viewModel.saveAuthToken(redirectUri!!)
-                lifecycleScope.launchWhenCreated {
-                    viewModel.authSuccess.collect {
-                        it?.let {
-                            if (it) {
-                                /*val navHostFragment =
-                                    supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                                val navController = navHostFragment.navController
-                                binding.bottomNav.setupWithNavController(navController)
-                                setContentView(binding.root)*/
-                                setContent {
-                                    AppScreen()
-                                }
+        Log.d("MyLog","checkOnSavedToken(): true")
+        val redirectUri: Uri? = intent.data
+        if (redirectUri.toString()
+                .startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")
+        ) {
+            viewModel.saveAuthToken(redirectUri!!)
+            lifecycleScope.launchWhenCreated {
+                viewModel.authSuccess.collect {
+                    it?.let {
+                        if (it) {
+                            /*val navHostFragment =
+                                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+                            val navController = navHostFragment.navController
+                            binding.bottomNav.setupWithNavController(navController)
+                            setContentView(binding.root)*/
+                            setContent {
+                                AppScreen()
                             }
                         }
                     }
                 }
-            } else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
-                val bundle = bundleOf()
-                val start = "https://unsplash.com/photos/".length
-                var id = redirectUri.toString().substring(start, redirectUri.toString().length)
-                /*bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
-                val navHostFragment =
-                    supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                val navController = navHostFragment.navController
-                navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment, bundle)
-                binding.bottomNav.setupWithNavController(navController)
-                setContentView(binding.root)*/
-                setContent {
-                    PhotoDetailedFragmentCompose(photoId = id)
-                }
-            } else {
-                /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                val navController = navHostFragment.navController
-                binding.bottomNav.setupWithNavController(navController)
-                setContentView(binding.root)*/
-                if(viewModel.checkOnSavedToken()){
-                    setContent {
-                        AppScreen()
-                    }
-                }
-
-                else{
-                    setContent {
-                        UnsplashTheme() {
-                            AuthFragmentCompose()
-                        }
-                    }
-                }
-
             }
+        } else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
+            val bundle = bundleOf()
+            val start = "https://unsplash.com/photos/".length
+            var id = redirectUri.toString().substring(start, redirectUri.toString().length)
+            /*bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
+            val navHostFragment =
+                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment, bundle)
+            binding.bottomNav.setupWithNavController(navController)
+            setContentView(binding.root)*/
+            setContent {
+                PhotoDetailedFragmentCompose(photoId = id)
+            }
+        } else {
+            /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
+            val navController = navHostFragment.navController
+            binding.bottomNav.setupWithNavController(navController)
+            setContentView(binding.root)*/
+            if(viewModel.checkOnSavedToken()){
+                setContent {
+                    AppScreen()
+                }
+            }
+
+            else{
+                setContent {
+                    UnsplashTheme() {
+                        AuthFragmentCompose(
+                            PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
+                            PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+                        )
+                    }
+                }
+            }
+
         }
+    }
 
 }
 

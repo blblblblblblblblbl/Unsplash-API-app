@@ -25,11 +25,4 @@
     <string name="download_icon_description">download icon</string>
     <string name="like_icon_description">like icon</string>
     <string name="try_again">try again</string>
-    <string name="onboarding">onboarding</string>
-    <string name="log_in">log in</string>
-    <string name="onboarding1">look at photos</string>
-    <string name="onboarding2">look at collections</string>
-    <string name="onboarding3">open photo</string>
-    <string name="onboarding4">search photos</string>
-    <string name="skip">skip</string>
 </resources>

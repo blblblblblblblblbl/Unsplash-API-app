@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.presentation.view.auth.screen
+package com.blblblbl.auth.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
@@ -15,8 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.blblblbl.myapplication.R
-import com.blblblbl.myapplication.presentation.view.auth.utils.OnBoardingPage
+import com.blblblbl.auth.R
 import com.google.accompanist.pager.*
 import kotlinx.coroutines.launch
 

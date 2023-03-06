@@ -1,7 +1,7 @@
-package com.blblblbl.myapplication.presentation.view.auth.utils
+package com.blblblbl.auth.ui
 
 import androidx.annotation.DrawableRes
-import com.blblblbl.myapplication.R
+import com.blblblbl.auth.R
 
 sealed class OnBoardingPage(
     @DrawableRes
