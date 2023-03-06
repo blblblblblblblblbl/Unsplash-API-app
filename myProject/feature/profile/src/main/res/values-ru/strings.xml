@@ -1,19 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="photos_fragment_title">Фотографии</string>
-    <string name="collections_fragment_title">Коллекции</string>
     <string name="user_fragment_title">Пользователь</string>
-    <string name="app_name">Unfold</string>
-    <string name="hello_blank_fragment">привет пустой фрагмент</string>
-    <string name="collection_total_photos">фотографий</string>
-    <string name="made_with_camera">Сделано с</string>
-    <string name="camera_Model">Модель</string>
-    <string name="exposure">Экспозиция</string>
-    <string name="aperture">Апертура</string>
-    <string name="focal_length">Фокусное расстояние</string>
-    <string name="iso">ISO</string>
-    <string name="about">Об</string>
-    <string name="download">Скачать</string>
     <string name="action_confirmation">Подтверждение действия</string>
     <string name="logout_confirmation">Вы действительно хотите выйти?</string>
     <string name="logout">выйти</string>
