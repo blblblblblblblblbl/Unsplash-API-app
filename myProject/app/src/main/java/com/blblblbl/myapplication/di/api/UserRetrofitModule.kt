@@ -1,7 +1,6 @@
 package com.blblblbl.myapplication.di.api
 
 import com.blblblbl.profile.data.network.UserApi
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn

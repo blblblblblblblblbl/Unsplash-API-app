@@ -18,6 +18,5 @@ abstract class RepositoryModule{
     abstract fun bindUserDataSource(userDataSource: UserDataSourceImpl): UserDataSource
     @Binds
     abstract fun bindPersistentStorage(persistentStorageImpl: PersistentStorageImpl): PersistentStorage
-    @Binds
-    abstract fun bindRepository(userRepositoryImpl: UserRepositoryImpl): UserRepository
+
 }

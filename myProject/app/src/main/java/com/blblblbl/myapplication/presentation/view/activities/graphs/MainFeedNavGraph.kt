@@ -3,13 +3,11 @@ package com.blblblbl.myapplication.presentation.view.activities.graphs
 import androidx.compose.material3.Text
 import androidx.navigation.*
 import androidx.navigation.compose.composable
-import com.blblblbl.myapplication.presentation.view.activities.DetailedPhoto
+import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
+import com.blblblbl.detailedphoto.ui.PhotoDetailedInfoFragment
 import com.blblblbl.myapplication.presentation.view.activities.MainFeed
-import com.blblblbl.myapplication.presentation.view.activities.Search
 import com.blblblbl.myapplication.presentation.view.activities.graphs.MainFeedNav.DETAILED_PHOTO_ROUTE
 import com.blblblbl.myapplication.presentation.view.activities.graphs.MainFeedNav.SEARCH_ROUTE
-import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedFragmentCompose
-import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment
 import com.blblblbl.myapplication.presentation.view.fragments.PhotosFragmentTab
 import com.blblblbl.myapplication.presentation.view.fragments.SearchFragmentCompose
 

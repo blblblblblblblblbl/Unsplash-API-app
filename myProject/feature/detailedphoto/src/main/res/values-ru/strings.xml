@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="made_with_camera">Сделано с</string>
+    <string name="camera_Model">Модель</string>
+    <string name="exposure">Экспозиция</string>
+    <string name="aperture">Апертура</string>
+    <string name="focal_length">Фокусное расстояние</string>
+    <string name="iso">ISO</string>
+    <string name="about">Об</string>
+    <string name="download">Скачать</string>
+</resources>

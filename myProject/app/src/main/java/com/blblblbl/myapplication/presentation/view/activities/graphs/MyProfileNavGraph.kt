@@ -5,12 +5,11 @@ import androidx.compose.material.Text
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.*
 import androidx.navigation.compose.composable
+import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
+import com.blblblbl.detailedphoto.ui.PhotoDetailedInfoFragment
 import com.blblblbl.myapplication.presentation.view.activities.MainActivity
 import com.blblblbl.myapplication.presentation.view.activities.MyProfile
 import com.blblblbl.myapplication.presentation.view.activities.graphs.MyProfileNav.DETAILED_PHOTO_ROUTE
-import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedFragmentCompose
-import com.blblblbl.myapplication.presentation.view.fragments.PhotoDetailedInfoFragment
-import com.blblblbl.myapplication.presentation.view.fragments.UserFragmentTab
 import com.blblblbl.profile.ui.UserFragmentCompose
 
 fun NavGraphBuilder.myProfileGraph(navController: NavHostController) {
