@@ -5,6 +5,7 @@ import androidx.navigation.*
 import androidx.navigation.compose.composable
 import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
 import com.blblblbl.detailedphoto.ui.PhotoDetailedInfoFragment
+import com.blblblbl.mainfeed.ui.PhotosFragmentCompose
 import com.blblblbl.myapplication.presentation.view.activities.MainFeed
 import com.blblblbl.myapplication.presentation.view.activities.graphs.MainFeedNav.DETAILED_PHOTO_ROUTE
 import com.blblblbl.myapplication.presentation.view.activities.graphs.MainFeedNav.SEARCH_ROUTE
@@ -14,7 +15,7 @@ import com.blblblbl.search.ui.SearchFragmentCompose
 fun NavGraphBuilder.mainFeedGraph(navController: NavHostController) {
     navigation(startDestination = MainFeed.route, route = "MainFeedNested") {
         composable(route = MainFeed.route) {
-            PhotosFragmentTab(
+            PhotosFragmentCompose(
                 onSearchClicked = {
                     navController.navigate(SEARCH_ROUTE)
                 },

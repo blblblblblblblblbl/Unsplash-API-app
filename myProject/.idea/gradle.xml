@@ -18,6 +18,7 @@
             <option value="$PROJECT_DIR$/feature/auth" />
             <option value="$PROJECT_DIR$/feature/collections" />
             <option value="$PROJECT_DIR$/feature/detailedphoto" />
+            <option value="$PROJECT_DIR$/feature/mainfeed" />
             <option value="$PROJECT_DIR$/feature/profile" />
             <option value="$PROJECT_DIR$/feature/search" />
           </set>
