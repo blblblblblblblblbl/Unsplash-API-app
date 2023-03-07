@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetCollectionsPagingUseCase @Inject constructor(
     private val repository: CollectionRepository
 ) {
-    fun execute(pageSize:Int): Flow<PagingData<PhotoCollection>> {
-        return repository.getCollectionPagingDataFlow(pageSize)
-    }
+
+    fun execute(pageSize: Int): Flow<PagingData<PhotoCollection>> =
+        repository.getCollectionPagingDataFlow(pageSize)
 }

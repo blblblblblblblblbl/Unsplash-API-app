@@ -6,10 +6,11 @@ import javax.inject.Inject
 class LikeStateUseCase @Inject constructor(
     private val repository: CollectionRepository
 ) {
-    suspend fun like(id: String){
+    suspend fun like(id: String) =
         repository.like(id)
-    }
-    suspend fun unlike(id: String){
+
+
+    suspend fun unlike(id: String) =
         repository.unlike(id)
-    }
+
 }

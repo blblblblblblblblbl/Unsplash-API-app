@@ -9,7 +9,7 @@ import javax.inject.Inject
 class GetPhotosFeedUseCase @Inject constructor(
     private val repository: FeedRepository
 ) {
-    fun execute(pageSize: Int): Flow<PagingData<Photo>> {
-        return repository.getAllImgs(pageSize)
-    }
+    fun execute(pageSize: Int): Flow<PagingData<Photo>> =
+        repository.getAllImgs(pageSize)
+
 }
