@@ -14,5 +14,9 @@ dependencyResolutionManagement {
 }
 rootProject.name = "My Application"
 include ':app'
-include ':data'
-include ':domain'
+include ':feature:auth'
+include ':feature:profile'
+include ':feature:detailedphoto'
+include ':feature:collections'
+include ':feature:search'
+include ':feature:mainfeed'

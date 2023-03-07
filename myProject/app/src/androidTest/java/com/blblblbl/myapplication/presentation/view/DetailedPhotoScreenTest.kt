@@ -5,10 +5,10 @@ import androidx.compose.ui.test.hasTestTag
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.domain.models.photo_detailed.Exif
-import com.blblblbl.myapplication.domain.models.photo_detailed.Location
-import com.blblblbl.myapplication.presentation.view.compose_utils.PhotoDescription
+import com.blblblbl.detailedphoto.domain.model.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.detailedphoto.domain.model.photo_detailed.Exif
+import com.blblblbl.detailedphoto.domain.model.photo_detailed.Location
+import com.blblblbl.detailedphoto.ui.PhotoDescription
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
@@ -36,7 +36,7 @@ class DetailedPhotoScreenTest {
     @Test
     fun allButtonIsShown(){
         val detailedPhotoInfo = DetailedPhotoInfo(location = Location(city = "city", country = "country"))
-        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{}) }
+        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{},{s,b->{}}) }
         composeTestRule.onNode(buttonLocation).assertExists()
         composeTestRule.onNode(buttonDownload).assertExists()
         composeTestRule.onNode(buttonShare).assertExists()
@@ -44,7 +44,7 @@ class DetailedPhotoScreenTest {
     @Test
     fun locationButtonIsNotShown(){
         val detailedPhotoInfo = DetailedPhotoInfo(location = Location(city = "city", country = "country"))
-        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,false,{},{},{}) }
+        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,false,{},{},{},{s,b->{}}) }
         composeTestRule.onNode(buttonLocation).assertDoesNotExist()
         composeTestRule.onNode(buttonDownload).assertExists()
         composeTestRule.onNode(buttonShare).assertExists()
@@ -52,7 +52,7 @@ class DetailedPhotoScreenTest {
     @Test
     fun exifIsNotShown(){
         val detailedPhotoInfo = DetailedPhotoInfo(location = Location(city = "city", country = "country"), exif = null)
-        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{}) }
+        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{},{s,b->{}}) }
         composeTestRule.onNode(buttonLocation).assertExists()
         composeTestRule.onNode(buttonDownload).assertExists()
         composeTestRule.onNode(buttonShare).assertExists()
@@ -61,7 +61,7 @@ class DetailedPhotoScreenTest {
     @Test
     fun exifIsShown(){
         val detailedPhotoInfo = DetailedPhotoInfo(location = Location(city = "city", country = "country"), exif = Exif())
-        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{}) }
+        composeTestRule.setContent { PhotoDescription(detailedPhotoInfo,true,{},{},{},{s,b->{}}) }
         composeTestRule.onNode(buttonLocation).assertExists()
         composeTestRule.onNode(buttonDownload).assertExists()
         composeTestRule.onNode(buttonShare).assertExists()

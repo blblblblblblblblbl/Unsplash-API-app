@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_fragment_title">user</string>
+    <string name="action_confirmation">Action confirmation</string>
+    <string name="logout_confirmation">Logout confirmation</string>
+    <string name="logout">logout</string>
+    <string name="cancel">cancel</string>
+    <string name="user">user</string>
+    <string name="logout_icon_description">logout icon</string>
+    <string name="location_icon_description">location icon</string>
+    <string name="mail_icon_description">mail icon</string>
+    <string name="download_icon_description">download icon</string>
+    <string name="like_icon_description">like icon</string>
+    <string name="try_again">try again</string>
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="made_with_camera">Made with</string>
+    <string name="camera_Model">Model</string>
+    <string name="exposure">Exposure</string>
+    <string name="aperture">Aperture</string>
+    <string name="focal_length">Focal length</string>
+    <string name="iso">ISO</string>
+    <string name="about">About</string>
+    <string name="download">Download</string>
+</resources>

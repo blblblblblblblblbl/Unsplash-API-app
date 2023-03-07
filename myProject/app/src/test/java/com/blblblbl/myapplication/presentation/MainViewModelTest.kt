@@ -7,8 +7,6 @@ import androidx.core.net.toUri
 import com.blblblbl.myapplication.MainDispatcherRule
 import com.blblblbl.myapplication.domain.usecase.GetBearerTokenUseCase
 import com.blblblbl.myapplication.domain.usecase.GetSavedBearerTokenUseCase
-import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
-import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.*
 import org.junit.runner.RunWith
@@ -60,5 +58,19 @@ class MainViewModelTest {
         verify(getBearerTokenUseCase, times(1)).execute(uriCaptor.capture(),authSuccessCaptor.capture())
         Assert.assertEquals(uriCaptor.firstValue,uri)
         Assert.assertEquals(authSuccessCaptor.firstValue,viewModel.authSuccess)
+    }
+    @Test
+    fun checkOnSavedTokenNullTest(){
+        Mockito.`when`(getSavedBearerTokenUseCase.execute()).thenReturn(null)
+        val result = viewModel.checkOnSavedToken()
+        verify(getSavedBearerTokenUseCase, times(1)).execute()
+        Assert.assertEquals(result, false)
+    }
+    @Test
+    fun checkOnSavedTokenTest(){
+        Mockito.`when`(getSavedBearerTokenUseCase.execute()).thenReturn("frwedavbgjhk")
+        val result = viewModel.checkOnSavedToken()
+        verify(getSavedBearerTokenUseCase, times(1)).execute()
+        Assert.assertEquals(result, true)
     }
 }

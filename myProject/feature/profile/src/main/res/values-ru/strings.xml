@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="user_fragment_title">Пользователь</string>
+    <string name="action_confirmation">Подтверждение действия</string>
+    <string name="logout_confirmation">Вы действительно хотите выйти?</string>
+    <string name="logout">выйти</string>
+    <string name="cancel">отмена</string>
+    <string name="user">пользователь</string>
+    <string name="logout_icon_description">кнопка выхода</string>
+    <string name="location_icon_description">кнопка местоположения</string>
+    <string name="mail_icon_description">кнопка почты</string>
+    <string name="download_icon_description">кнопка скачивания</string>
+    <string name="like_icon_description">кнопка лайка</string>
+    <string name="try_again">попробовать снова</string>
+</resources>

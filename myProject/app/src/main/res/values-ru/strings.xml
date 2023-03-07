@@ -15,7 +15,7 @@
     <string name="about">Об</string>
     <string name="download">Скачать</string>
     <string name="action_confirmation">Подтверждение действия</string>
-    <string name="logout_confirmation">Вы действительно хотите удалить выбранный элемент?</string>
+    <string name="logout_confirmation">Вы действительно хотите выйти?</string>
     <string name="logout">выйти</string>
     <string name="cancel">отмена</string>
     <string name="user">пользователь</string>
@@ -25,11 +25,4 @@
     <string name="download_icon_description">кнопка скачивания</string>
     <string name="like_icon_description">кнопка лайка</string>
     <string name="try_again">попробовать снова</string>
-    <string name="onboarding">Онбординг</string>
-    <string name="log_in">войти</string>
-    <string name="onboarding1">просматривайте ленту фото</string>
-    <string name="onboarding2">просматривайте коллекции</string>
-    <string name="onboarding3">открывайте фото</string>
-    <string name="onboarding4">ищите фото</string>
-    <string name="skip">пропустить</string>
 </resources>
