@@ -32,6 +32,7 @@ This android application works with unspash api
 - Android studio
 - Kotlin
 - Clean Architecture
+- multi-module app
 - Coroutines 
 - Flow
 - OAuth2
