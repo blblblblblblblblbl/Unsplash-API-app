@@ -1,23 +1,22 @@
 package com.blblblbl.search.domain.model.photo
 
-import com.google.gson.annotations.SerializedName
 
 
-data class Photo (
+data class Photo(
 
-    @SerializedName("id"                       ) var id                     : String?                           = null,
-    @SerializedName("created_at"               ) var createdAt              : String?                           = null,
-    @SerializedName("updated_at"               ) var updatedAt              : String?                           = null,
-    @SerializedName("width"                    ) var width                  : Int?                              = null,
-    @SerializedName("height"                   ) var height                 : Int?                              = null,
-    @SerializedName("color"                    ) var color                  : String?                           = null,
-    @SerializedName("blur_hash"                ) var blurHash               : String?                           = null,
-    @SerializedName("likes"                    ) var likes                  : Int?                              = null,
-    @SerializedName("liked_by_user"            ) var likedByUser            : Boolean?                          = null,
-    @SerializedName("description"              ) var description            : String?                           = null,
-    @SerializedName("user"                     ) var user                   : User?                             = User(),
-    @SerializedName("current_user_collections" ) var currentUserCollections : ArrayList<CurrentUserCollections> = arrayListOf(),
-    @SerializedName("urls"                     ) var urls                   : Urls?                             = Urls(),
-    @SerializedName("links"                    ) var links                  : Links?                            = Links()
+    var id: String? = null,
+    var createdAt: String? = null,
+    var updatedAt: String? = null,
+    var width: Int? = null,
+    var height: Int? = null,
+    var color: String? = null,
+    var blurHash: String? = null,
+    var likes: Int? = null,
+    var likedByUser: Boolean? = null,
+    var description: String? = null,
+    var user: User? = User(),
+    var currentUserCollections: ArrayList<CurrentUserCollections> = arrayListOf(),
+    var urls: Urls? = Urls(),
+    var links: Links? = Links()
 
 )

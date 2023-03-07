@@ -1,13 +1,13 @@
 package com.blblblbl.search.domain.model.photo
 
-import com.google.gson.annotations.SerializedName
 
 
-data class Links (
 
-  @SerializedName("self"              ) var self             : String? = null,
-  @SerializedName("html"              ) var html             : String? = null,
-  @SerializedName("download"          ) var download         : String? = null,
-  @SerializedName("download_location" ) var downloadLocation : String? = null
+data class Links(
+
+    var self: String? = null,
+    var html: String? = null,
+    var download: String? = null,
+    var downloadLocation: String? = null
 
 )
