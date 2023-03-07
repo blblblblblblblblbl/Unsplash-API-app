@@ -1,47 +1,36 @@
-package com.blblblbl.myapplication.presentation
+package com.blblblbl.mainfeed.presentation
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
-import androidx.lifecycle.viewModelScope
 import androidx.paging.PagingData
-import androidx.paging.PagingDataAdapter
-import androidx.paging.cachedIn
-import androidx.paging.map
-import com.blblblbl.myapplication.MainDispatcherRule
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.usecase.GetCollectionPhotoPagingUseCase
-import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
-import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
+import com.blblblbl.mainfeed.domain.model.photos.Photo
+import com.blblblbl.mainfeed.domain.usecase.GetPhotosFeedUseCase
+import com.blblblbl.mainfeed.domain.usecase.LikeStateUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import org.junit.*
-
 import org.mockito.Mockito
 import org.mockito.kotlin.argumentCaptor
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
-import java.util.Random
 
-class CollectionPhotoListViewModelTest {
+class PhotosFragmentViewModelTest {
     val likeStateUseCase = mock<LikeStateUseCase>()
-    val getCollectionPhotoPagingUseCase = mock<GetCollectionPhotoPagingUseCase>()
+    val getPhotosFeedUseCase = mock<GetPhotosFeedUseCase>()
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-    lateinit var viewModel: CollectionPhotoListViewModel
+    lateinit var viewModel: PhotosFragmentViewModel
     @After
     fun afterEach(){
         Mockito.reset(likeStateUseCase)
-        Mockito.reset(getCollectionPhotoPagingUseCase)
+        Mockito.reset(getPhotosFeedUseCase)
         ArchTaskExecutor.getInstance().setDelegate(null)
     }
     @Before
     fun beforeEach(){
-        viewModel = CollectionPhotoListViewModel(likeStateUseCase,getCollectionPhotoPagingUseCase)
+        viewModel = PhotosFragmentViewModel(likeStateUseCase,getPhotosFeedUseCase)
         ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor(){
             override fun executeOnDiskIO(runnable: Runnable) {
                 runnable.run()
@@ -57,23 +46,20 @@ class CollectionPhotoListViewModelTest {
         })
     }
     @Test
-    fun getCollectionPhotos(){
-        val id ="vwedfbjhka"
-        val idCaptor = argumentCaptor<String>()
+    fun getPhotosFeedTest(){
+        val pageSize = PhotosFragmentViewModel.PAGE_SIZE
         val pageSizeCaptor = argumentCaptor<Int>()
-        val pageSize = CollectionPhotoListViewModel.PAGE_SIZE
         val photo = PagingData.from(listOf(Photo()))
         val result : Flow<PagingData<Photo>> = flow {
             emit(photo)
         }
-        Mockito.`when`(getCollectionPhotoPagingUseCase.execute(id,pageSize))
+        Mockito.`when`(getPhotosFeedUseCase.execute(pageSize))
             .thenReturn(result)
-        viewModel.getCollectionPhotos(id)
+        viewModel.getPhotosFeed()
 
-        verify(getCollectionPhotoPagingUseCase, times(1)).execute(idCaptor.capture(),pageSizeCaptor.capture())
-        Assert.assertEquals(id,idCaptor.firstValue)
+        verify(getPhotosFeedUseCase, times(1)).execute(pageSizeCaptor.capture())
         Assert.assertEquals(pageSize,pageSizeCaptor.firstValue)
-        //Assert.assertEquals(result,viewModel.pagedPhotos) works only without cached in(ViewModelScope)
+        Assert.assertEquals(result,viewModel.pagedPhotos)// works only without cached in(ViewModelScope)
     }
     @Test
     fun likeTest() {
@@ -108,4 +94,3 @@ class CollectionPhotoListViewModelTest {
         Assert.assertEquals(id,idCaptor.firstValue)
     }
 }
-

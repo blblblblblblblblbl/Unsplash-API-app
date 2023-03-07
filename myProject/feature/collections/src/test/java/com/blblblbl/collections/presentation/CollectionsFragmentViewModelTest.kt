@@ -1,14 +1,10 @@
-package com.blblblbl.myapplication.presentation
+package com.blblblbl.collections.presentation
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.paging.PagingData
-import com.blblblbl.myapplication.MainDispatcherRule
-import com.blblblbl.myapplication.domain.models.collections.PhotoCollection
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.usecase.GetCollectionsPagingUseCase
-import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
-import com.blblblbl.myapplication.presentation.viewModel.CollectionsFragmentViewModel
+import com.blblblbl.collections.domain.model.collection.PhotoCollection
+import com.blblblbl.collections.domain.usecase.GetCollectionsPagingUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import org.junit.*

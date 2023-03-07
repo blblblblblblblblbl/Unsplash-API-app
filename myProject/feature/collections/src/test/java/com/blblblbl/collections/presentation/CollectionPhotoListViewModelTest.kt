@@ -1,19 +1,14 @@
-package com.blblblbl.myapplication.presentation
+package com.blblblbl.collections.presentation
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.paging.PagingData
-import androidx.paging.map
-import com.blblblbl.myapplication.MainDispatcherRule
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
-import com.blblblbl.myapplication.domain.usecase.SearchImagesUseCase
-import com.blblblbl.myapplication.presentation.viewModel.SearchFragmentViewModel
+import com.blblblbl.collections.domain.model.photo.Photo
+import com.blblblbl.collections.domain.usecase.GetCollectionPhotoPagingUseCase
+import com.blblblbl.collections.domain.usecase.LikeStateUseCase
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.test.runTest
 import org.junit.*
 import org.mockito.Mockito
 import org.mockito.kotlin.argumentCaptor
@@ -21,21 +16,21 @@ import org.mockito.kotlin.mock
 import org.mockito.kotlin.times
 import org.mockito.kotlin.verify
 
-class SearchFragmentViewModelTest {
+class CollectionPhotoListViewModelTest {
     val likeStateUseCase = mock<LikeStateUseCase>()
-    val searchImagesUseCase = mock<SearchImagesUseCase>()
+    val getCollectionPhotoPagingUseCase = mock<GetCollectionPhotoPagingUseCase>()
     @get:Rule
     val mainDispatcherRule = MainDispatcherRule()
-    lateinit var viewModel: SearchFragmentViewModel
+    lateinit var viewModel: CollectionPhotoListViewModel
     @After
     fun afterEach(){
         Mockito.reset(likeStateUseCase)
-        Mockito.reset(searchImagesUseCase)
+        Mockito.reset(getCollectionPhotoPagingUseCase)
         ArchTaskExecutor.getInstance().setDelegate(null)
     }
     @Before
     fun beforeEach(){
-        viewModel = SearchFragmentViewModel(likeStateUseCase,searchImagesUseCase)
+        viewModel = CollectionPhotoListViewModel(likeStateUseCase,getCollectionPhotoPagingUseCase)
         ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor(){
             override fun executeOnDiskIO(runnable: Runnable) {
                 runnable.run()
@@ -51,10 +46,23 @@ class SearchFragmentViewModelTest {
         })
     }
     @Test
-    fun updateSearchQueryTest(){
-        val query = "gnertjhkllwrs"
-        viewModel.updateSearchQuery(query)
-        Assert.assertEquals(viewModel.searchQuery.value,query)
+    fun getCollectionPhotos(){
+        val id ="vwedfbjhka"
+        val idCaptor = argumentCaptor<String>()
+        val pageSizeCaptor = argumentCaptor<Int>()
+        val pageSize = CollectionPhotoListViewModel.PAGE_SIZE
+        val photo = PagingData.from(listOf(Photo()))
+        val result : Flow<PagingData<Photo>> = flow {
+            emit(photo)
+        }
+        Mockito.`when`(getCollectionPhotoPagingUseCase.execute(id,pageSize))
+            .thenReturn(result)
+        viewModel.getCollectionPhotos(id)
+
+        verify(getCollectionPhotoPagingUseCase, times(1)).execute(idCaptor.capture(),pageSizeCaptor.capture())
+        Assert.assertEquals(id,idCaptor.firstValue)
+        Assert.assertEquals(pageSize,pageSizeCaptor.firstValue)
+        //Assert.assertEquals(result,viewModel.pagedPhotos) works only without cached in(ViewModelScope)
     }
     @Test
     fun likeTest() {
@@ -88,23 +96,5 @@ class SearchFragmentViewModelTest {
 
         Assert.assertEquals(id,idCaptor.firstValue)
     }
-
-    @Test
-    fun searchTest() = runTest{
-        val query:String = "trgjnklek'werekwnqr["
-        val queryCaptor = argumentCaptor<String>()
-        val pageSize = SearchFragmentViewModel.PAGE_SIZE
-        val pageSizeCaptor = argumentCaptor<Int>()
-        val photo = PagingData.from(listOf(Photo()))
-        val result : Flow<PagingData<Photo>> = flow {
-            emit(photo)
-        }
-        viewModel.searchQuery.value = query
-        Mockito.`when`(searchImagesUseCase.execute(query,pageSize)).thenReturn(result)
-        runBlocking { viewModel.search(query) }
-        runBlocking { verify(searchImagesUseCase, times(1)).execute(queryCaptor.capture(),pageSizeCaptor.capture()) }
-        Assert.assertEquals(query,queryCaptor.firstValue)
-        Assert.assertEquals(pageSize,pageSizeCaptor.firstValue)
-
-    }
 }
+

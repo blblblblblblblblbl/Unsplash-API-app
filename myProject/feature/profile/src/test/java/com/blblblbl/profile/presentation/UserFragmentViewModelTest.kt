@@ -1,15 +1,14 @@
-package com.blblblbl.myapplication.presentation
+package com.blblblbl.profile.presentation
 
 import android.content.Context
+import android.content.Intent
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
 import androidx.paging.PagingData
-import com.blblblbl.myapplication.MainDispatcherRule
-import com.blblblbl.myapplication.domain.models.photos.Photo
-import com.blblblbl.myapplication.domain.models.public_user_info.PublicUserInfo
-import com.blblblbl.myapplication.domain.models.user_info.UserInfo
-import com.blblblbl.myapplication.domain.usecase.*
-import com.blblblbl.myapplication.presentation.viewModel.UserFragmentViewModel
+import com.blblblbl.profile.domain.model.photo.Photo
+import com.blblblbl.profile.domain.model.public_user_info.PublicUserInfo
+import com.blblblbl.profile.domain.model.user_info.UserInfo
+import com.blblblbl.profile.domain.usecase.*
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -42,7 +41,7 @@ class UserFragmentViewModelTest {
     }
     @Before
     fun beforeEach(){
-        viewModel = UserFragmentViewModel(context,getUserInfoUseCase,likeStateUseCase,getMeInfoUseCase,clearStorageUseCase,getLikedPhotoPagingUseCase)
+        viewModel = UserFragmentViewModel(getUserInfoUseCase,likeStateUseCase,getMeInfoUseCase,clearStorageUseCase,getLikedPhotoPagingUseCase)
         ArchTaskExecutor.getInstance().setDelegate(object : TaskExecutor(){
             override fun executeOnDiskIO(runnable: Runnable) {
                 runnable.run()
@@ -59,7 +58,7 @@ class UserFragmentViewModelTest {
     }
     @Test
     fun logoutTest()= runTest{
-        runBlocking { viewModel.logout() }
+        runBlocking { viewModel.logout(context, Intent()) }
         runBlocking { verify(clearStorageUseCase, times(1)).execute() }
     }
     @Test

@@ -1,13 +1,11 @@
-package com.blblblbl.myapplication.presentation
+package com.blblblbl.detailedphoto.presentation
 
 import androidx.arch.core.executor.ArchTaskExecutor
 import androidx.arch.core.executor.TaskExecutor
-import com.blblblbl.myapplication.MainDispatcherRule
-import com.blblblbl.myapplication.domain.models.photo_detailed.DetailedPhotoInfo
-import com.blblblbl.myapplication.domain.usecase.DownloadImgUseCase
-import com.blblblbl.myapplication.domain.usecase.GetDetailedPhotoInfoUseCase
-import com.blblblbl.myapplication.domain.usecase.LikeStateUseCase
-import com.blblblbl.myapplication.presentation.viewModel.PhotoDetailedInfoFragmentViewModel
+import com.blblblbl.detailedphoto.domain.model.photo_detailed.DetailedPhotoInfo
+import com.blblblbl.detailedphoto.domain.usecase.DownloadImgUseCase
+import com.blblblbl.detailedphoto.domain.usecase.GetDetailedPhotoInfoUseCase
+import com.blblblbl.detailedphoto.domain.usecase.LikeStateUseCase
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.test.runTest
 import org.junit.*

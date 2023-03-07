@@ -61,4 +61,18 @@ class MainViewModelTest {
         Assert.assertEquals(uriCaptor.firstValue,uri)
         Assert.assertEquals(authSuccessCaptor.firstValue,viewModel.authSuccess)
     }
+    @Test
+    fun checkOnSavedTokenNullTest(){
+        Mockito.`when`(getSavedBearerTokenUseCase.execute()).thenReturn(null)
+        val result = viewModel.checkOnSavedToken()
+        verify(getSavedBearerTokenUseCase, times(1)).execute()
+        Assert.assertEquals(result, false)
+    }
+    @Test
+    fun checkOnSavedTokenTest(){
+        Mockito.`when`(getSavedBearerTokenUseCase.execute()).thenReturn("frwedavbgjhk")
+        val result = viewModel.checkOnSavedToken()
+        verify(getSavedBearerTokenUseCase, times(1)).execute()
+        Assert.assertEquals(result, true)
+    }
 }
