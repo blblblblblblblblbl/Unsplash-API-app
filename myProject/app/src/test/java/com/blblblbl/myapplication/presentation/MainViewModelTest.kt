@@ -7,8 +7,6 @@ import androidx.core.net.toUri
 import com.blblblbl.myapplication.MainDispatcherRule
 import com.blblblbl.myapplication.domain.usecase.GetBearerTokenUseCase
 import com.blblblbl.myapplication.domain.usecase.GetSavedBearerTokenUseCase
-import com.blblblbl.myapplication.presentation.viewModel.CollectionPhotoListViewModel
-import com.blblblbl.myapplication.presentation.viewModel.MainViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import org.junit.*
 import org.junit.runner.RunWith
