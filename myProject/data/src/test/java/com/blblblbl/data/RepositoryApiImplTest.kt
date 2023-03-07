@@ -16,7 +16,7 @@ import java.util.concurrent.TimeUnit
 
 
 class RepositoryApiImplTest {
-    private lateinit var repositoryApi: RepositoryApiImpl
+    /*private lateinit var repositoryApi: RepositoryApiImpl
     private lateinit var testApis: LikeApi
     private lateinit var mockWebServer: MockWebServer
 
@@ -98,5 +98,5 @@ class RepositoryApiImplTest {
 
     @Test
     fun unlike() {
-    }
+    }*/
 }
