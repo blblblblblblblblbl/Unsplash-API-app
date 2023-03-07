@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.presentation.view
+package com.blblblbl.mainfeed.ui
 
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
@@ -6,7 +6,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.blblblbl.mainfeed.domain.model.photos.Photo
 import com.blblblbl.mainfeed.domain.model.photos.User
-import com.blblblbl.mainfeed.ui.PhotoView
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

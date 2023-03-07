@@ -1,4 +1,4 @@
-package com.blblblbl.myapplication.presentation.view
+package com.blblblbl.detailedphoto.ui
 
 import androidx.compose.ui.test.hasClickAction
 import androidx.compose.ui.test.hasTestTag
@@ -8,7 +8,6 @@ import androidx.test.platform.app.InstrumentationRegistry
 import com.blblblbl.detailedphoto.domain.model.photo_detailed.DetailedPhotoInfo
 import com.blblblbl.detailedphoto.domain.model.photo_detailed.Exif
 import com.blblblbl.detailedphoto.domain.model.photo_detailed.Location
-import com.blblblbl.detailedphoto.ui.PhotoDescription
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule

@@ -1,15 +1,13 @@
-package com.blblblbl.myapplication.presentation.view.auth.screen
+package com.blblblbl.auth.ui
 
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.ui.test.*
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
-import com.blblblbl.auth.ui.OnBoardingScreen
 import com.google.accompanist.pager.ExperimentalPagerApi
 import org.junit.Assert.*
 import com.blblblbl.auth.R
-
 import org.junit.After
 import org.junit.Before
 import org.junit.Rule
