@@ -1,14 +1,13 @@
 package com.blblblbl.profile.domain.model.photo
 
-import com.google.gson.annotations.SerializedName
 
 
-data class Urls (
+data class Urls(
 
-  @SerializedName("raw"     ) var raw     : String? = null,
-  @SerializedName("full"    ) var full    : String? = null,
-  @SerializedName("regular" ) var regular : String? = null,
-  @SerializedName("small"   ) var small   : String? = null,
-  @SerializedName("thumb"   ) var thumb   : String? = null
+    var raw: String? = null,
+    var full: String? = null,
+    var regular: String? = null,
+    var small: String? = null,
+    var thumb: String? = null
 
 )

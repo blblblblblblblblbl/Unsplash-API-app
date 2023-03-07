@@ -6,7 +6,7 @@ import javax.inject.Inject
 class ClearStorageUseCase @Inject constructor(
     private val repository: UserRepository
 ) {
-    suspend fun execute(){
+    suspend fun execute() =
         repository.clearStorage()
-    }
+
 }

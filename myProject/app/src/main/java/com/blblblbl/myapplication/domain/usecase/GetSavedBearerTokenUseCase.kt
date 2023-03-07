@@ -6,7 +6,7 @@ import javax.inject.Inject
 class GetSavedBearerTokenUseCase @Inject constructor(
     private val repository: Repository
 ) {
-    fun execute():String?{
-        return repository.getSavedBearerToken()
-    }
+    fun execute(): String? =
+        repository.getSavedBearerToken()
+
 }

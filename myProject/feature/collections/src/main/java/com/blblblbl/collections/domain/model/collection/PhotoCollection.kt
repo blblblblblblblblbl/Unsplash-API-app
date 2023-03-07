@@ -1,22 +1,22 @@
 package com.blblblbl.collections.domain.model.collection
 
 
-import com.google.gson.annotations.SerializedName
 
 
-data class PhotoCollection (
 
-    @SerializedName("id"                ) var id              : String?        = null,
-    @SerializedName("title"             ) var title           : String?     = null,
-    @SerializedName("description"       ) var description     : String?     = null,
-    @SerializedName("published_at"      ) var publishedAt     : String?     = null,
-    @SerializedName("last_collected_at" ) var lastCollectedAt : String?     = null,
-    @SerializedName("updated_at"        ) var updatedAt       : String?     = null,
-    @SerializedName("total_photos"      ) var totalPhotos     : Int?        = null,
-    @SerializedName("private"           ) var private         : Boolean?    = null,
-    @SerializedName("share_key"         ) var shareKey        : String?     = null,
-    @SerializedName("cover_photo"       ) var coverPhoto      : CoverPhoto? = CoverPhoto(),
-    @SerializedName("user"              ) var user            : User?       = User(),
-    @SerializedName("links"             ) var links           : Links?      = Links()
+data class PhotoCollection(
+
+    var id: String? = null,
+    var title: String? = null,
+    var description: String? = null,
+    var publishedAt: String? = null,
+    var lastCollectedAt: String? = null,
+    var updatedAt: String? = null,
+    var totalPhotos: Int? = null,
+    var private: Boolean? = null,
+    var shareKey: String? = null,
+    var coverPhoto: CoverPhoto? = CoverPhoto(),
+    var user: User? = User(),
+    var links: Links? = Links()
 
 )

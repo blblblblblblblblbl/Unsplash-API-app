@@ -1,16 +1,15 @@
 package com.blblblbl.detailedphoto.domain.model.photo_detailed
 
-import com.google.gson.annotations.SerializedName
 
 
-data class CurrentUserCollections (
+data class CurrentUserCollections(
 
-  @SerializedName("id"                ) var id              : Int?    = null,
-  @SerializedName("title"             ) var title           : String? = null,
-  @SerializedName("published_at"      ) var publishedAt     : String? = null,
-  @SerializedName("last_collected_at" ) var lastCollectedAt : String? = null,
-  @SerializedName("updated_at"        ) var updatedAt       : String? = null,
-  @SerializedName("cover_photo"       ) var coverPhoto      : String? = null,
-  @SerializedName("user"              ) var user            : String? = null
+    var id: Int? = null,
+    var title: String? = null,
+    var publishedAt: String? = null,
+    var lastCollectedAt: String? = null,
+    var updatedAt: String? = null,
+    var coverPhoto: String? = null,
+    var user: String? = null
 
 )

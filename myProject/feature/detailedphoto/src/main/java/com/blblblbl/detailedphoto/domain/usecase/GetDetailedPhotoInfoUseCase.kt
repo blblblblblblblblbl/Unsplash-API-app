@@ -6,8 +6,8 @@ import javax.inject.Inject
 
 class GetDetailedPhotoInfoUseCase @Inject constructor(
     private val repository: DetailedPhotoRepository
-){
-    suspend fun execute(id: String): DetailedPhotoInfo {
-        return repository.getDetailedImgInfoById(id)
-    }
+) {
+    suspend fun execute(id: String): DetailedPhotoInfo =
+        repository.getDetailedImgInfoById(id)
+
 }

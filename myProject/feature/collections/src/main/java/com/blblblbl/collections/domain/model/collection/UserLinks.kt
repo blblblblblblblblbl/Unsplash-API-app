@@ -1,13 +1,12 @@
 package com.blblblbl.collections.domain.model.collection
 
-import com.google.gson.annotations.SerializedName
 
 
-data class UserLinks (
+data class UserLinks(
 
-  @SerializedName("self"    ) var self    : String? = null,
-  @SerializedName("html"    ) var html    : String? = null,
-  @SerializedName("photos"  ) var photos  : String? = null,
-  @SerializedName("related" ) var related : String? = null
+    var self: String? = null,
+    var html: String? = null,
+    var photos: String? = null,
+    var related: String? = null
 
 )

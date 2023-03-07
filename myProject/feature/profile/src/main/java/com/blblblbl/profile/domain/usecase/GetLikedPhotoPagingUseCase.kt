@@ -8,9 +8,9 @@ import javax.inject.Inject
 
 class GetLikedPhotoPagingUseCase @Inject constructor(
     private val repository: UserRepository
-){
-    fun execute(userName:String,pageSize:Int): Flow<PagingData<Photo>> {
-        return repository.getLikedPhotosPagingDataFlow(userName,pageSize)
-    }
+) {
+    fun execute(userName: String, pageSize: Int): Flow<PagingData<Photo>> =
+        repository.getLikedPhotosPagingDataFlow(userName, pageSize)
+
 
 }
