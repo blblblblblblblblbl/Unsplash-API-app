@@ -12,10 +12,10 @@ jobs:
           java-version: 11
       - name: Run domain unit tests
         working-directory: ./myProject
-        run: gradle :domain:testDebugUnitTest --tests "com.*"
+        run: gradle :app:testDebugUnitTest --tests "com.blblblbl.myapplication.domain.*"
       - name: Run presentation unit tests
         working-directory: ./myProject
-        run: gradle :app:testDebugUnitTest --tests "com.*"
+        run: gradle :app:testDebugUnitTest --tests "com.blblblbl.myapplication.presentation.*"
       - name: Build project
         working-directory: ./myProject
         run: gradle assembleDebug
