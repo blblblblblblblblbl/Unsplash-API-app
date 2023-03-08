@@ -11,8 +11,9 @@ import javax.inject.Singleton
 
 @Singleton
 class PersistentStorageImpl @Inject constructor(
-    private @ApplicationContext var context: Context
-):PersistentStorage {
+    private @ApplicationContext var context: Context,
+    private val storageConverter: StorageConverter
+) : PersistentStorage {
 
     private var sharedPreferences: SharedPreferences? = null
     private var editor: SharedPreferences.Editor? = null
@@ -26,20 +27,22 @@ class PersistentStorageImpl @Inject constructor(
         if (sharedPreferences == null) {
             init()
         }
-        Log.d("MyLog","addProperty:$name $value")
+        Log.d("MyLog", "addProperty:$name $value")
         editor!!.putString(name, value)
         editor!!.apply()
     }
-    override fun addProperty(name: String?, userInfo: UserInfo?) {
+
+    override fun addUserInfo(name: String?, userInfo: UserInfo?) {
         if (sharedPreferences == null) {
             init()
         }
         val value = userInfo?.let {
-            StorageConverter.userInfoToJson(it)
+            storageConverter.userInfoToJson(it)
         }
         editor!!.putString(name, value)
         editor!!.apply()
     }
+
     override fun clear() {
         if (sharedPreferences == null) {
             init()
@@ -54,7 +57,17 @@ class PersistentStorageImpl @Inject constructor(
         }
         return sharedPreferences!!.getString(name, null)
     }
-    companion object{
+
+    override fun getUserInfo(): UserInfo? {
+        if (sharedPreferences == null) {
+            init()
+        }
+        val json = sharedPreferences!!.getString(STORAGE_NAME, null)
+        val userInfo = storageConverter.userInfoFromJson(json ?: "")
+        return userInfo
+    }
+
+    companion object {
         const val STORAGE_NAME = "StorageName"
         const val AUTH_TOKEN = "lastsearch"
         const val USER_INFO = "userinfo"

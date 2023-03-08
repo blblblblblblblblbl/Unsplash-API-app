@@ -3,8 +3,6 @@ package com.blblblbl.myapplication.data.persistent_storage
 import android.content.Context
 import android.content.SharedPreferences
 import android.util.Log
-import com.blblblbl.profile.data.model.user_info.UserInfo
-import com.blblblbl.profile.data.persistent_storage.utils.StorageConverter
 import dagger.hilt.android.qualifiers.ApplicationContext
 import javax.inject.Inject
 import javax.inject.Singleton

@@ -2,8 +2,9 @@ package com.blblblbl.profile.data.persistent_storage.utils
 
 import com.google.gson.Gson
 import java.lang.reflect.Type
+import javax.inject.Inject
 
-class GsonParser(
+class GsonParser @Inject constructor(
     private val gson: Gson
 ): JsonParser {
     override fun <T> fromJson(json: String, type: Type): T? {
