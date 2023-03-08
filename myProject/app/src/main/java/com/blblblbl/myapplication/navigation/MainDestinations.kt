@@ -19,7 +19,10 @@ object MainFeed : AppDestination {
     override val icon = Icons.Default.Feed
     override val route = "mainFeed"
 }
-
+object AuthDest : AppDestination {
+    override val icon = Icons.Default.Feed
+    override val route = "authroute"
+}
 object Collections : AppDestination {
     override val icon = Icons.Default.Collections
     override val route = "collections"
