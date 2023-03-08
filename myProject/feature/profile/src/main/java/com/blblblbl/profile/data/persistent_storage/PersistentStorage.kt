@@ -17,7 +17,6 @@ interface PersistentStorage {
 
     companion object {
         const val STORAGE_NAME = "StorageName"
-        const val AUTH_TOKEN = "lastsearch"
         const val USER_INFO = "userinfo"
     }
 }
