@@ -45,27 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         Log.d("MyLog","checkOnSavedToken(): true")
         val redirectUri: Uri? = intent.data
-        if (redirectUri.toString()
-                .startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")
-        ) {
-            viewModel.saveAuthToken(redirectUri!!)
-            lifecycleScope.launchWhenCreated {
-                viewModel.authSuccess.collect {
-                    it?.let {
-                        if (it) {
-                            /*val navHostFragment =
-                                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                            val navController = navHostFragment.navController
-                            binding.bottomNav.setupWithNavController(navController)
-                            setContentView(binding.root)*/
-                            setContent {
-                                AppScreen()
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
+        if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
             var id = redirectUri.toString().substring(start, redirectUri.toString().length)
