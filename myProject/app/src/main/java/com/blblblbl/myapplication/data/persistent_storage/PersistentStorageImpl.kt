@@ -30,16 +30,6 @@ class PersistentStorageImpl @Inject constructor(
         editor!!.putString(name, value)
         editor!!.apply()
     }
-    override fun addProperty(name: String?, userInfo: UserInfo?) {
-        if (sharedPreferences == null) {
-            init()
-        }
-        val value = userInfo?.let {
-            StorageConverter.userInfoToJson(it)
-        }
-        editor!!.putString(name, value)
-        editor!!.apply()
-    }
     override fun clear() {
         if (sharedPreferences == null) {
             init()
@@ -56,7 +46,5 @@ class PersistentStorageImpl @Inject constructor(
     }
     companion object{
         const val STORAGE_NAME = "StorageName"
-        const val AUTH_TOKEN = "lastsearch"
-        const val USER_INFO = "userinfo"
     }
 }
