@@ -1,12 +1,11 @@
-package com.blblblbl.myapplication.data.persistent_storage
+package com.blblblbl.auth.data.persistent_storage
 
 import android.content.SharedPreferences
 import android.util.Log
-import com.blblblbl.myapplication.data.di.SharedPreferencesMain
 import javax.inject.Inject
 
 class PersistentStorageImpl @Inject constructor(
-    @SharedPreferencesMain private val sharedPreferences: SharedPreferences
+    private val sharedPreferences: SharedPreferences
 ):PersistentStorage {
 
     private val editor = sharedPreferences.edit()

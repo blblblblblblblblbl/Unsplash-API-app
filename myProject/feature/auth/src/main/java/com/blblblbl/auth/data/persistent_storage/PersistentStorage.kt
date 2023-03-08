@@ -1,6 +1,6 @@
-package com.blblblbl.myapplication.data.persistent_storage
+package com.blblblbl.auth.data.persistent_storage
 
-import com.blblblbl.profile.data.model.user_info.UserInfo
+
 
 
 interface PersistentStorage {

@@ -18,12 +18,16 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.blblblbl.auth.ui.AuthFragmentCompose
 import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
+import com.blblblbl.mainfeed.ui.PhotosFragmentCompose
 import com.blblblbl.myapplication.databinding.ActivityMainBinding
 import com.blblblbl.myapplication.navigation.AppTabRow
+import com.blblblbl.myapplication.navigation.AuthDest
+import com.blblblbl.myapplication.navigation.MainFeed
 import com.blblblbl.myapplication.navigation.appTabRowScreens
 import com.blblblbl.myapplication.navigation.graphs.collectionsGraph
 import com.blblblbl.myapplication.navigation.graphs.mainFeedGraph
@@ -41,27 +45,7 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         Log.d("MyLog","checkOnSavedToken(): true")
         val redirectUri: Uri? = intent.data
-        if (redirectUri.toString()
-                .startsWith("myproject://www.exagfdasrvxcmple.com/gizmos?code=")
-        ) {
-            viewModel.saveAuthToken(redirectUri!!)
-            lifecycleScope.launchWhenCreated {
-                viewModel.authSuccess.collect {
-                    it?.let {
-                        if (it) {
-                            /*val navHostFragment =
-                                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-                            val navController = navHostFragment.navController
-                            binding.bottomNav.setupWithNavController(navController)
-                            setContentView(binding.root)*/
-                            setContent {
-                                AppScreen()
-                            }
-                        }
-                    }
-                }
-            }
-        } else if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
+        if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
             var id = redirectUri.toString().substring(start, redirectUri.toString().length)
@@ -88,12 +72,12 @@ class MainActivity : AppCompatActivity() {
 
             else{
                 setContent {
-                    UnsplashTheme() {
+                    AppScreen(startDestination = AuthDest.route)
+                    /*UnsplashTheme() {
                         AuthFragmentCompose(
-                            PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
-                            PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
+
                         )
-                    }
+                    }*/
                 }
             }
 
@@ -103,7 +87,7 @@ class MainActivity : AppCompatActivity() {
 }
 
 @Composable
-fun AppScreen() {
+fun AppScreen(startDestination:String = "MainFeedNested") {
     UnsplashTheme() {
         val navController = rememberNavController()
         val currentBackStack by navController.currentBackStackEntryAsState()
@@ -124,7 +108,8 @@ fun AppScreen() {
         ) { innerPadding ->
             AppNavHost(
                 navController = navController,
-                modifier = Modifier.padding(innerPadding)
+                modifier = Modifier.padding(innerPadding),
+                startDestination = startDestination
             )
         }
     }
@@ -133,13 +118,19 @@ fun AppScreen() {
 @Composable
 fun AppNavHost(
     navController: NavHostController,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    startDestination:String = "MainFeedNested"
 ) {
     NavHost(
         navController = navController,
-        startDestination = "MainFeedNested",
+        startDestination = startDestination,
         modifier = modifier
     ) {
+        composable(route = AuthDest.route) {
+            AuthFragmentCompose(
+                onAuthSucces = { navController.navigateAndClear("MainFeedNested") }
+            )
+        }
         mainFeedGraph(navController)
         collectionsGraph(navController)
         myProfileGraph(navController)
@@ -147,7 +138,17 @@ fun AppNavHost(
 }
 
 
-
+fun NavHostController.navigateAndClear(route: String) =
+    this.navigate(route) {
+        popUpTo(
+            route
+        ) {
+            saveState = true
+            inclusive = true
+        }
+        launchSingleTop = true
+        restoreState = true
+    }
 
 
 

@@ -21,22 +21,20 @@ class UserRepositoryImpl @Inject constructor(
     private val userDataSource: UserDataSource,
     private val persistentStorage: PersistentStorage,
     private val likedPhotosPagingSource: LikedPhotosPagingSource
-):UserRepository {
+) : UserRepository {
     override suspend fun getMeInfo(): UserInfo? {
         try {
             val userInfo = userDataSource.getUserInfo()
-            persistentStorage.addProperty(PersistentStorage.USER_INFO,userInfo)
+            persistentStorage.addUserInfo(PersistentStorage.USER_INFO, userInfo)
             return userInfo.mapToDomain()
-        }
-        catch (e:Throwable){
-            val json = persistentStorage.getProperty(PersistentStorage.USER_INFO)
-            val userInfo = StorageConverter.userInfoFromJson(json?:"")
+        } catch (e: Throwable) {
+            val userInfo = persistentStorage.getUserInfo()
             return userInfo.mapToDomain()
         }
     }
 
     override suspend fun getPublicUserInfo(username: String): PublicUserInfo {
-        return userDataSource.getPublicUserInfo(username).mapToDomain()?: PublicUserInfo()
+        return userDataSource.getPublicUserInfo(username).mapToDomain() ?: PublicUserInfo()
     }
 
     override fun getLikedPhotosPagingDataFlow(
@@ -48,7 +46,8 @@ class UserRepositoryImpl @Inject constructor(
             config = PagingConfig(pageSize = 10),
             pagingSourceFactory = { likedPhotosPagingSource }
         ).flow.map { pagingData ->
-            pagingData.map { photo->photo.mapToDomain()?:Photo()
+            pagingData.map { photo ->
+                photo.mapToDomain() ?: Photo()
             }
         }
     }

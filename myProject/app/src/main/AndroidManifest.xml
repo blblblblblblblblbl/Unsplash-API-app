@@ -42,9 +42,9 @@
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />
                 <!-- Accepts URIs that begin with "http://www.example.com/gizmos” -->
-                <data android:scheme="myproject"
+                <!--<data android:scheme="myproject"
                     android:host="www.exagfdasrvxcmple.com"
-                    android:pathPrefix="/gizmos" />
+                    android:pathPrefix="/gizmos" />-->
                 <data
                     android:scheme="https"
                     android:host="unsplash.com"
