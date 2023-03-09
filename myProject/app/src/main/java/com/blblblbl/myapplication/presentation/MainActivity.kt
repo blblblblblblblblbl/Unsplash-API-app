@@ -49,35 +49,18 @@ class MainActivity : AppCompatActivity() {
             val bundle = bundleOf()
             val start = "https://unsplash.com/photos/".length
             var id = redirectUri.toString().substring(start, redirectUri.toString().length)
-            /*bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, id)
-            val navHostFragment =
-                supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-            val navController = navHostFragment.navController
-            navController.navigate(R.id.action_photosFragment_to_photoDetailedInfoFragment, bundle)
-            binding.bottomNav.setupWithNavController(navController)
-            setContentView(binding.root)*/
             setContent {
                 PhotoDetailedFragmentCompose(photoId = id)
             }
         } else {
-            /*val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragmentContainerView) as NavHostFragment
-            val navController = navHostFragment.navController
-            binding.bottomNav.setupWithNavController(navController)
-            setContentView(binding.root)*/
             if(viewModel.checkOnSavedToken()){
                 setContent {
                     AppScreen()
                 }
             }
-
             else{
                 setContent {
                     AppScreen(startDestination = AuthDest.route)
-                    /*UnsplashTheme() {
-                        AuthFragmentCompose(
-
-                        )
-                    }*/
                 }
             }
 

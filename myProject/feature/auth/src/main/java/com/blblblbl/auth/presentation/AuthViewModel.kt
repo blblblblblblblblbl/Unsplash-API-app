@@ -30,35 +30,9 @@ class AuthViewModel @Inject constructor(
     private val performTokenRequestUseCase: PerformTokenRequestUseCase
 ):ViewModel() {
 
-    private val openAuthPageEventChannel = Channel<Intent>(Channel.BUFFERED)
     private val _openAuthPageFlow = MutableStateFlow<Intent?>(null)
     val openAuthPageFlow = _openAuthPageFlow.asStateFlow()
-    /*fun auth(
-        context: Context,
-        completeIntent: PendingIntent,
-        cancelIntent: PendingIntent
-    ){
-        val authService = AuthorizationService(context)
-        val serviceConfig = AuthorizationServiceConfiguration(
-            Uri.parse("https://unsplash.com/oauth/authorize"),  // authorization endpoint
-            Uri.parse("https://unsplash.com/oauth/token")) // token endpoint
-        var authRequestBuilder = AuthorizationRequest.Builder(
-            serviceConfig,  // the authorization service configuration
-            MY_CLIENT_ID,  // the client ID, typically pre-registered and static
-            ResponseTypeValues.CODE,  // the response_type value: we want a code
-            MY_REDIRECT_URI.toUri()
-        ) // the redirect URI to which the auth response is sent
-        var authRequest = authRequestBuilder
-            .setScope("public read_user write_user read_photos write_photos write_likes write_followers write_collections read_collections")
-            .build()
-        authService.performAuthorizationRequest(
-            authRequest,
-            completeIntent,
-            cancelIntent
-            //PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE),
-            //PendingIntent.getActivity(context, 0, Intent(context, MainActivity::class.java), PendingIntent.FLAG_IMMUTABLE)
-        )
-    }*/
+
 
     fun auth(
         context: Context
@@ -96,14 +70,5 @@ class AuthViewModel @Inject constructor(
             }
         }
     }
-    companion object AuthConfig{
-        const val AUTH_URI = "https://unsplash.com/oauth/authorize"
-        const val TOKEN_URI = "https://unsplash.com/oauth/token"
-        const val RESPONSE_TYPE = ResponseTypeValues.CODE
-        const val SCOPE = "public read_user write_user read_photos write_photos write_likes write_followers write_collections read_collections"
 
-        const val CLIENT_ID:String ="RoIF7WHVqFj86IPcmNSz_dKxmUaDRGANTaSk9aqnyac"
-        const val CLIENT_SECRET:String ="e1guRuEqxqtvMOf9L3_Sf_S_z1P8cs41C720MpfdWqw"
-        const val REDIRECT_URI:String ="myunsplashproject://unsplash.com/callback"
-    }
 }
