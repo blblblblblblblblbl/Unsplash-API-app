@@ -130,8 +130,8 @@ fun PhotoCollectionItem(photoCollection: PhotoCollection, modifier: Modifier = M
         val textSizeTotalPhotos = 20.sp
         val textSizeName = 15.sp
         val textSizeUserName = 10.sp
-        Text(text = "${photoCollection.totalPhotos} ${stringResource(id = R.string.collection_total_photos)}", fontSize = textSizeTotalPhotos)
-        Text(text = "${photoCollection.title}", fontSize = textSizeTitle, fontWeight = FontWeight.Bold)
+        Text(text = "${photoCollection.totalPhotos} ${stringResource(id = R.string.collection_total_photos)}", fontSize = textSizeTotalPhotos, color = Color.White)
+        Text(text = "${photoCollection.title}", fontSize = textSizeTitle, fontWeight = FontWeight.Bold, color = Color.White)
         Spacer(modifier = Modifier.weight(1f))
         Row(verticalAlignment = Alignment.CenterVertically) {
             val avatar:String? = photoCollection.user?.profileImage?.large
@@ -143,8 +143,8 @@ fun PhotoCollectionItem(photoCollection: PhotoCollection, modifier: Modifier = M
                     shape = CircleShape
                 ))
             Column(Modifier.padding(start = 5.dp)) {
-                Text(text = "${photoCollection.user?.name}", fontSize = textSizeName)
-                Text(text = "@${photoCollection.user?.username}", fontSize = textSizeUserName)
+                Text(text = "${photoCollection.user?.name}", fontSize = textSizeName, color = Color.White)
+                Text(text = "@${photoCollection.user?.username}", fontSize = textSizeUserName, color = Color.White)
             }
         }
 

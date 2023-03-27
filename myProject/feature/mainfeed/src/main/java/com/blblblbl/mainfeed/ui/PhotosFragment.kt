@@ -12,6 +12,7 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.blblblbl.mainfeed.domain.model.photos.Photo
 import com.blblblbl.mainfeed.presentation.PhotosFragmentViewModel
@@ -101,19 +102,17 @@ fun PhotosTopBar(
     TopAppBar(
         title = {
             Text(
-                text = "search photo",
-                color = Color.White
+                text = "search photo"
             )
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
         ),
         actions = {
             IconButton(onClick = onSearchClicked) {
                 Icon(
                     imageVector = Icons.Default.Search,
-                    contentDescription = "Search Icon",
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    contentDescription = "Search Icon"
                 )
             }
         }

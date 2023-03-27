@@ -11,6 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.blblblbl.profile.R
 import com.blblblbl.profile.domain.model.photo.Photo
@@ -152,13 +153,11 @@ fun UserTopBar(
     TopAppBar(
         title = {
             Text(
-                text = stringResource(id = R.string.user),
-                color = Color.White
+                text = stringResource(id = R.string.user)
             )
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
         ),
         actions = {
             IconButton(onClick = onLogOutClicked) {

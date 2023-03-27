@@ -1,20 +1,22 @@
 package com.blblblbl.myapplication.presentation
 
-import android.app.PendingIntent
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.surfaceColorAtElevation
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavGraph.Companion.findStartDestination
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -23,16 +25,15 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.blblblbl.auth.ui.AuthFragmentCompose
 import com.blblblbl.detailedphoto.ui.PhotoDetailedFragmentCompose
-import com.blblblbl.mainfeed.ui.PhotosFragmentCompose
 import com.blblblbl.myapplication.databinding.ActivityMainBinding
 import com.blblblbl.myapplication.navigation.AppTabRow
 import com.blblblbl.myapplication.navigation.AuthDest
-import com.blblblbl.myapplication.navigation.MainFeed
 import com.blblblbl.myapplication.navigation.appTabRowScreens
 import com.blblblbl.myapplication.navigation.graphs.collectionsGraph
 import com.blblblbl.myapplication.navigation.graphs.mainFeedGraph
 import com.blblblbl.myapplication.navigation.graphs.myProfileGraph
-import com.blblblbl.myapplication.presentation.view.compose_utils.theming.UnsplashTheme
+import com.blblblbl.myapplication.presentation.ui.theming.UnsplashTheme
+import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -45,25 +46,28 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         Log.d("MyLog","checkOnSavedToken(): true")
         val redirectUri: Uri? = intent.data
-        if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
-            val bundle = bundleOf()
-            val start = "https://unsplash.com/photos/".length
-            var id = redirectUri.toString().substring(start, redirectUri.toString().length)
-            setContent {
-                PhotoDetailedFragmentCompose(photoId = id)
-            }
-        } else {
-            if(viewModel.checkOnSavedToken()){
-                setContent {
-                    AppScreen()
+        setContent {
+            val systemUiController = rememberSystemUiController()
+            UnsplashTheme() {
+                val useDarkIcons = !isSystemInDarkTheme()
+                val color = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
+                SideEffect {
+                    systemUiController.setSystemBarsColor(color, darkIcons = useDarkIcons)
+                }
+                if (redirectUri.toString().startsWith("https://unsplash.com/photos/")) {
+                    val start = "https://unsplash.com/photos/".length
+                    var id = redirectUri.toString().substring(start, redirectUri.toString().length)
+                    PhotoDetailedFragmentCompose(photoId = id)
+                }
+                else {
+                    if(viewModel.checkOnSavedToken()){
+                        AppScreen()
+                    }
+                    else{
+                        AppScreen(startDestination = AuthDest.route)
+                    }
                 }
             }
-            else{
-                setContent {
-                    AppScreen(startDestination = AuthDest.route)
-                }
-            }
-
         }
     }
 
@@ -71,31 +75,30 @@ class MainActivity : AppCompatActivity() {
 
 @Composable
 fun AppScreen(startDestination:String = "MainFeedNested") {
-    UnsplashTheme() {
-        val navController = rememberNavController()
-        val currentBackStack by navController.currentBackStackEntryAsState()
-        val currentDestination = currentBackStack?.destination
-        val currentScreen = appTabRowScreens.find { it.route == currentDestination?.route }
-        Scaffold(
-            bottomBar = {
-                currentScreen?.let { currentScreen->
-                    AppTabRow(
-                        allScreens = appTabRowScreens,
-                        onTabSelected = { screen ->
-                            navController.navigateSingleTopTo(screen.route)
-                        },
-                        currentScreen = currentScreen
-                    )
-                }
+    val navController = rememberNavController()
+    val currentBackStack by navController.currentBackStackEntryAsState()
+    val currentDestination = currentBackStack?.destination
+    val currentScreen = appTabRowScreens.find { it.route == currentDestination?.route }
+    Scaffold(
+        bottomBar = {
+            currentScreen?.let { currentScreen->
+                AppTabRow(
+                    allScreens = appTabRowScreens,
+                    onTabSelected = { screen ->
+                        navController.navigateSingleTopTo(screen.route)
+                    },
+                    currentScreen = currentScreen
+                )
             }
-        ) { innerPadding ->
-            AppNavHost(
-                navController = navController,
-                modifier = Modifier.padding(innerPadding),
-                startDestination = startDestination
-            )
         }
+    ) { innerPadding ->
+        AppNavHost(
+            navController = navController,
+            modifier = Modifier.padding(innerPadding),
+            startDestination = startDestination
+        )
     }
+
 }
 
 @Composable
