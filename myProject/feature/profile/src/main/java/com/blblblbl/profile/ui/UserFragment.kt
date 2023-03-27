@@ -11,65 +11,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.blblblbl.profile.R
 import com.blblblbl.profile.domain.model.photo.Photo
 import com.blblblbl.profile.presentation.UserFragmentViewModel
 
-/*@AndroidEntryPoint
-class UserFragment : Fragment() {
-    private val viewModel: UserFragmentViewModel by viewModels()
-    @OptIn(ExperimentalMaterial3Api::class)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        viewModel.getUserInfo()
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val privateInfoState by viewModel.privateUserInfo.collectAsState()
-                val publicInfoState by viewModel.publicUserInfo.collectAsState()
-                val pagedPhotos by viewModel.pagedPhotos.collectAsState()
-                UnsplashTheme() {
-                    val openDialog = remember { mutableStateOf(false) }
-                    Scaffold(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        topBar = {
-                            UserTopBar(onLogOutClicked = { openDialog.value = true })
-                        }
-                    ) {
-                        if (openDialog.value) {
-                            LogOutDialog(
-                                openDialog = openDialog,
-                                logoutOnClick = { viewModel.logout()
-                                })
-                        }
-                        Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                            MeInfoScreen(
-                                privateUserInfo = privateInfoState,
-                                publicUserInfo = publicInfoState,
-                                pagedPhotosFlow =  pagedPhotos,
-                                { id, bool -> viewModel.changeLike(id,bool) },
-                                {photo -> openDetailed(photo)}
-                            )
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    fun openDetailed(photo:Photo){
-        val bundle = bundleOf()
-        bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
-        findNavController().navigate(
-            R.id.action_userFragment_to_photoDetailedInfoFragment4,
-            bundle
-        )
-    }
-
-
-}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -152,13 +99,11 @@ fun UserTopBar(
     TopAppBar(
         title = {
             Text(
-                text = stringResource(id = R.string.user),
-                color = Color.White
+                text = stringResource(id = R.string.user)
             )
         },
         colors = TopAppBarDefaults.smallTopAppBarColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            actionIconContentColor = MaterialTheme.colorScheme.onPrimary
+            containerColor = MaterialTheme.colorScheme.surfaceColorAtElevation(5.dp)
         ),
         actions = {
             IconButton(onClick = onLogOutClicked) {

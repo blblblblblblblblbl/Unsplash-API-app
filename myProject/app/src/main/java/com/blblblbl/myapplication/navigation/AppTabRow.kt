@@ -10,10 +10,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.selection.selectableGroup
 import androidx.compose.material.Icon
-import androidx.compose.material.Surface
 import androidx.compose.material.Text
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -37,7 +37,8 @@ fun AppTabRow(
         Modifier
             .height(TabHeight)
             .fillMaxWidth(),
-        color = MaterialTheme.colorScheme.primary
+        tonalElevation = 5.dp
+
     ) {
         Row(
             modifier = Modifier
@@ -91,7 +92,6 @@ private fun AppTab(
                 indication = rememberRipple(
                     bounded = false,
                     radius = Dp.Unspecified
-                    //color = Color.Unspecified
                 )
             )
             .clearAndSetSemantics { contentDescription = text }

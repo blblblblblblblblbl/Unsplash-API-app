@@ -124,6 +124,7 @@ dependencies {
     implementation 'androidx.compose.foundation:foundation:1.4.0-alpha03'
     implementation 'androidx.compose.material:material-icons-extended:1.4.0-beta02'
     implementation "com.google.accompanist:accompanist-permissions:0.28.0"
+    implementation "com.google.accompanist:accompanist-systemuicontroller:0.28.0"
     //
     // Pager and Indicators - Accompanist
     implementation "com.google.accompanist:accompanist-pager:0.28.0"
