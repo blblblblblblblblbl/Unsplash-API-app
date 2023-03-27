@@ -21,64 +21,6 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class PhotoDetailedInfoFragment : Fragment() {
-    // TODO: make it works or delete 
-    /*private val viewModel: PhotoDetailedInfoFragmentViewModel by viewModels()
-    private var photoId:String? = null
-
-    val launcher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()){map->
-        if (map.values.all { it }){
-            Toast.makeText(context,"storage permissions granted", Toast.LENGTH_LONG).show()
-            viewModel.download()
-        }
-        else {
-            Toast.makeText(context,"storage permissions isn't granted", Toast.LENGTH_LONG).show()
-        }
-    }
-
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        arguments?.let {photoId = it.getString(PHOTO_ID_KEY)  }
-        photoId?.let { viewModel.getPhotoById(it)}
-        return ComposeView(requireContext()).apply {
-            setContent {
-                val isLocationShow = viewModel.isToShowLocation.collectAsState()
-                val detailedPhotoInfo by viewModel.detailedPhotoInfo. collectAsState()
-                UnsplashTheme() {
-                    PhotoDetailedScreen(
-                        detailedPhotoInfo = detailedPhotoInfo,
-                        { id, bool -> viewModel.changeLike(id,bool) } ,
-                        isLocationShow.value,
-                        { locationAction() },
-                        { downloadAction() },
-                        { shareAction() })
-                }
-            }
-        }
-    }
-    fun locationAction(){
-        val location = viewModel.detailedPhotoInfo.value?.location
-        val latitude = location?.position?.latitude
-        val longitude  = location?.position?.longitude
-        if (latitude!=null &&longitude!=null){
-            val intent = Intent(
-                Intent.ACTION_VIEW,
-                Uri.parse("geo:$latitude,$longitude")
-            )
-            startActivity(intent)
-        }
-    }
-    fun downloadAction(){
-        launcher.launch(REQUEST_PERMISSIONS)
-    }
-    fun shareAction(){
-        ShareCompat.IntentBuilder(requireContext())
-            .setType("text/plain")
-            .setChooserTitle("Share URL")
-            .setText("https://unsplash.com/photos/${viewModel.detailedPhotoInfo.value?.id}")
-            .startChooser()
-    }*/
 
     companion object{
         const val PHOTO_ID_KEY = "photoIdKey"

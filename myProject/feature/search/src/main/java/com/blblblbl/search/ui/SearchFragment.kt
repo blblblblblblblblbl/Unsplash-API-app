@@ -20,63 +20,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.blblblbl.search.domain.model.photo.Photo
 import com.blblblbl.search.presentation.SearchFragmentViewModel
 
-// TODO: make it work or delete
-/*@AndroidEntryPoint
-class SearchFragment : Fragment() {
-    private val viewModel: SearchFragmentViewModel by viewModels()
-    @OptIn(ExperimentalMaterial3Api::class)
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return ComposeView(requireContext()).apply {
-            val searchQuery by viewModel.searchQuery
-
-            setContent {
-                val searchedImages = viewModel.searchedImages.collectAsState()
-                UnsplashTheme() {
-                    Scaffold(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        topBar = {
-                            SearchWidget(
-                                text = searchQuery,
-                                onTextChange = {
-                                    viewModel.updateSearchQuery(query = it)
-                                },
-                                onSearchClicked = {
-                                    viewModel.search(query = it)
-                                },
-                                onCloseClicked = {
-                                    findNavController().popBackStack()
-                                }
-                            )
-                        },
-                        content = {
-                            searchedImages.value?.let { imgFlow->
-                                Surface(modifier = Modifier.padding(top = it.calculateTopPadding())) {
-                                    PhotoListView(
-                                        photos = imgFlow,
-                                        {photo -> openDetailed(photo)},
-                                        { id, bool -> viewModel.changeLike(id,bool) }
-                                    )
-                                }
-                            }
-                        }
-                    )
-                }
-            }
-        }
-    }
-    fun openDetailed(photo:Photo){
-        val bundle = bundleOf()
-        bundle.putString(PhotoDetailedInfoFragment.PHOTO_ID_KEY, photo.id)
-        findNavController().navigate(
-            R.id.action_searchFragment_to_photoDetailedInfoFragment3,
-            bundle
-        )
-    }
-
-}*/
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

@@ -22,27 +22,6 @@ import kotlinx.coroutines.currentCoroutineContext
 import net.openid.appauth.AuthorizationException
 import net.openid.appauth.AuthorizationResponse
 
-// TODO: make this work or delete it
-/*@AndroidEntryPoint
-class AuthFragment : Fragment() {
-    private val viewModel: AuthViewModel by viewModels()
-    @OptIn(
-        ExperimentalAnimationApi::class,
-        ExperimentalPagerApi::class
-    )
-    override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View? {
-        return ComposeView(requireContext()).apply {
-            setContent {
-                OnBoardingScreen({
-                    viewModel.auth()
-                })
-            }
-        }
-    }
-}*/
 
 @OptIn(ExperimentalAnimationApi::class, ExperimentalPagerApi::class)
 @Composable
