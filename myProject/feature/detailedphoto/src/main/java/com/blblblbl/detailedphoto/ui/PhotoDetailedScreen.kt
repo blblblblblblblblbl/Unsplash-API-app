@@ -141,21 +141,12 @@ fun LikeButton(
     state:Boolean,
     onClick:()->Unit
 ){
-    val icon: ImageVector
-    val tint: Color
-    if(state){
-        icon = Icons.Default.Favorite
-        tint = Color.Red
-    }
-    else{
-        icon = Icons.Default.FavoriteBorder
-        tint = Color.White
-    }
+    
     IconButton(onClick = { onClick() }) {
         Icon(
-            icon,
+            if (state) Icons.Default.Favorite else Icons.Default.FavoriteBorder,
             contentDescription = "like icon",
-            tint = tint,
+            tint = if (state) Color.Red else LocalContentColor.current,
             modifier = Modifier
                 .testTag("likeIcon")
         )
